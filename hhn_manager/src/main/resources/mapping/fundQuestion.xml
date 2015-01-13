@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundQuestionDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="question_id != null">question_id,</if>
+            <if test="parent_question_id != null">parent_question_id,</if>
+            <if test="subject_id != null">subject_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="content != null">content,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="question_id != null">#{question_id},</if>
+            <if test="parent_question_id != null">#{parent_question_id},</if>
+            <if test="subject_id != null">#{subject_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="content != null">#{content},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="question_id != null">question_id=#{question_id},</if>
+            <if test="parent_question_id != null">parent_question_id=#{parent_question_id},</if>
+            <if test="subject_id != null">subject_id=#{subject_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="content != null">content=#{content},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+        where question_id=#{question_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_question" keyProperty="question_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_question(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_question">update td_fund_question
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_question">
+        select * from td_fund_question where question_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_question where question_id=#{id}
+    </delete>
+</mapper>

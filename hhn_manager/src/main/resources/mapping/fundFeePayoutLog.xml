@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundFeePayoutLogDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="fee_id != null">fee_id,</if>
+            <if test="actual_account_log_id != null">actual_account_log_id,</if>
+            <if test="fee_amount != null">fee_amount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="create_time != null">create_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="fee_id != null">#{fee_id},</if>
+            <if test="actual_account_log_id != null">#{actual_account_log_id},</if>
+            <if test="fee_amount != null">#{fee_amount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="create_time != null">#{create_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fee_id != null">fee_id=#{fee_id},</if>
+            <if test="actual_account_log_id != null">actual_account_log_id=#{actual_account_log_id},</if>
+            <if test="fee_amount != null">fee_amount=#{fee_amount},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+        </trim>
+        where fee_id=#{fee_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_fee_payout_log" keyProperty="fee_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_fee_payout_log(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_fee_payout_log">update td_fund_fee_payout_log
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_fee_payout_log">
+        select * from td_fund_fee_payout_log where fee_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_fee_payout_log where fee_id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundAccountLogDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="account_log_id != null">account_log_id,</if>
+            <if test="trade_id != null">trade_id,</if>
+            <if test="log_type != null">log_type,</if>
+            <if test="trade_amount != null">trade_amount,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="user_account_id != null">user_account_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="trade_time != null">trade_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="account_log_id != null">#{account_log_id},</if>
+            <if test="trade_id != null">#{trade_id},</if>
+            <if test="log_type != null">#{log_type},</if>
+            <if test="trade_amount != null">#{trade_amount},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="user_account_id != null">#{user_account_id},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="trade_time != null">#{trade_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="account_log_id != null">account_log_id=#{account_log_id},</if>
+            <if test="trade_id != null">trade_id=#{trade_id},</if>
+            <if test="log_type != null">log_type=#{log_type},</if>
+            <if test="trade_amount != null">trade_amount=#{trade_amount},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="user_account_id != null">user_account_id=#{user_account_id},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="trade_time != null">trade_time=#{trade_time},</if>
+        </trim>
+        where account_log_id=#{account_log_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_account_log" keyProperty="account_log_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_account_log(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_account_log">update td_fund_account_log
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_account_log">
+        select * from td_fund_account_log where account_log_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_account_log where account_log_id=#{id}
+    </delete>
+</mapper>

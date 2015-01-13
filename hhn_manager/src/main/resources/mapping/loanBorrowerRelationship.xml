@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanBorrowerRelationshipDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="borrower_relationship_id != null">borrower_relationship_id,</if>
+            <if test="borrower_id != null">borrower_id,</if>
+            <if test="borrower_type != null">borrower_type,</if>
+            <if test="ralation_name != null">ralation_name,</if>
+            <if test="relationship != null">relationship,</if>
+            <if test="relation_type != null">relation_type,</if>
+            <if test="mobile_phone != null">mobile_phone,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="borrower_relationship_id != null">#{borrower_relationship_id},</if>
+            <if test="borrower_id != null">#{borrower_id},</if>
+            <if test="borrower_type != null">#{borrower_type},</if>
+            <if test="ralation_name != null">#{ralation_name},</if>
+            <if test="relationship != null">#{relationship},</if>
+            <if test="relation_type != null">#{relation_type},</if>
+            <if test="mobile_phone != null">#{mobile_phone},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="borrower_relationship_id != null">borrower_relationship_id=#{borrower_relationship_id},</if>
+            <if test="borrower_id != null">borrower_id=#{borrower_id},</if>
+            <if test="borrower_type != null">borrower_type=#{borrower_type},</if>
+            <if test="ralation_name != null">ralation_name=#{ralation_name},</if>
+            <if test="relationship != null">relationship=#{relationship},</if>
+            <if test="relation_type != null">relation_type=#{relation_type},</if>
+            <if test="mobile_phone != null">mobile_phone=#{mobile_phone},</if>
+        </trim>
+        where borrower_relationship_id=#{borrower_relationship_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_borrower_relationship" keyProperty="borrower_relationship_id"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_borrower_relationship(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="loan_borrower_relationship">update td_loan_borrower_relationship
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_borrower_relationship">
+        select * from td_loan_borrower_relationship where borrower_relationship_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_loan_borrower_relationship where borrower_relationship_id=#{id}
+    </delete>
+</mapper>

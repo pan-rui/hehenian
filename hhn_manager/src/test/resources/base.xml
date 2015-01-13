@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:task="http://www.springframework.org/schema/task" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:c='http://www.springframework.org/schema/c'
+       xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/task
+http://www.springframework.org/schema/task/spring-task-3.1.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <!-- 引入属性文件 -->
+    <context:property-placeholder location="classpath:config.properties"/>
+    <util:properties id="config" location="classpath:config.properties"/>
+    <util:properties id="message" location="classpath:message.properties"/>
+    <!-- 自动扫描(自动注入) -->
+    <context:component-scan base-package="com.hhn.dao,com.hhn.controll"/>
+    <context:annotation-config/>
+
+
+    <!--    <aop:config>
+            <aop:aspect ref="logService">
+                <aop:pointcut id="logServicePointcuts"
+                              expression="execution(* com.hehenian.biz.service..*.*(..))" />
+                <aop:around pointcut-ref="logServicePointcuts" method="around" />
+            </aop:aspect>
+        </aop:config>-->
+
+    <bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>message</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="commonMessages" value="message"/>
+    </bean>
+    <!-- 导入ehcache的配置文件 -->
+    <!--<import resource="spring-ehcache.xml"/>-->
+
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+         <property name="basePackage" value="com.hhn.dao" />
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    </bean>
+         -->
+    <!--    <bean id="cartDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+            <property name="mapperInterface" value="ICartDao"></property>
+            <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+        </bean>-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.hhn.dao"/>
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    </bean>
+
+    <!-- =================Spring data REDIS configuration =============================== -->
+    <!--       <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+                  <property name="maxTotal" value="32"></property>
+                  <property name="maxIdle" value="6"></property>
+                  <property name="maxWaitMillis" value="15000"></property>
+                  <property name="minEvictableIdleTimeMillis" value="300000"></property>
+                  <property name="numTestsPerEvictionRun" value="3"></property>
+                  <property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+           </bean>
+           <bean id="jedisConnectionFactory"
+                 class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                 destroy-method="destroy">
+                  <property name="poolConfig" ref="jedisPoolConfig"></property>
+                  <property name="hostName" value="${jedis.host}"></property>
+                  <property name="port" value="6379"></property>
+                  &lt;!&ndash;<property name="password" value="${jedis.pwd}"></property>&ndash;&gt;
+                  <property name="timeout" value="15000"></property>
+                  <property name="usePool" value="true"></property>
+           </bean>
+           <bean id="jedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+                  <property name="connectionFactory" ref="jedisConnectionFactory"></property>
+                  <property name="keySerializer">
+                         <bean
+                                 class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+                  </property>
+                  <property name="hashKeySerializer">
+                         <bean
+                                 class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+                  </property>
+                  <property name="valueSerializer">
+                         <bean
+                                 class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+                  </property>
+                  <property name="hashValueSerializer">
+                         <bean
+                                 class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+                  </property>
+           </bean>
+
+           <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager" c:template-ref="jedisTemplate" >
+                  <property name="cacheNames">
+                         <set>
+                                <value>commonData</value>
+                                <value>dbQuery</value>
+                         </set>
+                  </property>
+               <property name="expires">
+                   <map>
+                       <entry key="dbQuery" value="2592000"/>
+                       <entry key="commonData" value="2592000"/>
+                   </map>
+               </property>
+           </bean>
+           <bean id="jedisPool" class="redis.clients.jedis.JedisPool" c:poolConfig-ref="jedisPoolConfig" c:host="${jedis.host}"/> -->
+    <!-- =================Spring data REDIS configuration end================================= -->
+    <bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
+        <!--<property name="servers" value="#{configproperties['memcached.server.url']}" />-->
+        <property name="servers" value="${memcache.session.address}"/>
+        <property name="protocol" value="BINARY"/>
+        <property name="transcoder">
+            <bean class="net.spy.memcached.transcoders.SerializingTranscoder">
+                <property name="compressionThreshold" value="1024"/>
+            </bean>
+        </property>
+        <property name="opTimeout" value="1000"/>
+        <property name="timeoutExceptionThreshold" value="2000"/>
+        <!-- 这是一个坑：<property name="hashAlg" value="KETAMA_HASH"/>-->
+        <property name="hashAlg">
+            <value type="net.spy.memcached.DefaultHashAlgorithm">KETAMA_HASH</value>
+        </property>
+        <property name="locatorType" value="CONSISTENT"/>
+        <property name="failureMode" value="Redistribute"/>
+        <property name="useNagleAlgorithm" value="false"/>
+    </bean>
+  <!--  <bean id="cacheManager" class="com.hhn.util.CacheManager">
+        <property name="client" ref="memcachedClient"/>
+        <property name="caches">
+            <set>
+                <bean class="com.hhn.util.MyCache">
+                    <property name="name" value="dbQuery"/>
+                    <property name="client" ref="memcachedClient"/>
+                    <property name="expire" value="259200"/>
+                </bean>
+                <ref bean="cache"/>
+            </set>
+        </property>
+    </bean>
+    <bean id="cache" class="com.hhn.util.MyCache">
+        <property name="name" value="commonData"/>
+        <property name="client" ref="memcachedClient"/>
+        <property name="expire" value="259200"/>
+    </bean>-->
+    <!-- 用户登录filter -->
+    <bean id="userLoginFilter" class="com.hhn.filter.UserLoginFilter" >
+        <property name="loginView" value="${hhn.login}"/>
+        <property name="adminLoginView" value="${hhn.admin.login}"/>
+        <property name="topView" value="${hhn.top.url}"/>
+        <property name="footerView" value="${hhn.footer.url}"/>
+    </bean>
+</beans>

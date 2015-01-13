@@ -1,0 +1,293 @@
+body {
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+}
+
+.load {
+    height: 20px;
+    width: 20px;
+}
+
+.pageDivClass {
+    font-size: 12px;
+    margin: 10px;
+}
+
+#right {
+    width: 100%;
+}
+
+.main_alll_h2 {
+    font-size: 14px;
+    color: #666;
+    background: url(../image/menu_top_bg1.png) no-repeat;
+    display: block;
+    width: 147px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    margin-top: 10px;
+    font-family: "微软雅黑";
+}
+
+.gvHeader {
+    font-size: 12px;
+    color: #3e4959;
+    font-family: "tahoma";
+    line-height: 20px;
+    height: 28px;
+    text-align: center;
+    background-image: url(../image/title_bg_blue.jpg);
+}
+.gvHeader th{
+    vertical-align: middle;
+    border:1px solid #DEE7EF;
+}
+.thalign{
+    text-align: left;
+    padding-left: 20px;
+    position: relative;
+}
+.iptalign{
+    position: absolute;
+    top: 0px;left: 46px;
+}
+.thalign2{
+    text-align: left;
+    padding-left: 6px;
+    position: relative;
+}
+.iptalign2{
+    position: absolute;
+    top: 0px;left: 28px;
+}
+.gvItem {
+    font-size: 12px;
+    color: #3e4959;
+    font-family: "tahoma";
+    background-color: #fff;
+    height: 28px;
+    text-align: center;
+}
+.gvItem td{
+    border:1px solid #DEE7EF;
+}
+.gvItem a:link {
+    font-family: "tahoma";
+    color: #3e4959;
+    text-decoration: none;
+}
+
+.gvItem a:visited {
+    font-family: "tahoma";
+    color: #3e4959;
+    text-decoration: none;
+}
+
+.gvItem a:hover {
+    font-family: "tahoma";
+    color: #cc0000;
+    text-decoration: none;
+}
+
+.gvItem a:active {
+    font-family: "tahoma";
+    color: #3e4959;
+    text-decoration: none;
+}
+
+.curPageColor {
+    background-color: #148dd9;
+    color: #ffffff;
+}
+
+.f66 {
+    font-size: 12px;
+    color: #666;
+    font-family: "tahoma";
+    line-height: 20px;
+}
+
+.f66 a:link {
+    font-family: "tahoma";
+    color: #666;
+    text-decoration: none;
+}
+
+.f66 a:active {
+    font-family: "tahoma";
+    color: #666;
+    text-decoration: none;
+}
+
+.f66 a:visited {
+    font-family: "tahoma";
+    color: #666;
+    text-decoration: none;
+}
+
+.f66 a:hover {
+    font-family: "tahoma";
+    color: #666;
+    text-decoration: none;
+}
+
+input[type="button"] {
+    background-image: url("../image/bk_mod-3-hd.png");
+    border: 1px solid #F1F1F1;
+    color: #333333;
+    cursor: pointer;
+    height: 24px;
+    line-height: 20px;
+    margin-left: 10px;
+    margin-top: 0;
+    min-width: 78px;
+    font-size: 12px;
+}
+.subInput{
+    width: 140px;
+}
+
+.gvHidden {
+    display: none;
+}
+
+.pages {
+    margin: 5px auto
+}
+
+.pages a {
+    display: block;
+    font-size: 12px;
+    line-height: 17px;
+    height: 17px;
+    text-decoration: none ! important
+}
+
+.pages span {
+    display: block;
+    font-size: 12px;
+    line-height: 17px;
+    height: 17px;
+    text-decoration: none ! important
+}
+
+.pages_num a {
+    width: 15px;
+    text-align: center
+}
+
+.pages_num a:hover {
+    font-weight: bold
+}
+
+.iptt2 {
+    border-right: #accbde 1px solid;
+    border-top: #accbde 1px solid;
+    border-left: #accbde 1px solid;
+    width: 33px;
+    color: #989c9f;
+    line-height: 17px;
+    border-bottom: #accbde 1px solid;
+    height: 17px;
+    text-align: center
+}
+
+.pages .pages_span {
+    padding-right: 4px;
+    padding-left: 4px;
+    font-size: 12px ! important;
+    padding-bottom: 0px;
+    line-height: 17px ! important;
+    padding-top: 0px
+}
+
+.require-field {
+    color: #FF0000;
+    font-size: 14px;
+}
+
+.pagegr {
+    text-align: center;
+}
+
+input {
+    border: 1px solid #d9d9d9;
+    height: 22px;
+    line-height: 22px;
+}
+
+input[type="button"] {
+    cursor: pointer;
+    background-image: url(../image/bk_mod-3-hd.png);
+    height: 24px;
+    min-width: 78px;
+    border: 1px solid #f1f1f1;
+    margin-left: 10px;
+    line-height: 20px;
+    color: #333;
+    margin-top: 0;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    background-image: url(../image/bk_mod-3-hd.png);
+    height: 24px;
+    line-height: 20px;
+    margin-top: 0;
+    min-width: 78px;
+    color: #333;
+    margin-left: 10px;
+    border: 1px solid #f1f1f1;
+}
+
+input[type="submit"]:hover {
+    color: #3366cc;
+    background-image: url(../image/bk_mod-3-hd.png) bottom;
+}
+
+input[type="button"]:hover {
+    color: #3366cc;
+    background-image: url(../image/bk_mod-3-hd.png) bottom;
+}
+
+button {
+    cursor: pointer;
+}
+
+.curPageColor {
+    background-color: #148dd9;
+    color: #ffffff;
+}
+
+.data-submit {
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+}
+.lftd {
+    font-size: 13px;
+    color: #3e4959;
+    font-family: "tahoma";
+    background-color: #ccc;
+    height: 28px;
+    width: 28%;
+    text-align: left;
+    border: 1px solid #DEE7EF;
+}
+
+.ritd{
+    font-size: 12px;
+    color: #3e4959;
+    font-family: "tahoma";
+    background-color: #fff;
+    height: 28px;
+    width: 72%;
+    text-align: left;
+    border: 1px solid #DEE7EF;
+}
+#dataInfo{
+    margin-left: 15px;
+}

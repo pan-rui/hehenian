@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundPaymentDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="fund_payment_id != null">fund_payment_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="invest_detail_id != null">invest_detail_id,</if>
+            <if test="pre_payment_money != null">pre_payment_money,</if>
+            <if test="payment_money != null">payment_money,</if>
+            <if test="capital != null">capital,</if>
+            <if test="interest != null">interest,</if>
+            <if test="pre_payment_time != null">pre_payment_time,</if>
+            <if test="payment_time != null">payment_time,</if>
+            <if test="ctime != null">ctime,</if>
+            <if test="utime != null">utime,</if>
+            <if test="payment_status != null">payment_status,</if>
+            <if test="comment != null">comment,</if>
+            <if test="fee_amount != null">fee_amount,</if>
+            <if test="periods != null">periods,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="fund_payment_id != null">#{fund_payment_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="invest_detail_id != null">#{invest_detail_id},</if>
+            <if test="pre_payment_money != null">#{pre_payment_money},</if>
+            <if test="payment_money != null">#{payment_money},</if>
+            <if test="capital != null">#{capital},</if>
+            <if test="interest != null">#{interest},</if>
+            <if test="pre_payment_time != null">#{pre_payment_time},</if>
+            <if test="payment_time != null">#{payment_time},</if>
+            <if test="ctime != null">#{ctime},</if>
+            <if test="utime != null">#{utime},</if>
+            <if test="payment_status != null">#{payment_status},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="fee_amount != null">#{fee_amount},</if>
+            <if test="periods != null">#{periods},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fund_payment_id != null">fund_payment_id=#{fund_payment_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="invest_detail_id != null">invest_detail_id=#{invest_detail_id},</if>
+            <if test="pre_payment_money != null">pre_payment_money=#{pre_payment_money},</if>
+            <if test="payment_money != null">payment_money=#{payment_money},</if>
+            <if test="capital != null">capital=#{capital},</if>
+            <if test="interest != null">interest=#{interest},</if>
+            <if test="pre_payment_time != null">pre_payment_time=#{pre_payment_time},</if>
+            <if test="payment_time != null">payment_time=#{payment_time},</if>
+            <if test="ctime != null">ctime=#{ctime},</if>
+            <if test="utime != null">utime=#{utime},</if>
+            <if test="payment_status != null">payment_status=#{payment_status},</if>
+            <if test="comment != null">comment=#{comment},</if>
+            <if test="fee_amount != null">fee_amount=#{fee_amount},</if>
+            <if test="periods != null">periods=#{periods},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_payment" keyProperty="fund_payment_id"
+            useGeneratedKeys="true">
+        insert into
+        td_fund_payment(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+
+    <update id="update" parameterType="fund_payment">update td_fund_payment
+        <include refid="uuu"></include>
+        where fund_payment_id=#{fund_payment_id}
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_payment">
+        select * from td_fund_payment where fund_payment_id=#{fund_payment_id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_payment where fund_payment_id=#{fund_payment_id}
+    </delete>
+
+    <select id="queryPayment" parameterType="int" resultType="fund_payment">
+        select fp.* from td_fund_payment fp
+        JOIN td_fund_investment_detail fid ON fid.user_id=fp.user_id AND fid.investment_detail_id=fp.invest_detail_id
+        JOIN td_fund_product p ON p.product_id=fid.product_id
+        JOIN td_loan_detail ld ON ld.loan_id=p.loan_id
+        JOIN td_fund_pre_repayment fpr ON fpr.product_id=ld.loan_id
+        WHERE fpr.repayment_id=#{repayment_id}
+    </select>
+    <select id="queryByPros" parameterType="map" resultType="fund_payment">
+        select * FROM td_fund_payment
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+<select id="queryCapital" parameterType="int" resultType="java.math.BigDecimal">
+    SELECT sum(capital) FROM td_fund_payment WHERE user_id=#{user_id} AND payment_status=0
+</select>
+    <select id="queryInterest" parameterType="int" resultType="java.math.BigDecimal">
+        SELECT sum(interest) FROM td_fund_payment WHERE user_id=#{user_id} AND payment_status=0
+    </select>
+    <select id="queryInterested" parameterType="int" resultType="java.math.BigDecimal">
+        SELECT sum(interest) FROM td_fund_payment WHERE user_id=#{user_id} AND payment_status=1
+    </select>
+</mapper>

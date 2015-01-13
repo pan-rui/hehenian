@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanVerifyDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="loanId != null">loanId,</if>
+            <if test="firstWorkerId != null">firstWorkerId,</if>
+            <if test="secondWorkerId != null">secondWorkerId,</if>
+            <if test="thirdWorkerId != null">thirdWorkerId,</if>
+            <if test="firstVerifyStatus != null">firstVerifyStatus,</if>
+            <if test="firstRemark != null">firstRemark,</if>
+            <if test="totalFirstPoint != null">totalFirstPoint,</if>
+            <if test="totalSecondPint != null">totalSecondPint,</if>
+            <if test="secondRemark != null">secondRemark,</if>
+            <if test="thirdRemark != null">thirdRemark,</if>
+            <if test="loanAmount != null">loanAmount,</if>
+            <if test="loanDeadline != null">loanDeadline,</if>
+            <if test="yearRate != null">yearRate,</if>
+            <if test="rmbCollectDay != null">rmbCollectDay,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="firstVerifyTime != null">firstVerifyTime,</if>
+            <if test="secondVerifyTime != null">secondVerifyTime,</if>
+            <if test="thirdVerifyTime != null">thirdVerifyTime,</if>
+            <if test="emailContent != null">emailContent,</if>
+            <if test="secondVerifyStatus != null">secondVerifyStatus,</if>
+            <if test="thirdVerifyStatus != null">thirdVerifyStatus,</if>
+            <if test="verifySuggest != null">verifySuggest,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="loanId != null">#{loanId},</if>
+            <if test="firstWorkerId != null">#{firstWorkerId},</if>
+            <if test="secondWorkerId != null">#{secondWorkerId},</if>
+            <if test="thirdWorkerId != null">#{thirdWorkerId},</if>
+            <if test="firstVerifyStatus != null">#{firstVerifyStatus},</if>
+            <if test="firstRemark != null">#{firstRemark},</if>
+            <if test="totalFirstPoint != null">#{totalFirstPoint},</if>
+            <if test="totalSecondPint != null">#{totalSecondPint},</if>
+            <if test="secondRemark != null">#{secondRemark},</if>
+            <if test="thirdRemark != null">#{thirdRemark},</if>
+            <if test="loanAmount != null">#{loanAmount},</if>
+            <if test="loanDeadline != null">#{loanDeadline},</if>
+            <if test="yearRate != null">#{yearRate},</if>
+            <if test="rmbCollectDay != null">#{rmbCollectDay},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="firstVerifyTime != null">#{firstVerifyTime},</if>
+            <if test="secondVerifyTime != null">#{secondVerifyTime},</if>
+            <if test="thirdVerifyTime != null">#{thirdVerifyTime},</if>
+            <if test="emailContent != null">#{emailContent},</if>
+            <if test="secondVerifyStatus != null">#{secondVerifyStatus},</if>
+            <if test="thirdVerifyStatus != null">#{thirdVerifyStatus},</if>
+            <if test="verifySuggest != null">#{verifySuggest},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="loanId != null">loanId=#{loanId},</if>
+            <if test="firstWorkerId != null">firstWorkerId=#{firstWorkerId},</if>
+            <if test="secondWorkerId != null">secondWorkerId=#{secondWorkerId},</if>
+            <if test="thirdWorkerId != null">thirdWorkerId=#{thirdWorkerId},</if>
+            <if test="firstVerifyStatus != null">firstVerifyStatus=#{firstVerifyStatus},</if>
+            <if test="firstRemark != null">firstRemark=#{firstRemark},</if>
+            <if test="totalFirstPoint != null">totalFirstPoint=#{totalFirstPoint},</if>
+            <if test="totalSecondPint != null">totalSecondPint=#{totalSecondPint},</if>
+            <if test="secondRemark != null">secondRemark=#{secondRemark},</if>
+            <if test="thirdRemark != null">thirdRemark=#{thirdRemark},</if>
+            <if test="loanAmount != null">loanAmount=#{loanAmount},</if>
+            <if test="loanDeadline != null">loanDeadline=#{loanDeadline},</if>
+            <if test="yearRate != null">yearRate=#{yearRate},</if>
+            <if test="rmbCollectDay != null">rmbCollectDay=#{rmbCollectDay},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="firstVerifyTime != null">firstVerifyTime=#{firstVerifyTime},</if>
+            <if test="secondVerifyTime != null">secondVerifyTime=#{secondVerifyTime},</if>
+            <if test="thirdVerifyTime != null">thirdVerifyTime=#{thirdVerifyTime},</if>
+            <if test="emailContent != null">emailContent=#{emailContent},</if>
+            <if test="secondVerifyStatus != null">secondVerifyStatus=#{secondVerifyStatus},</if>
+            <if test="thirdVerifyStatus != null">thirdVerifyStatus=#{thirdVerifyStatus},</if>
+            <if test="verifySuggest != null">verifySuggest=#{verifySuggest},</if>
+        </trim>
+        where loanId=#{loanId}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_verify" keyProperty="loanId"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_verify(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="loan_verify">update td_loan_verify
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_verify">
+        select * from td_loan_verify where loanId=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_loan_verify where loanId=#{id}
+    </delete>
+</mapper>

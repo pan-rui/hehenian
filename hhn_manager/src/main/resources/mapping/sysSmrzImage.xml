@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ISysSmrzImageDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="image_id != null">image_id,</if>
+            <if test="identitycard != null">identitycard,</if>
+            <if test="card_image != null">card_image,</if>
+            <if test="create_time != null">create_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="image_id != null">#{image_id},</if>
+            <if test="identitycard != null">#{identitycard},</if>
+            <if test="card_image != null">#{card_image},</if>
+            <if test="create_time != null">#{create_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="image_id != null">image_id=#{image_id},</if>
+            <if test="identitycard != null">identitycard=#{identitycard},</if>
+            <if test="card_image != null">card_image=#{card_image},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+        </trim>
+        where image_id=#{image_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="sys_smrz_image" keyProperty="image_id"
+            useGeneratedKeys="true">
+    insert into
+ td_sys_smrz_image(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="sys_smrz_image">update td_sys_smrz_image
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="sys_smrz_image">
+        select * from td_sys_smrz_image where image_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_sys_smrz_image where image_id=#{id}
+    </delete>
+</mapper>

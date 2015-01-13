@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanPersonWorkDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="person_work_id != null">person_work_id,</if>
+            <if test="loan_person_id != null">loan_person_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="loan_id != null">loan_id,</if>
+            <if test="com_full_name != null">com_full_name,</if>
+            <if test="department != null">department,</if>
+            <if test="position != null">position,</if>
+            <if test="income != null">income,</if>
+            <if test="email != null">email,</if>
+            <if test="working_address_id != null">working_address_id,</if>
+            <if test="com_type != null">com_type,</if>
+            <if test="industry != null">industry,</if>
+            <if test="scale != null">scale,</if>
+            <if test="work_year != null">work_year,</if>
+            <if test="com_telephone != null">com_telephone,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="person_work_id != null">#{person_work_id},</if>
+            <if test="loan_person_id != null">#{loan_person_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="loan_id != null">#{loan_id},</if>
+            <if test="com_full_name != null">#{com_full_name},</if>
+            <if test="department != null">#{department},</if>
+            <if test="position != null">#{position},</if>
+            <if test="income != null">#{income},</if>
+            <if test="email != null">#{email},</if>
+            <if test="working_address_id != null">#{working_address_id},</if>
+            <if test="com_type != null">#{com_type},</if>
+            <if test="industry != null">#{industry},</if>
+            <if test="scale != null">#{scale},</if>
+            <if test="work_year != null">#{work_year},</if>
+            <if test="com_telephone != null">#{com_telephone},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="person_work_id != null">person_work_id=#{person_work_id},</if>
+            <if test="loan_person_id != null">loan_person_id=#{loan_person_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="loan_id != null">loan_id=#{loan_id},</if>
+            <if test="com_full_name != null">com_full_name=#{com_full_name},</if>
+            <if test="department != null">department=#{department},</if>
+            <if test="position != null">position=#{position},</if>
+            <if test="income != null">income=#{income},</if>
+            <if test="email != null">email=#{email},</if>
+            <if test="working_address_id != null">working_address_id=#{working_address_id},</if>
+            <if test="com_type != null">com_type=#{com_type},</if>
+            <if test="industry != null">industry=#{industry},</if>
+            <if test="scale != null">scale=#{scale},</if>
+            <if test="work_year != null">work_year=#{work_year},</if>
+            <if test="com_telephone != null">com_telephone=#{com_telephone},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_person_work" keyProperty="person_work_id"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_person_work(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="loan_person_work">update td_loan_person_work
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_person_work">
+        select * from td_loan_person_work where person_work_id=#{id}
+    </select>
+    <select id="queryByProperties" parameterType="map" resultType="loan_person_work">
+        select * form loan_person_work where #{keyy}=#{valuee}
+    </select>
+    <delete id="delete" parameterType="int">
+        delete from td_loan_person_work where person_work_id=#{id}
+    </delete>
+</mapper>

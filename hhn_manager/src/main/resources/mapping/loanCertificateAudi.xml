@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanCertificateAudiDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="loan_certificate_audi_id != null">loan_certificate_audi_id,</if>
+            <if test="loan_id != null">loan_id,</if>
+            <if test="verify_stage != null">verify_stage,</if>
+            <if test="certificate_type_id != null">certificate_type_id,</if>
+            <if test="first_verify_point != null">first_verify_point,</if>
+            <if test="first_fail_content != null">first_fail_content,</if>
+            <if test="first_remark != null">first_remark,</if>
+            <if test="first_result != null">first_result,</if>
+            <if test="first_status != null">first_status,</if>
+            <if test="second_verify_point != null">second_verify_point,</if>
+            <if test="second_fail_content != null">second_fail_content,</if>
+            <if test="second_remark != null">second_remark,</if>
+            <if test="second_result != null">second_result,</if>
+            <if test="second_status != null">second_status,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="loan_certificate_audi_id != null">#{loan_certificate_audi_id},</if>
+            <if test="loan_id != null">#{loan_id},</if>
+            <if test="verify_stage != null">#{verify_stage},</if>
+            <if test="certificate_type_id != null">#{certificate_type_id},</if>
+            <if test="first_verify_point != null">#{first_verify_point},</if>
+            <if test="first_fail_content != null">#{first_fail_content},</if>
+            <if test="first_remark != null">#{first_remark},</if>
+            <if test="first_result != null">#{first_result},</if>
+            <if test="first_status != null">#{first_status},</if>
+            <if test="second_verify_point != null">#{second_verify_point},</if>
+            <if test="second_fail_content != null">#{second_fail_content},</if>
+            <if test="second_remark != null">#{second_remark},</if>
+            <if test="second_result != null">#{second_result},</if>
+            <if test="second_status != null">#{second_status},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="loan_certificate_audi_id != null">loan_certificate_audi_id=#{loan_certificate_audi_id},</if>
+            <if test="loan_id != null">loan_id=#{loan_id},</if>
+            <if test="verify_stage != null">verify_stage=#{verify_stage},</if>
+            <if test="certificate_type_id != null">certificate_type_id=#{certificate_type_id},</if>
+            <if test="first_verify_point != null">first_verify_point=#{first_verify_point},</if>
+            <if test="first_fail_content != null">first_fail_content=#{first_fail_content},</if>
+            <if test="first_remark != null">first_remark=#{first_remark},</if>
+            <if test="first_result != null">first_result=#{first_result},</if>
+            <if test="first_status != null">first_status=#{first_status},</if>
+            <if test="second_verify_point != null">second_verify_point=#{second_verify_point},</if>
+            <if test="second_fail_content != null">second_fail_content=#{second_fail_content},</if>
+            <if test="second_remark != null">second_remark=#{second_remark},</if>
+            <if test="second_result != null">second_result=#{second_result},</if>
+            <if test="second_status != null">second_status=#{second_status},</if>
+        </trim>
+        where loan_certificate_audi_id=#{loan_certificate_audi_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_certificate_audi" keyProperty="loan_certificate_audi_id"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_certificate_audi(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="loan_certificate_audi">update td_loan_certificate_audi
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_certificate_audi">
+        select * from td_loan_certificate_audi where loan_certificate_audi_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_loan_certificate_audi where loan_certificate_audi_id=#{id}
+    </delete>
+</mapper>

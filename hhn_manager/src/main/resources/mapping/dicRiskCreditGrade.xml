@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IDicRiskCreditGradeDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="borrower_type != null">borrower_type,</if>
+            <if test="min != null">min,</if>
+            <if test="max != null">max,</if>
+            <if test="credit_grade != null">credit_grade,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="borrower_type != null">#{borrower_type},</if>
+            <if test="min != null">#{min},</if>
+            <if test="max != null">#{max},</if>
+            <if test="credit_grade != null">#{credit_grade},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null">id=#{id},</if>
+            <if test="borrower_type != null">borrower_type=#{borrower_type},</if>
+            <if test="min != null">min=#{min},</if>
+            <if test="max != null">max=#{max},</if>
+            <if test="credit_grade != null">credit_grade=#{credit_grade},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+        where id=#{id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="dic_risk_credit_grade" keyProperty="id"
+            useGeneratedKeys="true">
+    insert into
+ td_dic_risk_credit_grade(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="dic_risk_credit_grade">update td_dic_risk_credit_grade
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="dic_risk_credit_grade">
+        select * from td_dic_risk_credit_grade where id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_dic_risk_credit_grade where id=#{id}
+    </delete>
+</mapper>

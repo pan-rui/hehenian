@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:task="http://www.springframework.org/schema/task" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/task
+http://www.springframework.org/schema/task/spring-task-3.1.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    <import resource="base.xml"/>
+
+    <!-- 引入属性文件 -->
+    <!--<context:property-placeholder location="classpath:config.properties" />-->
+    <util:properties id="payConfig" location="classpath:payConfig/payConfig.properties"/>
+    <util:properties id="process" location="classpath:processInfo.properties"/>
+    <!-- 自动扫描(自动注入) -->
+    <context:component-scan base-package="com.hhn.service,com.hhn.hessian,com.hhn.util,com.hhn.test" />
+    <context:annotation-config/>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="jdbcUrl"
+                  value="jdbc:mysql://${mysql.host}:${mysql.port}/${mysql.dbName}?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true" />
+        <property name="user" value="${mysql.UserName}" />
+        <property name="password" value="${mysql.Password}" />
+        <property name="initialPoolSize" value="1" />
+        <property name="maxPoolSize" value="100" />
+        <property name="minPoolSize" value="1" />
+        <property name="acquireIncrement" value="3" />
+        <property name="idleConnectionTestPeriod" value="180" />
+        <property name="maxIdleTime" value="180" />
+        <property name="autoCommitOnClose" value="false" />
+        <property name="preferredTestQuery" value="select 1" />
+        <property name="testConnectionOnCheckout" value="false" />
+        <property name="testConnectionOnCheckin" value="true" />
+        <property name="acquireRetryAttempts" value="30" />
+        <property name="acquireRetryDelay" value="1000" />
+        <property name="breakAfterAcquireFailure" value="false" />
+        <property name="checkoutTimeout" value="30000" />
+        <!--<property name="automaticTestTable" value="test_c3p0" />-->
+        <property name="maxStatements" value="0" />
+        <property name="maxStatementsPerConnection" value="0" />
+        <property name="numHelperThreads" value="3" />
+        <property name="propertyCycle" value="300" />
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:configuration.xml"></property>
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath*:mapping/*.xml"/>
+        <property name="typeAliasesPackage" value="com.hhn.pojo"/>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <tx:advice id="methodAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="create*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="merge*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="remove*" propagation="REQUIRED" />
+            <tx:method name="put*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="count*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="query*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="list*" propagation="SUPPORTS" read-only="true" />
+            <!--<tx:method name="*" propagation="SUPPORTS" read-only="true" />-->
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="interceptorPointCuts"
+                      expression="execution(* com.hhn.service..*.*(..))" />
+        <aop:advisor advice-ref="methodAdvice" pointcut-ref="interceptorPointCuts" />
+
+    </aop:config>
+
+<!--    <tx:advice id="hessian" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="!apply" propagation="REQUIRED" rollback-for="Exception"/>
+            &lt;!&ndash;<tx:method name="*" propagation="SUPPORTS" read-only="true" />&ndash;&gt;
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="hessianInterceptor" expression="execution(* com.hhn.hessian..*(..))" />
+        <aop:advisor advice-ref="hessian" pointcut-ref="hessianInterceptor" />
+    </aop:config>-->
+
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+
+    <!--还款费用接口-->
+    <bean id="remoteRepaymentService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean" p:readTimeout="${hessian.readTimeout}">
+        <property name="serviceUrl" value="${remoteVerifyCodeUrl}/settleCalculatorService"/>
+        <property name="serviceInterface" value="com.hehenian.biz.common.trade.ISettleCalculatorService"/>
+        <property name="overloadEnabled" value="true"/>
+    </bean>
+
+    <!--定时器 -->
+    <!--<task:annotation-driven/>-->
+    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
+    <task:scheduler id="qbScheduler" pool-size="10"/>
+<!--    <task:scheduled-tasks>
+        <task:scheduled ref="paymentServiceimpl" method="payment" cron="#{process['invest.returned.task']}"/>
+    </task:scheduled-tasks>-->
+        <task:scheduled-tasks>
+            <task:scheduled ref="investServiceImpl" method="autoInvest" cron="#{process['invest.returned.task']}"/>
+        </task:scheduled-tasks>
+
+</beans>

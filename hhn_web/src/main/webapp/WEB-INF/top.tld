@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+
+    <tlib-version>1.1</tlib-version>
+    <short-name>util</short-name>
+    <uri>http://www.hehenian.com/top</uri>
+    <!-- Invoke 'Generate' action to add tags or functions -->
+<tag>
+    <name>top</name>
+    <tag-class>com.hhn.util.tag.Top</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+        <name>url</name>
+        <required>true</required>
+        <fragment>true</fragment>
+    </attribute>
+    <attribute>
+        <name>params</name>
+        <required>false</required>
+        <fragment>true</fragment>
+    </attribute>
+    <attribute>
+        <name>suffix</name>
+        <required>false</required>
+        <fragment>true</fragment>
+    </attribute>
+</tag>
+</taglib>

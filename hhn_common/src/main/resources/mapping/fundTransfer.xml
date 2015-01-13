@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundTransferDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="transfer_id != null">transfer_id,</if>
+            <if test="transfer_user_id != null">transfer_user_id,</if>
+            <if test="buy_user_id != null">buy_user_id,</if>
+            <if test="invest_detail_Id != null">invest_detail_Id,</if>
+            <if test="capital_balance != null">capital_balance,</if>
+            <if test="periods_surplus != null">periods_surplus,</if>
+            <if test="transfer_amount != null">transfer_amount,</if>
+            <if test="share_surplus != null">share_surplus,</if>
+            <if test="share_transfer != null">share_transfer,</if>
+            <if test="transfer_time != null">transfer_time,</if>
+            <if test="transfer_status != null">transfer_status,</if>
+            <if test="ctime != null">ctime,</if>
+            <if test="utime != null">utime,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="transfer_id != null">#{transfer_id},</if>
+            <if test="transfer_user_id != null">#{transfer_user_id},</if>
+            <if test="buy_user_id != null">#{buy_user_id},</if>
+            <if test="invest_detail_Id != null">#{invest_detail_Id},</if>
+            <if test="capital_balance != null">#{capital_balance},</if>
+            <if test="periods_surplus != null">#{periods_surplus},</if>
+            <if test="transfer_amount != null">#{transfer_amount},</if>
+            <if test="share_surplus != null">#{share_surplus},</if>
+            <if test="share_transfer != null">#{share_transfer},</if>
+            <if test="transfer_time != null">#{transfer_time},</if>
+            <if test="transfer_status != null">#{transfer_status},</if>
+            <if test="ctime != null">#{ctime},</if>
+            <if test="utime != null">#{utime},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="transfer_id != null">transfer_id=#{transfer_id},</if>
+            <if test="transfer_user_id != null">transfer_user_id=#{transfer_user_id},</if>
+            <if test="buy_user_id != null">buy_user_id=#{buy_user_id},</if>
+            <if test="invest_detail_Id != null">invest_detail_Id=#{invest_detail_Id},</if>
+            <if test="capital_balance != null">capital_balance=#{capital_balance},</if>
+            <if test="periods_surplus != null">periods_surplus=#{periods_surplus},</if>
+            <if test="transfer_amount != null">transfer_amount=#{transfer_amount},</if>
+            <if test="share_surplus != null">share_surplus=#{share_surplus},</if>
+            <if test="share_transfer != null">share_transfer=#{share_transfer},</if>
+            <if test="transfer_time != null">transfer_time=#{transfer_time},</if>
+            <if test="transfer_status != null">transfer_status=#{transfer_status},</if>
+            <if test="ctime != null">ctime=#{ctime},</if>
+            <if test="utime != null">utime=#{utime},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_transfer" keyProperty="transfer_id"
+            useGeneratedKeys="true">
+        insert into
+        td_fund_transfer(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+
+    <update id="update" parameterType="fund_transfer">update td_fund_transfer
+        <include refid="uuu"></include>
+        where transfer_id=#{transfer_id}
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_transfer">
+        select * from td_fund_transfer where transfer_id=#{transfer_id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_transfer where transfer_id=#{transfer_id}
+    </delete>
+    <select id="queryUnique" parameterType="int" resultMap="fund_transferM">
+        select ft.*,fid.* FROM td_fund_transfer ft
+        JOIN td_fund_investment_detail fid ON fid.investment_detail_id=ft.invest_detail_Id
+        WHERE ft.transfer_id=#{transfer_id}
+    </select>
+<select id="querys" resultType="fund_transfer">
+    select * FROM td_fund_transfer WHERE transfer_status=0 order BY transfer_time,transfer_amount DESC
+</select>
+
+    <resultMap id="fund_transferM" type="com.hhn.pojo.FundTransfer" autoMapping="true">
+        <id property="transfer_id" column="transfer_id"/>
+        <association property="fundInvestmentDetail" javaType="com.hhn.pojo.FundInvestmentDetail" autoMapping="true">
+            <id property="investment_detail_id" column="investment_detail_id"/>
+        </association>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundBankCardDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="bank_card_id != null">bank_card_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="account_name != null">account_name,</if>
+            <if test="bank_name != null">bank_name,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="detail_address != null">detail_address,</if>
+            <if test="card_no != null">card_no,</if>
+            <if test="card_type != null">card_type,</if>
+            <if test="is_default != null">is_default,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="bank_card_id != null">#{bank_card_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="account_name != null">#{account_name},</if>
+            <if test="bank_name != null">#{bank_name},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="detail_address != null">#{detail_address},</if>
+            <if test="card_no != null">#{card_no},</if>
+            <if test="card_type != null">#{card_type},</if>
+            <if test="is_default != null">#{is_default},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bank_card_id != null">bank_card_id=#{bank_card_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="account_name != null">account_name=#{account_name},</if>
+            <if test="bank_name != null">bank_name=#{bank_name},</if>
+            <if test="province != null">province=#{province},</if>
+            <if test="city != null">city=#{city},</if>
+            <if test="detail_address != null">detail_address=#{detail_address},</if>
+            <if test="card_no != null">card_no=#{card_no},</if>
+            <if test="card_type != null">card_type=#{card_type},</if>
+            <if test="is_default != null">is_default=#{is_default},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+        where bank_card_id=#{bank_card_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_bank_card" keyProperty="bank_card_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_bank_card(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_bank_card">update td_fund_bank_card
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_bank_card">
+        select * from td_fund_bank_card where bank_card_id=#{id}
+    </select>
+    <select id="queryByUserId" parameterType="int" resultType="fund_bank_card">
+        select * from td_fund_bank_card where user_id=#{userId}
+    </select>
+    <delete id="delete" parameterType="int">
+        delete from td_fund_bank_card where bank_card_id=#{id}
+    </delete>
+    <select id="queryByPros" parameterType="map" resultType="fund_bank_card">
+        select * FROM td_fund_bank_card
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+</mapper>

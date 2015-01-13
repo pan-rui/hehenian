@@ -1,0 +1,433 @@
+.container{
+	position: relative;
+	height: 100%;
+}
+.content{
+	width: 100%;
+	background: #ffffff;
+}
+.buy-success .header,.buy-confirm .header,.payment .header{
+	height: 60px;
+	background: #08b2e6;
+	text-align: center;
+	line-height: 60px;
+	color: #dddddd;
+	font-size: 30px;
+}
+.buy-success .content{
+	height: 100%;
+	border-left:2px solid  #f4f4f4;
+	border-right:2px solid  #f4f4f4;  
+}
+.buy-success .success-title{
+	position: relative;
+	background: #ffffff;
+	height: 130px;
+	border-bottom: 1px solid #dddddd;
+}
+.buy-success .success-title p{
+	line-height: 130px;
+	color: #333333;
+	font-size: 30px;
+	text-align: center;
+}
+.buy-success .success-title img{
+	position: absolute;
+	top:44px;
+	left: 98px;
+}
+.buy-success .success-text{
+	height: 350px;
+	background: #ffffff;
+	padding: 0 30px;
+	padding-top: 20px;
+}
+.buy-success .success-text div{
+	height: 75px;
+	font-size: 30px;
+	line-height: 75px;
+	color: #666666;
+}
+.buy-success .success-text .left{
+	float: left;
+}
+.buy-success .success-text .right{
+	float: right;
+}
+.buy-success .bottom,.conductFinancial .bottom,.transactionDetails .bottom,.payment .bottom{
+	position: fixed;
+	bottom: 0;
+	height: 108px;
+	width: 640px;
+	background: #e9eaee;
+	border-top:1px solid #d0d1d3;
+}
+.buy-success .bottom .buttom-menu,.conductFinancial .bottom .buttom-menu,.transactionDetails .bottom .buttom-menu,.payment .bottom .buttom-menu{
+	display: inline-block;
+	position: relative;
+	width: 156px;
+	height: 100%;
+}
+.buy-success .bottom .buttom-menu p,.conductFinancial .bottom .buttom-menu p,.transactionDetails .bottom .buttom-menu,.payment .bottom .buttom-menu{
+	padding-top: 70px;
+	font-size: 28px;
+	text-align: center;
+}
+.buy-success .bottom .buttom-menu div,.conductFinancial .bottom .buttom-menu div,.transactionDetails .bottom .buttom-menu div,.payment .bottom .buttom-menu div{
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	background: url(../images/bottom-icons.png);
+	top:14px;
+	left: 54px;
+}
+.buy-success .bottom .buttom-menu .first,.conductFinancial .bottom .buttom-menu .first,.transactionDetails .bottom .buttom-menu .first,.payment .bottom .buttom-menu .first{
+	background-position:3px 0;
+}
+.buy-success .bottom .buttom-menu .second,.conductFinancial .bottom .buttom-menu .second,.transactionDetails .bottom .buttom-menu .second,.payment .bottom .buttom-menu .second{
+	background-position:-57px 4px;
+}
+.buy-success .bottom .buttom-menu .third,.conductFinancial .bottom .buttom-menu .third,.transactionDetails .bottom .buttom-menu .third,.payment .bottom .buttom-menu .third{
+	background-position:-124px 2px;
+}
+.buy-success .bottom .buttom-menu .fourth,.conductFinancial .bottom .buttom-menu .fourth,.transactionDetails .bottom .buttom-menu .fourth,.payment .bottom .buttom-menu .fourth{
+	background-position:-187px 6px;
+}
+.buy-confirm .species{
+	padding:20px 0;
+	height: 147px;
+}
+.buy-confirm .species span{
+	display: inline-block;
+	position: relative;
+	height: 147px;
+	width: 316px;
+}
+.buy-confirm .species .icon{
+	position: absolute;
+	top:23px;
+	left:83px;
+	width: 31px;
+	height: 30px;
+	background: url(../images/buy-confirm.png);
+}
+.buy-confirm .species .first-font{
+	font-size: 24px;
+	color: #999999;
+	text-align: center;
+	padding-top: 26px;
+}
+.buy-confirm .species .second-font{
+	font-size: 48px;
+	color: #ff9900;
+	padding-top: 22px;
+	text-align: center;
+}
+.buy-confirm .prompt{
+	color:#bebebe;
+	line-height: 95px;
+	font-size: 24px;
+	padding-left: 64px;
+}
+.buy-confirm .prompt-icon{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top:294px;
+	left: 23px;
+	background: url(../images/buy-confirm.png);
+	background-position: -67px 0;
+}
+.buy-confirm .inputBox{
+	height: 88px;
+	border:1px solid #eeeeee;
+	background: #ffffff;
+}
+.buy-confirm .inputBox span{
+	height: 88px;
+	width: 156px;
+	display: inline-block;
+	line-height: 88px;
+	text-align: center;
+	color: #333333;
+	font-size: 30px;
+}
+.buy-confirm .inputBox input{
+	height: 88px;
+	width: 400px;
+	display: inline-block;
+	line-height: 88px;
+	text-align: center;
+	color: #333333;
+	font-size: 30px;
+	border: none;
+	outline: none;
+}
+.buy-confirm .yuqi{
+	color:#666666;
+	line-height: 95px;
+	font-size: 24px;
+	padding-left: 20px;
+}
+.buy-confirm .confirmBtn{
+	display: block;
+	width: 600px;
+	height: 80px;
+	margin: 40px auto;
+	background: #ff9833;
+	line-height: 80px;
+	color: #ffffff;
+	text-align: center;
+	font-size: 30px;
+
+}
+.buy-confirm .agreementBox,.payment .agreementBox{
+	position: relative;
+	text-align: center;
+	font-size: 24px;
+	color: #666666;
+}
+.buy-confirm .agreementBox span,.payment .agreementBox span{
+	background: url(../images/buy-confirm.png);
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	left: 140px;
+	top:0px;
+	background-position: -102px -20px;
+
+}
+.buy-confirm .agreementBox span.onclick,.payment .agreementBox span.onclick{
+	background-position: -102px 0px;
+
+}
+.conductFinancial .header{
+	position: relative;
+	height: 260px;
+	background: #87c5f5;
+	margin-bottom: 18px;
+}
+.conductFinancial .header div{
+	position: absolute;
+	top:39px;
+	left: 61px;
+	height: 191px;
+	width: 519px;
+	background: url(../images/banner-bg.png);
+}
+.conductFinancial .list{
+	position: relative;
+	height: 118px;
+	background: #ffffff;
+	border-top:1px solid #eeeeee;
+	border-bottom:1px solid #eeeeee;
+	margin-bottom: 18px;
+}
+.conductFinancial .list .buyBtn{
+	position: absolute;
+	top:35px;
+	right: 20px;
+	display: block;
+	width: 100px;
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+	color: #08b2e6;
+	font-size: 30px;
+	border: 1px solid #08b2e6;
+	border-radius: 25px;
+}
+.conductFinancial .list .list-one{
+	height: 118px;
+	width: 258px;
+	display: inline-block;
+	position: relative;
+}
+.conductFinancial .list .list-one .icon{
+	width: 30px;
+	height: 31px;
+	position: absolute;
+	top:45px;
+	left: 25px;
+	background: url(../images/buy-confirm.png);
+}
+.conductFinancial .list .list-one .list-text{
+	position: absolute;
+	top:43px;
+	left: 63px;
+	font-size:18px;
+	color:#999999 ;
+}
+.conductFinancial .list .list-one .big{
+	position: absolute;
+	top:36px;
+	left: 105px;
+	font-size: 48px;
+	color: #ff9900;
+}
+.transactionDetails .header{
+	position: fixed;
+	top:0px;
+	height: 60px;
+	width: 640px;
+	background: #08b2e6;
+	text-align: center;
+	line-height: 60px;
+	color: #dddddd;
+	font-size: 30px;
+	z-index: 10;
+}
+.transactionDetails .content{
+	position: absolute;
+	top: 130px;
+	margin-bottom: 111px;
+}
+.transactionDetails  table{
+	width: 100%;
+}
+.transactionDetails  th{
+	height: 70px;
+	border-right:1px solid #dddddd;
+	border-bottom:1px solid #dddddd;
+	vertical-align: middle;
+	font-size: 24px;
+	color: #666666;
+	background: #f5f5f5;
+}
+.transactionDetails .content td{
+	position: relative;
+	height: 90px;
+	border-bottom:1px solid #dddddd;
+	vertical-align: middle;
+	font-size: 24px;
+	color: #666666;
+	background: #f5f5f5;
+	text-align: center;
+}
+.transactionDetails .content td .icon{
+	position:absolute;
+	top:30px;
+	left: 52px;
+	background: url(../images/buy-confirm.png);
+	width: 30px;
+	height: 30px;
+}
+.payment .cover{
+	position: fixed;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.3;
+	z-index: 99998;
+	background: #000000;
+	display: none;
+}
+.payment .bankBox{
+	position: fixed;
+	top:50%;
+	width: 100%;
+	height: 650px;
+	margin-top: -350px;
+	background: #ffffff;
+	z-index: 99999;
+	overflow: auto;
+	display: none;
+}
+.payment .bankBox .bankText{
+	display: inline-block;
+	width: 100%;
+	line-height: 90px;
+	font-size: 40px;
+	text-align: center;
+}
+.payment .bankBox .bankText:active{
+	background: #08b2e6;
+	color: #ffffff;
+}
+.payment .payManey{
+	position: relative;
+	line-height: 100px;
+	font-size: 24px;
+	color: #333333;
+	padding-left: 60px;
+	background: #f5f5f5;
+}
+.payment .payManey img{
+	position: absolute;
+	top:36px;
+	left:23px;
+}
+.payment .inputBox{
+	height: 88px;
+	border-top:1px solid #eeeeee;
+	border-bottom: 1px solid #eeeeee;
+	position: relative;
+}
+.payment .inputBox .bankCode{
+	height: 90px;
+	margin-left: 48px;
+	border: 0;
+	outline: none;
+	font-size: 40px;
+	width: 100%;
+	color:#bdbdbd;
+}
+.payment .inputBox span{
+	line-height: 88px;
+	color: #333333;
+	font-size: 30px;
+	padding:0 20px;
+}
+.payment .inputBox input{
+	padding-left: 50px;
+	width: 590px;
+	height: 80px;
+	font-size: 40px;
+	border: 0;
+	outline: none;
+}
+.payment .inputBox .accountNoO{
+	color: #FF6600;
+	font-size: 50px;
+	font-family: "宋体";
+	padding-left: 30px;
+	padding-right: 8px;
+	position: absolute;
+	top:86px;
+	_bottom: -8px;
+	line-height: 80px;
+	border-top: 0;
+	text-align: left;
+	overflow: hidden;
+	background-color: #FFFFFF;
+	display: none;
+	z-index: 999;
+	border: 1px solid #e3e3e3;
+	border-top: none;
+}
+.payment .subBtn{
+	display: block;
+	width: 600px;
+	height: 80px;
+	background: #ff9833;
+	margin: 30px 20px;
+	line-height: 80px;
+	color: #ffffff;
+	text-align: center;
+	font-size: 30px;
+}
+.payment .colorGray{
+	background: #bebebe;
+}
+.codeInput{
+	height: 68px;
+	font-size: 30px;
+	width: 220px;
+	border-radius: 10px;
+}
+.codeButton{
+	height: 60px;
+	font-size: 30px;
+	margin-left: 10px;
+}

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundPreRepaymentDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="repayment_id != null">repayment_id,</if>
+            <if test="loan_id != null">loan_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="repay_amount != null">repay_amount,</if>
+            <if test="repay_status != null">repay_status,</if>
+            <if test="repay_type != null">repay_type,</if>
+            <if test="remark != null">remark,</if>
+            <if test="repay_date != null">repay_date,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="repay_times != null">repay_times,</if>
+            <if test="pre_repay_amount != null">pre_repay_amount,</if>
+            <if test="pre_repay_date != null">pre_repay_date,</if>
+            <if test="capital != null">capital,</if>
+            <if test="interest != null">interest,</if>
+            <if test="comment != null">comment,</if>
+            <if test="pre_capital != null">pre_capital,</if>
+            <if test="pre_interest != null">pre_interest,</if>
+            <if test="fee_amount != null">fee_amount,</if>
+            <if test="receive_user_id != null">receive_user_id,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="repayment_id != null">#{repayment_id},</if>
+            <if test="loan_id != null">#{loan_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="repay_amount != null">#{repay_amount},</if>
+            <if test="repay_status != null">#{repay_status},</if>
+            <if test="repay_type != null">repay_type,</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="repay_date != null">#{repay_date},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+            <if test="repay_times != null">#{repay_times},</if>
+            <if test="pre_repay_amount != null">#{pre_repay_amount},</if>
+            <if test="pre_repay_date != null">#{pre_repay_date},</if>
+            <if test="capital != null">#{capital},</if>
+            <if test="interest != null">#{interest},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="pre_capital != null">#{pre_capital},</if>
+            <if test="pre_interest != null">#{pre_interest},</if>
+            <if test="fee_amount != null">#{fee_amount},</if>
+            <if test="receive_user_id != null">#{receive_user_id},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="repayment_id != null">repayment_id=#{repayment_id},</if>
+            <if test="loan_id != null">loan_id=#{loan_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="repay_amount != null">repay_amount=#{repay_amount},</if>
+            <if test="repay_status != null">repay_status=#{repay_status},</if>
+            <if test="repay_type != null">repay_type=#{repay_status},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="repay_date != null">repay_date=#{repay_date},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+            <if test="repay_times != null">repay_times=#{repay_times},</if>
+            <if test="pre_repay_amount != null">pre_repay_amount=#{pre_repay_amount},</if>
+            <if test="pre_repay_date != null">pre_repay_date=#{pre_repay_date},</if>
+            <if test="capital != null">capital=#{capital},</if>
+            <if test="interest != null">interest=#{interest},</if>
+            <if test="comment != null">comment=#{comment},</if>
+            <if test="pre_capital != null">pre_capital=#{pre_capital},</if>
+            <if test="pre_interest != null">pre_interest=#{pre_interest},</if>
+            <if test="fee_amount != null">fee_amount=#{fee_amount},</if>
+            <if test="receive_user_id != null">receive_user_id=#{receive_user_id},</if>
+        </trim>
+        where repayment_id=#{repayment_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_pre_repayment" keyProperty="repayment_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_pre_repayment(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_pre_repayment">update td_fund_pre_repayment
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_pre_repayment">
+        select * from td_fund_pre_repayment where repayment_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_pre_repayment where repayment_id=#{id}
+    </delete>
+    <select id="queryByPros" parameterType="map" resultType="fund_pre_repayment">
+        select * FROM td_fund_pre_repayment
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+</mapper>

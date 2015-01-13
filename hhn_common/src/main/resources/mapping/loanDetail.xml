@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanDetailDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="loan_id != null">loan_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="loan_title != null">loan_title,</if>
+            <if test="loan_amount != null">loan_amount,</if>
+            <if test="loan_usage != null">loan_usage,</if>
+            <if test="loan_period != null">loan_period,</if>
+            <if test="annual_rate != null">annual_rate,</if>
+            <if test="repay_period != null">repay_period,</if>
+            <if test="repay_type != null">repay_type,</if>
+            <if test="tender_day != null">tender_day,</if>
+            <if test="loan_desc != null">loan_desc,</if>
+            <if test="loan_status != null">loan_status,</if>
+            <if test="borrower_type != null">borrower_type,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="loan_rate != null">loan_rate,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="loan_id != null">#{loan_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="loan_title != null">#{loan_title},</if>
+            <if test="loan_amount != null">#{loan_amount},</if>
+            <if test="loan_usage != null">#{loan_usage},</if>
+            <if test="loan_period != null">#{loan_period},</if>
+            <if test="annual_rate != null">#{annual_rate},</if>
+            <if test="repay_period != null">#{repay_period},</if>
+            <if test="repay_type != null">#{repay_type},</if>
+            <if test="tender_day != null">#{tender_day},</if>
+            <if test="loan_desc != null">#{loan_desc},</if>
+            <if test="loan_status != null">#{loan_status},</if>
+            <if test="borrower_type != null">#{borrower_type},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="loan_rate != null">#{loan_rate},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="loan_title != null">loan_title=#{loan_title},</if>
+            <if test="loan_amount != null">loan_amount=#{loan_amount},</if>
+            <if test="loan_usage != null">loan_usage=#{loan_usage},</if>
+            <if test="loan_period != null">loan_period=#{loan_period},</if>
+            <if test="annual_rate != null">annual_rate=#{annual_rate},</if>
+            <if test="repay_period != null">repay_period=#{repay_period},</if>
+            <if test="repay_type != null">repay_type=#{repay_type},</if>
+            <if test="tender_day != null">tender_day=#{tender_day},</if>
+            <if test="loan_desc != null">loan_desc=#{loan_desc},</if>
+            <if test="loan_status != null">loan_status=#{loan_status},</if>
+            <if test="borrower_type != null">borrower_type=#{borrower_type},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="loan_rate != null">loan_rate=#{loan_rate},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_detail" keyProperty="loan_id"
+            useGeneratedKeys="true">
+        insert into
+        td_loan_detail(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+    <select id="existLoan" parameterType="loan_detail" resultType="int">
+        select count(1) from td_loan_detail where user_id = #{user_id} and loan_title = #{loan_title} and loan_amount = #{loan_amount}
+    </select>
+
+    <update id="update" parameterType="loan_detail">update td_loan_detail
+        <include refid="uuu"></include>
+        where loan_id=#{loan_id}
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_detail">
+        select * from td_loan_detail where loan_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_loan_detail where loan_id=#{id}
+    </delete>
+
+    <select id="getAllCount" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(1)
+        from td_loan_detail a where 1=1
+        <if test="loanTitle!=null">
+            and loan_title LIKE CONCAT('%',#{loanTitle},'%')
+        </if>
+        <if test="loanStatus!=null">
+            and loan_status = #{loanStatus}
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="java.util.Map" resultType="loan_detail">
+        SELECT *
+        from td_loan_detail a where 1=1
+        <if test="loan_title != null">
+            and loan_title LIKE CONCAT('%',#{loan_title},'%')
+        </if>
+        <if test="loan_status!=null">
+            and loan_status = #{loan_status}
+        </if>
+        limit #{currentPage},#{pageSize}
+    </select>
+<!--查询借款对应的投资记录-->
+    <select id="queryForFID" parameterType="int" resultType="fund_investment_detail">
+        SELECT i.* from td_loan_detail l
+        JOIN td_fund_product p ON l.loan_id=p.loan_id
+        JOIN td_fund_investment_detail i ON p.product_id=i.product_id
+        WHERE l.loan_id=#{loanDetailId}
+    </select>
+
+</mapper>

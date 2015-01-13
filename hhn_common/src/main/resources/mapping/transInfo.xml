@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ITransInfoDao">
+
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="trans_info_id != null">trans_info_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="bank_user != null">bank_user,</if>
+            <if test="card_id != null">card_id,</if>
+            <if test="trans_money != null">trans_money,</if>
+            <if test="content != null">content,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="third_sn != null">third_sn,</if>
+            <if test="socket_type != null">socket_type,</if>
+            <if test="operation_type != null">operation_type,</if>
+            <if test="actual_id != null">actual_id,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="trans_info_id != null">#{trans_info_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="bank_user != null">#{bank_user},</if>
+            <if test="card_id != null">#{card_id},</if>
+            <if test="trans_money != null">#{trans_money},</if>
+            <if test="content != null">#{content},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="third_sn != null">#{third_sn},</if>
+            <if test="socket_type != null">#{socket_type},</if>
+            <if test="operation_type != null">#{operation_type},</if>
+            <if test="actual_id != null">#{actual_id},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trans_info_id != null">trans_info_id=#{trans_info_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="bank_user != null">bank_user=#{bank_user},</if>
+            <if test="card_id != null">card_id=#{card_id},</if>
+            <if test="trans_money != null">trans_money=#{trans_money},</if>
+            <if test="content != null">content=#{content},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="third_sn != null">third_sn=#{third_sn},</if>
+            <if test="socket_type != null">socket_type=#{socket_type},</if>
+            <if test="operation_type != null">operation_type=#{operation_type},</if>
+            <if test="actual_id != null">actual_id=#{actual_id},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="trans_info" keyProperty="trans_info_id"
+            useGeneratedKeys="true">
+        insert into
+        td_trans_info(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+    <update id="update" parameterType="trans_info">update td_trans_info
+        <include refid="uuu"></include>
+        where trans_info_id=#{trans_info_id}
+    </update>
+
+    <select id="query" parameterType="int" resultType="trans_info">
+        select * from td_trans_info where trans_info_id=#{trans_info_id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_trans_info where trans_info_id=#{trans_info_id}
+    </delete>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ISysLoanCertificateDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="sys_certificate_id != null">sys_certificate_id,</if>
+            <if test="loan_id != null">loan_id,</if>
+            <if test="certificate_type_id != null">certificate_type_id,</if>
+            <if test="file_path != null">file_path,</if>
+            <if test="file_type != null">file_type,</if>
+            <if test="qq_number != null">qq_number,</if>
+            <if test="weixi_number != null">weixi_number,</if>
+            <if test="weibo_number != null">weibo_number,</if>
+            <if test="create_time != null">create_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="sys_certificate_id != null">#{sys_certificate_id},</if>
+            <if test="loan_id != null">#{loan_id},</if>
+            <if test="certificate_type_id != null">#{certificate_type_id},</if>
+            <if test="file_path != null">#{file_path},</if>
+            <if test="file_type != null">#{file_type},</if>
+            <if test="qq_number != null">#{qq_number},</if>
+            <if test="weixi_number != null">#{weixi_number},</if>
+            <if test="weibo_number != null">#{weibo_number},</if>
+            <if test="create_time != null">#{create_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sys_certificate_id != null">sys_certificate_id=#{sys_certificate_id},</if>
+            <if test="loan_id != null">loan_id=#{loan_id},</if>
+            <if test="certificate_type_id != null">certificate_type_id=#{certificate_type_id},</if>
+            <if test="file_path != null">file_path=#{file_path},</if>
+            <if test="file_type != null">file_type=#{file_type},</if>
+            <if test="qq_number != null">qq_number=#{qq_number},</if>
+            <if test="weixi_number != null">weixi_number=#{weixi_number},</if>
+            <if test="weibo_number != null">weibo_number=#{weibo_number},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+        </trim>
+        where sys_certificate_id=#{sys_certificate_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="sys_loan_certificate" keyProperty="sys_certificate_id"
+            useGeneratedKeys="true">
+    insert into
+ td_sys_loan_certificate(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="sys_loan_certificate">update td_sys_loan_certificate
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="sys_loan_certificate">
+        select * from td_sys_loan_certificate where sys_certificate_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_sys_loan_certificate where sys_certificate_id=#{id}
+    </delete>
+</mapper>

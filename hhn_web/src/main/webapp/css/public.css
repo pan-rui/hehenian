@@ -1,0 +1,1124 @@
+.content{
+	width: 100%;
+	background: #ffffff;
+}
+.buy-success .content-nav{
+	height: 54px;
+	background: #f3f3f3;
+	border-top:1px solid #e5e5e5;
+	border-bottom:  1px solid #e5e5e5;
+}
+.buy-success .content-nav-sec{
+	position: relative;
+	width: 1140px;
+	height: 100%;
+	margin: 0 auto;
+}
+.buy-success .triangle-pic{
+	position: absolute;
+	top:23px;
+	left:22px;
+	width: 7px;
+	height: 12px;
+	background: url(../images/buy-success-icon.png) -81px -222px;
+}
+.buy-success .content-nav-text{
+	position: absolute;
+	top: 22px;
+	left: 40px;
+}
+.buy-success .content-body{
+	height: 708px;
+}
+.buy-success .success-box{
+	position: relative;
+	height: 674px;
+	width: 1138px;
+	border:1px solid #e5e5e5;
+	margin: 0 auto;
+	margin-top: 30px;
+	background: #f9f9f9;
+}
+.buy-success .step{
+	position: absolute;
+	top: 40px;
+	display: block;
+	height: 58px;
+	line-height: 58px;
+	color: #666666;
+	font-size: 20px;
+	background: url(../images/buy-success-icon.png);
+}
+.buy-success .first{
+	padding-left: 68px;
+	left: 49px;
+	width: 277px;
+
+}
+.buy-success .second{
+	padding-left: 100px;
+	color: #ffffff;
+	left: 394px;
+	width: 256px;
+	background-position: 0px -70px;
+}
+.buy-success .third{
+	padding-left: 131px;
+	left: 753px;
+	width: 205px;
+	background-position: 0px -143px;
+}
+.buy-success .Hook-pic{
+	position: absolute;
+	top: 182px;
+	left: 368px;
+	width: 62px;
+	height: 62px;
+	background: url(../images/buy-success-icon.png);
+	background-position:0 -214px; 
+}
+.buy-success .success-text{
+	position: absolute;
+	left: 455px;
+	font-size: 18px;
+	color: #666666;
+}
+.buy-success .gongxi{
+	font-size: 24px;
+	color: #333333;
+	top: 193px;
+}
+.buy-success .yuji{
+	top: 229px;
+}
+.buy-success .ninke{
+	top: 261px;
+}
+.buy-success .loginBtn{
+	position: absolute;
+	width: 209px;
+	height: 43px;
+	background: #ff9900;
+	top:324px;
+	left: 452px;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 18px;
+	line-height: 43px;
+	text-align: center;
+}
+.buy-confirm .content-nav{
+	height: 54px;
+	background: #f3f3f3;
+	border-top:1px solid #e5e5e5;
+	border-bottom:  1px solid #e5e5e5;
+}
+.buy-confirm .content-nav-sec{
+	position: relative;
+	width: 1140px;
+	height: 100%;
+	margin: 0 auto;
+}
+.buy-confirm .triangle-pic{
+	position: absolute;
+	top:23px;
+	left:22px;
+	width: 7px;
+	height: 12px;
+	background: url(../images/buy-success-icon.png) -81px -222px;
+}
+.buy-confirm .content-nav-text{
+	position: absolute;
+	top: 22px;
+	left: 40px;
+}
+.buy-confirm .content-body{
+	height: 708px;
+}
+.buy-confirm .success-box{
+	position: relative;
+	height: 674px;
+	width: 1138px;
+	border:1px solid #e5e5e5;
+	margin: 0 auto;
+	margin-top: 30px;
+	background: #f9f9f9;
+}
+.buy-confirm .step{
+	position: absolute;
+	top: 40px;
+	display: block;
+	height: 58px;
+	line-height: 58px;
+	color: #666666;
+	font-size: 20px;
+	background: url(../images/buy-confirm-icon.png);
+}
+.buy-confirm .first{
+	padding-left: 68px;
+	color: #ffffff;
+	left: 49px;
+	width: 277px;
+
+}
+.buy-confirm .second{
+	padding-left: 100px;
+	left: 394px;
+	width: 256px;
+	background-position: 0px -70px;
+}
+.buy-confirm .third{
+	padding-left: 131px;
+	left: 753px;
+	width: 205px;
+	background-position: 0px -143px;
+}
+.buy-confirm .tableBox{
+	padding-top: 163px;
+	width: 1040px;
+	margin: 0 auto;
+	border-bottom:1px dashed #e3e3e3;
+}
+.buy-confirm .tableBox table{
+	border:1px solid #e5e5e5;
+	border-bottom: none;
+	width: 100%;
+}
+.buy-confirm .tableBox table th{
+	height: 50px;
+	vertical-align: middle;
+	background: #ffffff;
+	border-bottom: 1px solid #e5e5e5;
+}
+.buy-confirm .tableBox table td{
+	height: 50px;
+	vertical-align: middle;
+	background: #f9f9f9;
+	border-bottom: 1px solid #e5e5e5;
+	text-align: center;
+}
+.buy-confirm .tableBox div{
+	height: 89px;
+	width: 100%;
+	line-height: 89px;
+	color: #ff9900;
+	font-size: 18px;
+	text-align: right;
+}
+.buy-confirm .agreementBox{
+	text-align: center;
+	margin-top: 47px;
+}
+.buy-confirm .agreementBox .agreement-pic{
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	background: url(../images/buy-confirm-icon.png) -19px -204px;
+	cursor: pointer;
+}
+.buy-confirm .agreementBox .agreement-pic.onclick{
+	background-position:0  -204px;
+}
+.buy-confirm .payBtn{
+	position: relative;
+	display: block;
+	margin: 0 auto;
+	margin-top: 20px;
+	width: 209px;
+	height: 43px;
+	background: #ff9900;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 18px;
+	line-height: 43px;
+	text-align: center;
+}
+.buy-confirm  .modifyBtn{
+	position: absolute;
+	left: 345px;
+	top: 504px;
+	width: 95px;
+	height: 43px;
+	background: #a1a1a1;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 18px;
+	line-height: 43px;
+	text-align: center;
+}
+.conductFinancial{
+	position: relative;
+	overflow: hidden;
+}
+.conductFinancial .banner{
+	position: relative;
+	width: 100%;
+	background: #5ea9ea;
+	height: 568px;
+}
+.conductFinancial .banner .title{
+	font-size: 48px;
+	color: #ffffff;
+	text-align: center;
+	line-height: 133px;
+	font-weight: bold;
+}
+.conductFinancial .banner .bannerPic{
+	position: absolute;
+	left: 50%;
+	margin-left: -676px;
+	top:72px;
+	background: url(../images/newBannerBg.png);
+	width: 1353px;
+	height: 204px;
+}
+.conductFinancial .banner .selectWindow{
+	position: absolute;
+	width: 1140px;
+	height: 360px;
+	border: 15px solid #fef1db;
+	background: #ffffff;
+	left: 50%;
+	margin-left: -570px;
+}
+.conductFinancial .banner .selectBox{
+	position: relative;
+	margin-top: 30px;
+}
+.conductFinancial .banner .selectBox li{
+	position: relative;
+	display: inline-block;
+}
+.conductFinancial .banner .selectBox li .changeSpan{
+	display: inline-block;
+	position: relative;
+	width: 296px;
+	height: 142px;
+	border:4px solid #f1f1f1;
+	border-top: 4px solid #ff9900;
+	margin-left: 55px;
+	cursor: pointer;
+	overflow: hidden;
+}
+.conductFinancial .banner .selectBox .changeSpan.onClick{
+	border:4px solid #ff9900;
+}
+.conductFinancial .banner .selectBox .changeSpan .financeTitle{
+	height: 50px;
+	line-height: 50px;
+	color: #706968;
+	font-size: 22px;
+	padding-left: 80px;
+}
+.conductFinancial .banner .selectBox .changeSpan .financeTitle img{
+	position: absolute;
+	top:0;
+	left: 0;
+}
+.conductFinancial .banner .selectBox .changeSpan em {
+position: absolute;
+left: -240px;
+top: 0;
+width: 211px;
+transform: skewx(-15deg);
+-o-transform: skewx(-25deg);
+-moz-transform: skewx(-25deg);
+-webkit-transform: skewx(-25deg);
+background-image: -moz-linear-gradient(0deg, rgba(253,255,120,0), rgba(253,255,120,0.4), rgba(253,255,120,0));
+background-image: -webkit-linear-gradient(0deg,rgba(253,255,120,0), rgba(253,255,120,0.4), rgba(253,255,120,0));
+background-image: -o-linear-gradient(0deg,rgba(253,255,120,0), rgba(253,255,120,0.4), rgba(253,255,120,0));
+background-image: linear-gradient(0deg,rgba(253,255,120,0), rgba(253,255,120,0.4), rgba(253,255,120,0));
+height: 142px;
+}
+.conductFinancial .banner .selectBox .changeSpan:hover em{
+left: 350px;
+-moz-transition: .5s;
+-o-transition: .5s;
+-webkit-transition: .5s;
+transition: .5s;
+}
+.conductFinancial .banner .selectBox .profitBox{
+	background: #f8f8f8;
+	height: 94px;
+	position: relative;
+}
+.conductFinancial .banner .selectBox .profitBox .baozhang{
+	position: absolute;
+	display: block;
+	top:19px;
+	left: 19px;
+	padding-top: 10px;
+	height: 47px;
+	width: 74px;
+	border-right: 1px dashed #dddddd;
+	font-size: 12px;
+	color: #666666;
+}
+.conductFinancial .banner .selectBox .profitBox .baozhang p{
+	line-height: 20px;
+}
+.conductFinancial .banner .selectBox .profitBox .moneyRate{
+	position: absolute;
+	display: block;
+	top:19px;
+	left: 94px;
+	height: 57px;
+	padding-top: 5px;
+	padding-left: 25px;
+	font-size: 12px;
+	color: #666666;
+}
+.conductFinancial .banner .selectBox .hook-pic{
+	position: absolute;
+	top:118px;
+	left: 333px;
+	width: 46px;
+	height: 46px;
+	background:url(../images/conductFinancial-icon.png) -51px 0 ; 
+	border:none;
+	margin: 0;
+}
+.conductFinancial .banner .selectBox .hook-pic.click{
+	background:url(../images/conductFinancial-icon.png); 
+}
+.conductFinancial .banner .selectWindow .inputBox{
+	width: 1020px;
+	height: 58px;
+	border: 1px solid #dddddd;
+	margin: 0 auto;
+	margin-top:33px; 
+	overflow: hidden;
+}
+.conductFinancial .banner .selectWindow .buyBtn{
+	display: block;
+	margin: 0 auto;
+	margin-top: 24px;
+	width: 209px;
+	height: 43px;
+	background: #ff9900;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 18px;
+	line-height: 43px;
+	text-align: center;
+}
+.conductFinancial .selectWindow .inputBox .mairu{
+	display: inline-block;
+	padding-left: 5px;
+	height: 58px;
+	width: 124px;
+	line-height: 58px;
+	text-align: center;
+	font-size: 20px;
+	color: #333333;
+}
+.conductFinancial .selectWindow .inputBox input{
+	width: 440px;
+	height: 34px;
+	vertical-align: middle;
+	font-size: 20px;
+	border:0;
+	border-right: 1px solid #dddddd;
+	outline: none;
+	margin-top: -4px;
+}
+.conductFinancial .selectWindow .inputBox .mairujine{
+	display: inline-block;
+	height: 58px;
+	width: 80px;
+	line-height: 58px;
+	text-align: center;
+	font-size: 14px;
+	color: #666666;
+}
+.conductFinancial .advantageBox{
+	width: 1166px;
+	height: 325px;
+	margin: 0 auto;
+	margin-top: 45px;
+}
+.conductFinancial .advantageBox .swatch-container {
+  -moz-perspective: 1000;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 43px;
+  text-align: left;
+  position: relative;
+}
+.conductFinancial .advantageBox .swatch-container p{
+	position: absolute;
+	top:229px;
+	left: 16px;
+	font-size: 20px;
+	color: #666666;
+}
+.conductFinancial .advantageBox .swatch-container:hover .inner {
+  -moz-transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+.conductFinancial .advantageBox .swatch-container .inner {
+  -moz-transition: 0.6s;
+  -o-transition: 0.6s;
+  -webkit-transition: 0.6s;
+  transition: 0.6s;
+  -moz-transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.conductFinancial .advantageBox .swatch-container,.front,.back {
+  width: 200px;
+  height: 200px;
+}
+.conductFinancial .advantageBox .front,.back {
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url(../images/big4.png);
+}
+
+.conductFinancial .advantageBox .front {
+  z-index: 2;
+}
+.conductFinancial .advantageBox .back {
+  -moz-transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+.conductFinancial .content-bottom{
+	height: 579px;
+	background: #ffffff;
+}
+.conductFinancial .recordsBox{
+	position: relative;
+	height: 365px;
+	width: 1168px;
+	border:1px solid #e5e5e5;
+	margin: 0 auto;
+}
+.conductFinancial .recordsBox .box-left{
+	position: relative;
+	width: 404px;
+	height: 365px;
+	border-right: 1px solid #e5e5e5;
+	background: #fcfcfc;
+}
+.conductFinancial .recordsBox .box-left .icon{
+	position: absolute;
+	top:52px;
+	left: 123px;
+	display: block;
+	width: 157px;
+	height: 163px;
+	background: url(../images/conductFinancial-icon.png); 
+	background-position:-265px -23px; 
+}
+.conductFinancial .recordsBox .box-left p{
+	color: #333333;
+	font-size: 18px;
+	text-align: center;
+	padding-top: 24px;
+}
+.conductFinancial .recordsBox .box-right{
+	position: absolute;
+	height: 365px;
+	width: 763px;
+	top:0;
+	left: 405px;
+}
+.conductFinancial .recordsBox .box-right .one-record{
+	position: relative;
+	height: 120px;
+}
+.conductFinancial .recordsBox .box-right .head-portrait{
+	position: absolute;
+	width: 70px;
+	height: 70px;
+	top:27px;
+	left: 68px;
+	background: url(../images/conductFinancial-icon.png); 
+	background-position:-273px -219px; 
+}
+.conductFinancial .recordsBox .box-right .recordsText-box{
+	width: 500px;
+	height: 100%;
+	position: absolute;
+	border-bottom: 1px dashed #edecec;
+	top:0;
+	left: 186px;
+}
+.conductFinancial .recordsBox .box-right .recordsText-box .first-font{
+	margin-top: 40px;
+	font-size: 18px;
+	color: #666666;
+}
+.conductFinancial .recordsBox .box-right .recordsText-box .second-font{
+	font-size: 14px;
+	margin-top: 20px;
+	color: #999999;
+}
+
+.transactionDetails.user-all{
+	background: #f8f8f8 url(../images/detail_logo_bg.jpg) repeat-x;
+}
+.transactionDetails .user-center {
+	width: 1170px;
+	margin: 0px auto;
+	background: #f8f8f8;
+}
+.transactionDetails .u-left {
+	float: left;
+	margin-right: 20px;
+}
+.transactionDetails .sidebarmenu {
+	margin: 0px 0;
+	padding: 0;
+	width: 195px;
+}
+.transactionDetails .sidebarmenu a.menuitem:visited, .sidebarmenu .menuitem:active {
+	color: white;
+}
+.transactionDetails .sidebarmenu a.menuitem {
+	background: url(../images/sidebar_menu_top.gif) no-repeat center top;
+	color: #fff;
+	display: block;
+	position: relative;
+	width: 185px;
+	height: 31px;
+	margin: 0 0 5px 0;
+	line-height: 31px;
+	padding: 0px 0 0 10px;
+	text-decoration: none;
+}
+.transactionDetails .sidebarmenu div.submenu {
+	background: white;
+}
+.transactionDetails .sidebarmenu div.submenu ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0 0 5px 0;
+}
+.transactionDetails .sidebarmenu div.submenu ul li {
+	border-bottom: 1px dotted #bfd1d9;
+}
+.transactionDetails .sidebarmenu div.submenu ul li a:hover {
+	background: #e2f0ff;
+	color: #0e4354;
+}
+.transactionDetails  .sidebarmenu div.submenu ul li a {
+	display: block;
+	color: black;
+	text-decoration: none;
+	padding: 5px 0;
+	padding-left: 30px;
+}
+.transactionDetails .sidebarmenu a.menuitem .statusicon {
+	position: absolute;
+	top: 11px;
+	right: 7px;
+	border: none;
+}
+.transactionDetails .sidebarmenu a.menuitem_red {
+	background: url(../images/red_bt.gif) no-repeat center top;
+	color: #fff;
+	display: block;
+	position: relative;
+	width: 185px;
+	height: 31px;
+	margin: 0 0 5px 0;
+	line-height: 31px;
+	padding: 0px 0 0 10px;
+	text-decoration: none;
+}
+.transactionDetails .sidebarmenu a.menuitem:hover {
+	background: url(../images/sidebar_menu_top_a.gif) no-repeat center top;
+}
+.transactionDetails .sidebarmenu a.menuitem_red:hover {
+	background: url(../images/red_bt_a.gif) no-repeat center top;
+}
+.transactionDetails .u-right {
+	float: left;
+	margin-bottom: 20px;
+}
+.transactionDetails .user-right {
+	background: #fff;
+	width: 885px;
+	float: left;
+	border: 1px solid #e6e6e6;
+	padding: 20px;
+}
+.transactionDetails .biaoge table{
+	border: 1px solid #edecec;
+	border-bottom: none;
+}
+.transactionDetails .biaoge table th,.transactionDetails .biaoge table td{
+	height: 48px;
+	background: #f8f8f8;
+	border-bottom: 1px solid #edecec;
+	border-right: 1px solid #edecec;
+	vertical-align: middle;
+	text-align: center;
+}
+.transactionDetails .biaoge table td{
+	background: #ffffff;
+}
+.transactionDetails .biaoge table td a {
+display: inline-block;
+width: 80px;
+height: 20px;
+line-height: 22px;
+border: 1px solid #e3e3e3;
+background: #fff;
+color: #333;
+font-size: 12px;
+cursor: pointer;
+border-radius: 2px;
+}
+.transactionDetails .biaoge table td a:hover {
+background: #e6e5e1;
+}
+.transactionDetails .proPage {
+	background: #fefdfd;
+	text-align: right;
+	padding: 13px 25px;
+	margin-top: 27px;
+}
+.transactionDetails .bProPage {
+	text-align: center;
+}
+.transactionDetails .pageStyle {
+	padding: 7px 12px;
+	border: 1px #ccc solid;
+	margin-left: 5px;
+	cursor: pointer;
+}
+.transactionDetails .pageStyle:hover {
+	border: 1px #4aa3e9 solid;
+	color: #4aa3e9;
+}
+
+.payment .content-nav{
+	height: 54px;
+	background: #f3f3f3;
+	border-top:1px solid #e5e5e5;
+	border-bottom:  1px solid #e5e5e5;
+}
+.payment .content-nav-sec{
+	position: relative;
+	width: 1140px;
+	height: 100%;
+	margin: 0 auto;
+}
+.payment .triangle-pic{
+	position: absolute;
+	top:23px;
+	left:22px;
+	width: 7px;
+	height: 12px;
+	background: url(../images/buy-success-icon.png) -81px -222px;
+}
+.payment .content-nav-text{
+	position: absolute;
+	top: 22px;
+	left: 40px;
+}
+.payment .success-box{
+	position: relative;
+	width: 1138px;
+	border:1px solid #e5e5e5;
+	margin: 40px auto;
+	background: #f9f9f9;
+}
+.payment .success-box .inputBox{
+	position: relative;
+	width: 530px;
+	border: 1px solid #e5e5e5;
+	background: #ffffff;
+	margin: 75px auto;
+	padding:54px 105px 54px 105px;
+}
+.payment .success-box .inputBox div{
+	position: relative;
+	height: 50px;
+	margin-bottom: 20px;
+	line-height: 50px;
+	font-size: 18px;
+	color:#666666;
+}
+.payment .success-box .inputBox div .bankBox{
+	position: relative;
+	display: inline-block;
+	width: 450px;
+	margin-left: 72px;
+}
+.payment .success-box .inputBox div .bankBox .bankLogo{
+	display: inline-block;
+	width: 100px;
+	border: 2px solid #e3e3e3;
+	cursor: pointer;
+	margin-right: 6px;
+}
+.payment .success-box .inputBox div .bankBox .bankLogo.onClick{
+	border: 2px solid #ff9900;
+}
+.payment .success-box .inputBox div .bankBox .bankLogo img{
+	height: 35px;
+	width: 100px;
+}
+.payment .success-box .inputBox div .bankBox .bankLogo .bankName{
+	position: relative;
+	top:0;
+	left: 0;
+	line-height: 20px;
+	font-size: 15px;
+	text-align: center;
+	margin-top: -16px;
+}
+.payment .success-box .inputBox div .accountNoO{
+	color: #FF6600;
+	font-size: 20pt;
+	font-family: "宋体";
+	padding-left: 8px;
+	padding-right: 8px;
+	position: absolute;
+	left: 72px;
+	bottom: -76px;
+	_bottom: -8px;
+	line-height: 52px;
+	border-top: 0;
+	text-align: left;
+	overflow: hidden;
+	background-color: #FFFFFF;
+	display: none;
+	z-index: 999;
+	border: 1px solid #e3e3e3;
+	border-top: none;
+}
+.payment .success-box .inputBox div input{
+	height: 50px;
+	width: 423px;
+	border:1px solid #e3e3e3;
+	padding-left: 25px;
+	font-size: 18px;
+}
+.payment .success-box .inputBox .agreement{
+	font-size: 14px;
+	color:#61b6f1;
+	padding-left: 98px;
+	position: relative;
+	margin-bottom: 0;
+}
+.payment .success-box .inputBox .paymentBtn{
+	height: 60px;
+	width: 450px;
+	display: block;
+	background: #ff9900;
+	margin-left: 72px;
+	color: #ffffff;
+	font-size: 26px;
+	line-height: 60px;
+	text-align: center;
+}
+.payment .success-box p{
+	position: absolute;
+	color:#333333;
+	font-size: 18px;
+	top:38px;
+	left:268px;
+}
+.payment .success-box .inputBox .agreement span{
+	position: absolute;
+	top:17px;
+	left:74px;
+	width: 15px;
+	height: 16px;
+	background: url(../images/agreementIcon.png) 0 16px;
+	display: block;
+	cursor: pointer;
+}
+.payment .success-box .inputBox .agreement span.onclick{
+	background-position:0 0; 
+}
+.payingPop{
+	position: fixed;
+	top:50%;
+	left:50%;
+	margin-top: -65px;
+	margin-left: -250px;
+	width: 500px;
+	height: 130px;
+	background: #ffffff;
+	line-height: 130px;
+	font-size: 24px;
+	color: #ff9900;
+	z-index: 9998;
+	text-align: center;
+	border-radius: 10px;
+}
+.payFailure{
+	position: fixed;
+	top:50%;
+	left:50%;
+	margin-top: -95px;
+	margin-left: -250px;
+	width: 500px;
+	height: 190px;
+	background: #ffffff;
+	line-height: 130px;
+	font-size: 24px;
+	color: #ff9900;
+	z-index: 9998;
+	text-align: center;
+	border-radius: 10px;
+}
+.payFailure img{
+	position: absolute;
+	top:44px;
+	left: 83px;
+}
+.payFailure p{
+	position: absolute;
+	color: #333333;
+	font-size: 24px;
+	top:53px;
+	left: 138px;
+	line-height: 24px;
+}
+.payFailure a{
+	position: absolute;
+	color: #ffffff;
+	font-size: 18px;
+	top:119px;
+	left: 177px;
+	width:146px;
+	height:44px;
+	line-height: 44px;
+	text-align: center;
+	background: #ff9900;
+	border-radius: 5px;
+}
+.regularOverview.user-all{
+	background: #f8f8f8 url(../images/detail_logo_bg.jpg) repeat-x;
+}
+.regularOverview .user-center {
+	width: 1170px;
+	margin: 0px auto;
+	background: #f8f8f8;
+}
+.regularOverview .u-left {
+	float: left;
+	margin-right: 20px;
+}
+.regularOverview .sidebarmenu {
+	margin: 0px 0;
+	padding: 0;
+	width: 195px;
+}
+.regularOverview .sidebarmenu a.menuitem:visited, .sidebarmenu .menuitem:active {
+	color: white;
+}
+.regularOverview .sidebarmenu a.menuitem {
+	background: url(../images/sidebar_menu_top.gif) no-repeat center top;
+	color: #fff;
+	display: block;
+	position: relative;
+	width: 185px;
+	height: 31px;
+	margin: 0 0 5px 0;
+	line-height: 31px;
+	padding: 0px 0 0 10px;
+	text-decoration: none;
+}
+.regularOverview .sidebarmenu div.submenu {
+	background: white;
+}
+.regularOverview .sidebarmenu div.submenu ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0 0 5px 0;
+}
+.regularOverview .sidebarmenu div.submenu ul li {
+	border-bottom: 1px dotted #bfd1d9;
+}
+.regularOverview .sidebarmenu div.submenu ul li a:hover {
+	background: #e2f0ff;
+	color: #0e4354;
+}
+.regularOverview  .sidebarmenu div.submenu ul li a {
+	display: block;
+	color: black;
+	text-decoration: none;
+	padding: 5px 0;
+	padding-left: 30px;
+}
+.regularOverview .sidebarmenu a.menuitem .statusicon {
+	position: absolute;
+	top: 11px;
+	right: 7px;
+	border: none;
+}
+.regularOverview .sidebarmenu a.menuitem_red {
+	background: url(../images/red_bt.gif) no-repeat center top;
+	color: #fff;
+	display: block;
+	position: relative;
+	width: 185px;
+	height: 31px;
+	margin: 0 0 5px 0;
+	line-height: 31px;
+	padding: 0px 0 0 10px;
+	text-decoration: none;
+}
+.regularOverview .sidebarmenu a.menuitem:hover {
+	background: url(../images/sidebar_menu_top_a.gif) no-repeat center top;
+}
+.regularOverview .sidebarmenu a.menuitem_red:hover {
+	background: url(../images/red_bt_a.gif) no-repeat center top;
+}
+.regularOverview .u-right {
+float: left;
+margin-bottom: 20px;
+}
+.regularOverview  .user-right {
+background: #fff;
+width: 885px;
+float: left;
+border: 1px solid #e6e6e6;
+padding: 20px;
+}
+.regularOverview .account-box {
+padding-top: 20px;
+height: 415px;
+overflow: hidden;
+}
+.regularOverview .account-box ul {
+width: 905px;
+}
+.regularOverview .clearfix {
+zoom: 1;
+}
+.regularOverview .account-box ul li {
+height: 185px;
+float: left;
+width: 285px;
+margin-right: 15px;
+margin-bottom: 15px;
+background: #f0f4f7;
+}
+.regularOverview .account-box ul li span {
+display: block;
+text-align: center;
+color: #4d4d4d;
+}
+.regularOverview .account-box ul li span.t1 {
+height: 30px;
+line-height: 30px;
+color: #fff;
+font-size: 14px;
+font-weight: bold;
+background: #eb8b57;
+}
+.regularOverview .account-box ul li span.t-red {
+color: #cc0000;
+}
+.regularOverview .account-box ul li span.t2 {
+height: 90px;
+line-height: 90px;
+font-size: 30px;
+font-weight: bold;
+overflow: hidden;
+}
+.regularOverview .account-box ul li span.t3 {
+font-size: 12px;
+padding: 10px 20px;
+text-align: left;
+line-height: 22px;
+color: #666;
+border-top: #fff solid 2px;
+position: relative;
+}
+.regularOverview .account-box ul li span.t3 a {
+position: absolute;
+top: 7px;
+}
+.regularOverview a.bt_green span.bt_green_lft {
+width: 10px;
+height: 31px;
+display: block;
+float: left;
+background: url(../images/bt_green_left.gif) no-repeat center right;
+}
+.regularOverview  a.bt_green strong {
+width: auto;
+height: 31px;
+padding: 0 10px 0 10px;
+display: block;
+float: left;
+background: url(../images/bt_green_center.gif) repeat-x center;
+}
+.regularOverview  a.bt_green span.bt_green_r {
+width: 10px;
+height: 31px;
+display: block;
+float: left;
+background: url(../images/bt_green_r.gif) no-repeat center right;
+}
+.regularOverview  a.bt_blue span.bt_blue_lft {
+width: 10px;
+height: 31px;
+display: block;
+float: left;
+background: url(../images/bt_blue_left.gif) no-repeat center right;
+}
+.regularOverview  a.bt_blue span.bt_blue_r {
+width: 10px;
+height: 31px;
+display: block;
+float: left;
+background: url(../images/bt_blue_r.gif) no-repeat center right;
+}
+.regularOverview  a.bt_green {
+margin: 10px 5px 10px 5px;
+line-height: 31px;
+text-decoration: none;
+color: #FFFFFF;
+text-shadow: 1px 1px #8fa42b;
+}
+.regularOverview a.bt_blue {
+display: block;
+margin: 10px 5px 10px 5px;
+line-height: 31px;
+text-decoration: none;
+color: #FFFFFF;
+text-shadow: 1px 1px #3597bf;
+}
+.regularOverview a.bt_blue strong {
+width: auto;
+height: 31px;
+padding: 0 10px 0 10px;
+display: block;
+float: left;
+background: url(../images/bt_blue_center.gif) repeat-x center;
+}
+.regularOverview .biaoge table{
+	border:1px solid #f0f4f7;
+}
+.regularOverview .biaoge table th,.regularOverview .biaoge table td{
+	height: 40px;
+	background: #f0f4f7;
+	vertical-align: middle;
+	text-align: center;
+}
+.regularOverview .biaoge table td{
+	background: #ffffff;
+	border-right: 1px solid #f0f4f7;
+	border-bottom: 1px solid #f0f4f7;
+	
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IBankCodeDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="bank_code_id != null">bank_code_id,</if>
+            <if test="code != null">code,</if>
+            <if test="bank_name != null">bank_name,</if>
+            <if test="regex != null">regex,</if>
+            <if test="bank_index != null">bank_index,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="bank_code_id != null">#{bank_code_id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="bank_name != null">#{bank_name},</if>
+            <if test="regex != null">#{regex},</if>
+            <if test="bank_index != null">#{bank_index},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bank_code_id != null">bank_code_id=#{bank_code_id},</if>
+            <if test="code != null">code=#{code},</if>
+            <if test="bank_name != null">bank_name=#{bank_name},</if>
+            <if test="regex != null">regex=#{regex},</if>
+            <if test="bank_index != null">bank_index=#{bank_index},</if>
+        </trim>
+        where bank_code_id=#{bank_code_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="bank_code" keyProperty="bank_code_id"
+            useGeneratedKeys="true">
+    insert into
+ td_bank_code(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="bank_code">update td_bank_code
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="bank_code">
+        select * from td_bank_code where bank_code_id=#{bank_code_id}
+    </select>
+    <delete id="delete" parameterType="int">
+        delete from td_bank_code where bank_code_id=#{bank_code_id}
+    </delete>
+    <select id="queryByProperties" parameterType="map" resultType="bank_code">
+        select * from td_bank_code where ${keyy}=#{valuee}
+    </select>
+</mapper>

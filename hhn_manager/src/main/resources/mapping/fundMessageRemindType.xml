@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundMessageRemindTypeDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="message_remind_type_id != null">message_remind_type_id,</if>
+            <if test="invest_type != null">invest_type,</if>
+            <if test="message_name != null">message_name,</if>
+            <if test="status != null">status,</if>
+            <if test="create_time != null">create_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="message_remind_type_id != null">#{message_remind_type_id},</if>
+            <if test="invest_type != null">#{invest_type},</if>
+            <if test="message_name != null">#{message_name},</if>
+            <if test="status != null">#{status},</if>
+            <if test="create_time != null">#{create_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="message_remind_type_id != null">message_remind_type_id=#{message_remind_type_id},</if>
+            <if test="invest_type != null">invest_type=#{invest_type},</if>
+            <if test="message_name != null">message_name=#{message_name},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+        </trim>
+        where message_remind_type_id=#{message_remind_type_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_message_remind_type" keyProperty="message_remind_type_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_message_remind_type(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_message_remind_type">update td_fund_message_remind_type
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_message_remind_type">
+        select * from td_fund_message_remind_type where message_remind_type_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_message_remind_type where message_remind_type_id=#{id}
+    </delete>
+</mapper>

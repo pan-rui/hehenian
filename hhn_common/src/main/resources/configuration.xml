@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- "configuration" must match "(properties?,settings?,typeAliases?,typeHandlers?,objectFactory?,objectWrapperFactory?,plugins?,environments?,mappers?)". -->
+
+	<properties>
+		<property name="dialect" value="MYSQL" />
+		<!--<property name="pageSqlId" value=".*Page$" />-->
+	</properties>
+
+    <settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--延迟加载时按需加载属性-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+
+<!--	<typeAliases>
+
+        <typeAlias alias="cart" type="com.hhn.pojo.Cart"/>
+    </typeAliases>-->
+<typeHandlers>
+	<typeHandler handler="org.apache.ibatis.type.ObjectTypeHandler"/>
+</typeHandlers>
+<!--	<plugins>
+		<plugin interceptor="com.hehenian.biz.common.mybatis.PageInterceptor">
+			<property name="a" value="a" />
+			<property name="b" value="b" />
+		</plugin>
+	</plugins>-->
+
+<!--
+	<mappers>
+        <mapper resource="mapping/cart.xml"/>
+	</mappers>-->
+
+</configuration>

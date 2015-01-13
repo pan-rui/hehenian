@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanCertificateDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="certificate_id != null">certificate_id,</if>
+            <if test="loan_id != null">loan_id,</if>
+            <if test="certificate_type_id != null">certificate_type_id,</if>
+            <if test="borrower_id != null">borrower_id,</if>
+            <if test="borrower_type != null">borrower_type,</if>
+            <if test="file_path != null">file_path,</if>
+            <if test="file_type != null">file_type,</if>
+            <if test="reject_content != null">reject_content,</if>
+            <if test="certificat_status != null">certificat_status,</if>
+            <if test="qq_number != null">qq_number,</if>
+            <if test="weixin_number != null">weixin_number,</if>
+            <if test="weibo_number != null">weibo_number,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="expire_date != null">expire_date,</if>
+            <if test="delete_time != null">delete_time,</if>
+            <if test="is_examine != null">is_examine,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="certificate_id != null">#{certificate_id},</if>
+            <if test="loan_id != null">#{loan_id},</if>
+            <if test="certificate_type_id != null">#{certificate_type_id},</if>
+            <if test="borrower_id != null">#{borrower_id},</if>
+            <if test="borrower_type != null">#{borrower_type},</if>
+            <if test="file_path != null">#{file_path},</if>
+            <if test="file_type != null">#{file_type},</if>
+            <if test="reject_content != null">#{reject_content},</if>
+            <if test="certificat_status != null">#{certificat_status},</if>
+            <if test="qq_number != null">#{qq_number},</if>
+            <if test="weixin_number != null">#{weixin_number},</if>
+            <if test="weibo_number != null">#{weibo_number},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="expire_date != null">#{expire_date},</if>
+            <if test="delete_time != null">#{delete_time},</if>
+            <if test="is_examine != null">#{is_examine},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="certificate_id != null">certificate_id=#{certificate_id},</if>
+            <if test="loan_id != null">loan_id=#{loan_id},</if>
+            <if test="certificate_type_id != null">certificate_type_id=#{certificate_type_id},</if>
+            <if test="borrower_id != null">borrower_id=#{borrower_id},</if>
+            <if test="borrower_type != null">borrower_type=#{borrower_type},</if>
+            <if test="file_path != null">file_path=#{file_path},</if>
+            <if test="file_type != null">file_type=#{file_type},</if>
+            <if test="reject_content != null">reject_content=#{reject_content},</if>
+            <if test="certificat_status != null">certificat_status=#{certificat_status},</if>
+            <if test="qq_number != null">qq_number=#{qq_number},</if>
+            <if test="weixin_number != null">weixin_number=#{weixin_number},</if>
+            <if test="weibo_number != null">weibo_number=#{weibo_number},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="expire_date != null">expire_date=#{expire_date},</if>
+            <if test="delete_time != null">delete_time=#{delete_time},</if>
+            <if test="is_examine != null">is_examine=#{is_examine},</if>
+        </trim>
+        where certificate_id=#{certificate_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_certificate" keyProperty="certificate_id"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_certificate(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="loan_certificate">update td_loan_certificate
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_certificate">
+        select * from td_loan_certificate where certificate_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_loan_certificate where certificate_id=#{id}
+    </delete>
+</mapper>

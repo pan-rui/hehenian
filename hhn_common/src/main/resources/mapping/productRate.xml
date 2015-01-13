@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IProductRateDao">
+
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="product_rate_id != null">product_rate_id,</if>
+            <if test="period != null">period,</if>
+            <if test="rate != null">rate,</if>
+            <if test="coefficient != null">coefficient,</if>
+            <if test="money_scope != null">money_scope,</if>
+            <if test="comment != null">comment,</if>
+            <if test="ctime != null">ctime,</if>
+            <if test="utime != null">utime,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="product_rate_id != null">#{product_rate_id},</if>
+            <if test="period != null">#{period},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="coefficient != null">#{coefficient},</if>
+            <if test="money_scope != null">#{money_scope},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="ctime != null">#{ctime},</if>
+            <if test="utime != null">#{utime},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="product_rate_id != null">product_rate_id=#{product_rate_id},</if>
+            <if test="period != null">period=#{period},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="coefficient != null">coefficient=#{coefficient},</if>
+            <if test="money_scope != null">money_scope=#{money_scope},</if>
+            <if test="comment != null">comment=#{comment},</if>
+            <if test="ctime != null">ctime=#{ctime},</if>
+            <if test="utime != null">utime=#{utime},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="product_rate" keyProperty="product_rate_id"
+            useGeneratedKeys="true">
+        insert into
+        td_product_rate(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+    <!--    <select id="existUser" parameterType="product_rate" resultType="int">
+            select user_id from td_account_user a where a.user_name = #{user_name} and a.id_mumber = #{id_mumber}
+        </select>-->
+
+    <update id="update" parameterType="product_rate">update td_product_rate
+        <include refid="uuu"></include>
+        where product_rate_id=#{product_rate_id}
+    </update>
+
+    <select id="query" parameterType="int" resultType="product_rate">
+        select * from td_product_rate where product_rate_id=#{product_rate_id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_product_rate where product_rate_id=#{product_rate_id}
+    </delete>
+
+    <select id="queryByProperties" parameterType="map" resultType="product_rate">
+        select * from td_product_rate where ${keyy}=#{valuee}
+    </select>
+
+    <select id="getProductRateList" parameterType="map" resultType="product_rate">
+        select * from td_product_rate limit 3
+    </select>
+
+    <select id="getProductRate" parameterType="map" resultType="java.math.BigDecimal">
+        select rate from td_product_rate where period = #{mounth}
+        <if test="product_rate_id!=null">
+            and product_rate_id = #{product_rate_id}
+        </if>
+        limit 1
+    </select>
+
+</mapper>

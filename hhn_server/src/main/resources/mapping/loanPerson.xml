@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanPersonDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="loan_person_id != null">loan_person_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="loan_id != null">loan_id,</if>
+            <if test="education != null">education,</if>
+            <if test="graduate_school != null">graduate_school,</if>
+            <if test="graduate_year != null">graduate_year,</if>
+            <if test="residence_type != null">residence_type,</if>
+            <if test="family_phone != null">family_phone,</if>
+            <if test="marriaged != null">marriaged,</if>
+            <if test="has_children != null">has_children,</if>
+            <if test="has_house != null">has_house,</if>
+            <if test="has_house_loan != null">has_house_loan,</if>
+            <if test="has_car != null">has_car,</if>
+            <if test="has_car_loan != null">has_car_loan,</if>
+            <if test="household_address_id != null">household_address_id,</if>
+            <if test="family_address_id != null">family_address_id,</if>
+            <if test="residence_address_id != null">residence_address_id,</if>
+            <if test="loan_address != null">loan_address,</if>
+            <if test="status != null">status,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="loan_person_id != null">loan_person_id,</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="loan_id != null">#{loan_id},</if>
+            <if test="education != null">#{education},</if>
+            <if test="graduate_school != null">#{graduate_school},</if>
+            <if test="graduate_year != null">#{graduate_year},</if>
+            <if test="residence_type != null">#{residence_type},</if>
+            <if test="family_phone != null">#{family_phone},</if>
+            <if test="marriaged != null">#{marriaged},</if>
+            <if test="has_children != null">#{has_children},</if>
+            <if test="has_house != null">#{has_house},</if>
+            <if test="has_house_loan != null">#{has_house_loan},</if>
+            <if test="has_car != null">#{has_car},</if>
+            <if test="has_car_loan != null">#{has_car_loan},</if>
+            <if test="household_address_id != null">#{household_address_id},</if>
+            <if test="family_address_id != null">#{family_address_id},</if>
+            <if test="residence_address_id != null">#{residence_address_id},</if>
+            <if test="loan_address != null">loan_address,</if>
+            <if test="status != null">status,</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="loan_person_id != null">loan_person_id=#{loan_person_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="loan_id != null">loan_id=#{loan_id},</if>
+            <if test="education != null">education=#{education},</if>
+            <if test="graduate_school != null">graduate_school=#{graduate_school},</if>
+            <if test="graduate_year != null">graduate_year=#{graduate_year},</if>
+            <if test="residence_type != null">residence_type=#{residence_type},</if>
+            <if test="family_phone != null">family_phone=#{family_phone},</if>
+            <if test="marriaged != null">marriaged=#{marriaged},</if>
+            <if test="has_children != null">has_children=#{has_children},</if>
+            <if test="has_house != null">has_house=#{has_house},</if>
+            <if test="has_house_loan != null">has_house_loan=#{has_house_loan},</if>
+            <if test="has_car != null">has_car=#{has_car},</if>
+            <if test="has_car_loan != null">has_car_loan=#{has_car_loan},</if>
+            <if test="household_address_id != null">household_address_id=#{household_address_id},</if>
+            <if test="family_address_id != null">family_address_id=#{family_address_id},</if>
+            <if test="residence_address_id != null">residence_address_id=#{residence_address_id},</if>
+            <if test="loan_address != null">loan_address=#{loan_address},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_person" keyProperty="loan_person_id"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_person(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+<!--        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="loan_person_id" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>-->
+    </insert>
+
+    <update id="update" parameterType="loan_person">update td_loan_person
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_person">
+        select * from td_loan_person where loan_person_id=#{id}
+    </select>
+<select id="queryByProperties" parameterType="map" resultType="loan_person">
+    select * form loan_person where #{keyy}=#{valuee}
+</select>
+    <delete id="delete" parameterType="int">
+        delete from td_loan_person where loan_person_id=#{id}
+    </delete>
+</mapper>

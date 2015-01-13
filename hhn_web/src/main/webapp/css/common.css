@@ -1,0 +1,197 @@
+﻿body {
+font-size: 14px;
+font-family: 'Merriweather',"Microsoft YaHei","Lucida Sans Unicode","Myriad Pro","Hiragino Sans GB","Heiti SC",Verdana,simsun;
+color: #666666;
+}
+/**.header {
+width: 100%;
+}
+.header_one{
+width: 100%;
+height: 55px;
+background: url(../images/top_bg.jpg) repeat-x;
+}
+.header_one_center {
+width: 1170px;
+margin: 0 auto;
+height: 55px;
+line-height: 48px;
+background: url(../images/top_bg.jpg) repeat-x;
+}
+.ui-top-img-link.weibo {
+width: 18px;
+background-position: 0 -16px;
+}
+.ui-top-img-link {
+display: block;
+margin-right: 5px;
+height: 16px;
+font-size: 0;
+line-height: 0;
+background: url(../images/shejiao.png) no-repeat 0 0;
+}
+.ui-top-img-link.we-chat {
+width: 20px;
+background-position: -17px -16px;
+}
+.ui-top-img-link {
+display: block;
+margin-right: 5px;
+height: 16px;
+font-size: 0;
+line-height: 0;
+background: url(../images/shejiao.png) no-repeat 0 0;
+}
+.header_one_center span {
+color: #2f2f2f;
+float: right;
+font-size: 13px;
+}
+.header_one_center span a {
+color: #333;
+}
+.header_one_center ul li {
+float: right;
+list-sytle: none;
+}
+.header_two {
+width: 100%;
+height: 86px;
+}
+.header_two_center {
+width: 1170px;
+height: 86px;
+margin: 0 auto;
+}
+.header_two_left {
+padding-top: 14px;
+width: 400px;
+float: left;
+}
+.header_two_right {
+float: right;
+margin-top: 28px;
+}
+.header_two_right_ul {
+width: 100%;
+}
+.header_two_right_ul li {
+float: left;
+list-style: none;
+height: 28px;
+line-height: 28px;
+margin-left: 12px;
+position: relative;
+z-index: 3;
+}
+.header_two_right_ul li a {
+color: #333;
+font-size: 16px;
+height: 28px;
+float: left;
+display: block;
+width: 80px;
+text-align: center;
+line-height: 28px;
+}
+
+.bottom {
+margin-top: 15px;
+width: 100%;
+background: url(../images/bottombg.png);
+}
+.bottom_one {
+width: 1170px;
+height: 199px;
+background: #e8e9e8;
+margin: 0px auto;
+}
+.bottom_one_all {
+width: 1170px;
+margin: 0 auto;
+}
+.bottom_one_all ul {
+width: 105px;
+float: left;
+border-left: 1px solid #c3c3c3;
+margin-top: 32px;
+margin-right: 5px;
+}
+.bottom_one_all ul li {
+display: block;
+width: 100%;
+text-align: center;
+}
+.bottom_one_all ul li h2 {
+font-size: 16px;
+color: #000;
+width: 100%;
+border-left: 4px solid #ff5a00;
+display: block;
+padding-top: 5px;
+}
+.bottom_erwm {
+height: 142px;
+float: right;
+margin-top: 32px;
+}
+.bottom_logo {
+float: right;
+margin: 32px 0px;
+}
+.bottom_logo {
+float: right;
+margin: 32px 0px;
+}
+.ui-footer-img-link.weibo {
+width: 107px;
+background-position: 0 0;
+}
+.ui-footer-img-link {
+display: block;
+margin-right: 5px;
+height: 32px;
+font-size: 0;
+line-height: 0;
+background: url(../images/sns.png) no-repeat 0 0;
+}
+.ui-footer-img-link.we-chat {
+width: 112px;
+background-position: 0px -30px;
+}
+.bottom_two {
+height: 80px;
+background: url(../images/copy_bg.gif);
+color: #c2c2c2;
+font-size: 12px;
+width: 1170px;
+margin: 0px auto;
+}
+.bottom_one_all ul li a {
+color: #000;
+display: block;
+padding-top: 10px;
+}
+.ui-footer-img-link.weibo:hover {
+background-position: -112px 0px;
+}
+.ui-footer-img-link.we-chat:hover {
+background-position: -114px -30px;
+}
+.onPage {
+background: #4aa3e9;
+border: 1px #4aa3e9 solid;
+}
+.onPage a {
+color: #fff;
+}
+.cover{
+	position: fixed;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000000;
+	opacity: 0.4;
+	z-index: 9997;
+}

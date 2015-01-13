@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ISystemLogDao">
+
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="log_id != null">log_id,</if>
+            <if test="description != null">description,</if>
+            <if test="method != null">method,</if>
+            <if test="log_type != null">log_type,</if>
+            <if test="request_ip != null">request_ip,</if>
+            <if test="exception_code != null">exception_code,</if>
+            <if test="exception_detail != null">exception_detail,</if>
+            <if test="params != null">params,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="ctime != null">ctime,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="log_id != null">#{log_id},</if>
+            <if test="description != null">#{description},</if>
+            <if test="method != null">#{method},</if>
+            <if test="log_type != null">#{log_type},</if>
+            <if test="request_ip != null">#{request_ip},</if>
+            <if test="exception_code != null">#{exception_code},</if>
+            <if test="exception_detail != null">#{exception_detail},</if>
+            <if test="params != null">#{params},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="ctime != null">#{ctime},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="log_id != null">log_id=#{log_id},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="method != null">method=#{method},</if>
+            <if test="log_type != null">log_type=#{log_type},</if>
+            <if test="request_ip != null">request_ip=#{request_ip},</if>
+            <if test="exception_code != null">exception_code=#{exception_code},</if>
+            <if test="exception_detail != null">exception_detail=#{exception_detail},</if>
+            <if test="params != null">params=#{params},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="ctime != null">ctime=#{ctime},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="system_log" keyProperty="log_id"
+            useGeneratedKeys="true">
+        insert into
+        td_system_log(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+    <update id="update" parameterType="system_log">update td_system_log
+        <include refid="uuu"></include>
+        where log_id=#{log_id}
+    </update>
+
+    <select id="query" parameterType="int" resultType="system_log">
+        select * from td_system_log where log_id=#{log_id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_system_log where log_id=#{log_id}
+    </delete>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundMessageRecipientDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="message_id != null">message_id,</if>
+            <if test="recipient_id != null">recipient_id,</if>
+            <if test="is_reader != null">is_reader,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="message_id != null">#{message_id},</if>
+            <if test="recipient_id != null">#{recipient_id},</if>
+            <if test="is_reader != null">#{is_reader},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="message_id != null">message_id=#{message_id},</if>
+            <if test="recipient_id != null">recipient_id=#{recipient_id},</if>
+            <if test="is_reader != null">is_reader=#{is_reader},</if>
+        </trim>
+        where message_id=#{message_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_message_recipient" keyProperty="message_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_message_recipient(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_message_recipient">update td_fund_message_recipient
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_message_recipient">
+        select * from td_fund_message_recipient where message_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_message_recipient where message_id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanAddressDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="address_id != null">address_id,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="detail_address != null">detail_address,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="address_id != null">#{address_id},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="detail_address != null">#{detail_address},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="address_id != null">address_id=#{address_id},</if>
+            <if test="province != null">province=#{province},</if>
+            <if test="city != null">city=#{city},</if>
+            <if test="detail_address != null">detail_address=#{detail_address},</if>
+        </trim>
+        where address_id=#{address_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_address" keyProperty="address_id"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_address(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="loan_address">update td_loan_address
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_address">
+        select * from td_loan_address where address_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_loan_address where address_id=#{id}
+    </delete>
+</mapper>

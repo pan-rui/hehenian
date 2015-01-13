@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanCollateralDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="collateral_id != null">collateral_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="collateral_type != null">collateral_type,</if>
+            <if test="purchase_date != null">purchase_date,</if>
+            <if test="purchase_price != null">purchase_price,</if>
+            <if test="use_year != null">use_year,</if>
+            <if test="remark != null">remark,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="collateral_id != null">#{collateral_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="collateral_type != null">#{collateral_type},</if>
+            <if test="purchase_date != null">#{purchase_date},</if>
+            <if test="purchase_price != null">#{purchase_price},</if>
+            <if test="use_year != null">#{use_year},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="collateral_id != null">collateral_id=#{collateral_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="collateral_type != null">collateral_type=#{collateral_type},</if>
+            <if test="purchase_date != null">purchase_date=#{purchase_date},</if>
+            <if test="purchase_price != null">purchase_price=#{purchase_price},</if>
+            <if test="use_year != null">use_year=#{use_year},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+        where collateral_id=#{collateral_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_collateral" keyProperty="collateral_id"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_collateral(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="loan_collateral">update td_loan_collateral
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_collateral">
+        select * from td_loan_collateral where collateral_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_loan_collateral where collateral_id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundFeedbackDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="feed_id != null">feed_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="content != null">content,</if>
+            <if test="create_date != null">create_date,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="feed_id != null">#{feed_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="content != null">#{content},</if>
+            <if test="create_date != null">#{create_date},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="feed_id != null">feed_id=#{feed_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="content != null">content=#{content},</if>
+            <if test="create_date != null">create_date=#{create_date},</if>
+        </trim>
+        where feed_id=#{feed_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_feedback" keyProperty="feed_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_feedback(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_feedback">update td_fund_feedback
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_feedback">
+        select * from td_fund_feedback where feed_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_feedback where feed_id=#{id}
+    </delete>
+</mapper>

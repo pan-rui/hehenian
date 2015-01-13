@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundActualAccountLogDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="actual_account_log_id != null">actual_account_log_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="trade_amount != null">trade_amount,</if>
+            <if test="from_account != null">from_account,</if>
+            <if test="to_account != null">to_account,</if>
+            <if test="third_pay_type != null">third_pay_type,</if>
+            <if test="third_pay_account_no != null">third_pay_account_no,</if>
+            <if test="third_pay_id != null">third_pay_id,</if>
+            <if test="third_trade_time != null">third_trade_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="transfer_status != null">transfer_status,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="actual_account_log_id != null">#{actual_account_log_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="trade_amount != null">#{trade_amount},</if>
+            <if test="from_account != null">#{from_account},</if>
+            <if test="to_account != null">#{to_account},</if>
+            <if test="third_pay_type != null">#{third_pay_type},</if>
+            <if test="third_pay_account_no != null">#{third_pay_account_no},</if>
+            <if test="third_pay_id != null">#{third_pay_id},</if>
+            <if test="third_trade_time != null">#{third_trade_time},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="transfer_status != null">#{transfer_status},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="actual_account_log_id != null">actual_account_log_id=#{actual_account_log_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="trade_amount != null">trade_amount=#{trade_amount},</if>
+            <if test="from_account != null">from_account=#{from_account},</if>
+            <if test="to_account != null">to_account=#{to_account},</if>
+            <if test="third_pay_type != null">third_pay_type=#{third_pay_type},</if>
+            <if test="third_pay_account_no != null">third_pay_account_no=#{third_pay_account_no},</if>
+            <if test="third_pay_id != null">third_pay_id=#{third_pay_id},</if>
+            <if test="third_trade_time != null">third_trade_time=#{third_trade_time},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="transfer_status != null">transfer_status=#{transfer_status},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+        where actual_account_log_id=#{actual_account_log_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_actual_account_log" keyProperty="actual_account_log_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_actual_account_log(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_actual_account_log">update td_fund_actual_account_log
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_actual_account_log">
+        select * from td_fund_actual_account_log where actual_account_log_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_actual_account_log where actual_account_log_id=#{id}
+    </delete>
+
+
+    <select id="findAllCount" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT (1)
+        FROM td_fund_actual_account_log a
+        INNER JOIN t_person b ON a.user_id = b.userId
+        WHERE 1=1
+
+        <if test="user_name!=null">
+            and b.realName LIKE  CONCAT('%',#{user_name},'%')
+        </if>
+        <if test="beginDate!=null and beginDate!=''">
+            <![CDATA[ and update_time >  #{beginDate} ]]>
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            <![CDATA[ and update_time < date_add(date_format(#{endDate},'%Y-%m-%d'),interval 1 day) ]]>
+        </if>
+    </select>
+
+    <select id="findByPage" parameterType="java.util.Map" resultType="java.util.HashMap">
+        SELECT a.actual_account_log_id,a.trade_amount,a.update_time,a.transfer_status,b.realName user_name
+        FROM td_fund_actual_account_log a
+        INNER JOIN t_person b ON a.user_id = b.userId
+        WHERE 1=1
+        <if test="user_name!=null">
+            and b.realName LIKE  CONCAT('%',#{user_name},'%')
+        </if>
+        <if test="beginDate!=null and beginDate!=''">
+            <![CDATA[ and update_time >  #{beginDate} ]]>
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            <![CDATA[ and update_time < date_add(date_format(#{endDate},'%Y-%m-%d'),interval 1 day) ]]>
+        </if>
+        order by update_time desc limit 500
+    </select>
+
+
+</mapper>

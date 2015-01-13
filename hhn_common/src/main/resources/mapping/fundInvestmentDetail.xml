@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundInvestmentDetailDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="investment_detail_id != null">investment_detail_id,</if>
+            <if test="product_id != null">product_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="user_account_id != null">user_account_id,</if>
+            <if test="trade_amount != null">trade_amount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="invest_time != null">invest_time,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="fund_trade_id != null">fund_trade_id,</if>
+            <if test="invest_period != null">invest_period,</if>
+            <if test="income != null">income,</if>
+            <if test="status != null">status,</if>
+            <if test="loan_user_id != null">loan_user_id,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="investment_detail_id != null">#{investment_detail_id},</if>
+            <if test="product_id != null">#{product_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="user_account_id != null">#{user_account_id},</if>
+            <if test="trade_amount != null">#{trade_amount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="invest_time != null">#{invest_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+            <if test="fund_trade_id != null">#{fund_trade_id},</if>
+            <if test="invest_period != null">#{invest_period},</if>
+            <if test="income != null">#{income},</if>
+            <if test="status != null">#{status},</if>
+            <if test="loan_user_id != null">#{loan_user_id},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="investment_detail_id != null">investment_detail_id=#{investment_detail_id},</if>
+            <if test="product_id != null">product_id=#{product_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="user_account_id != null">user_account_id=#{user_account_id},</if>
+            <if test="trade_amount != null">trade_amount=#{trade_amount},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="invest_time != null">create_time=#{invest_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+            <if test="fund_trade_id != null">fund_trade_id=#{fund_trade_id},</if>
+            <if test="invest_period != null">invest_period=#{invest_period},</if>
+            <if test="income != null">income=#{income},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="loan_user_id != null">loan_user_id=#{loan_user_id},</if>
+        </trim>
+        where investment_detail_id=#{investment_detail_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_investment_detail" keyProperty="investment_detail_id"
+            useGeneratedKeys="true">
+        insert into
+        td_fund_investment_detail(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+    <update id="update" parameterType="fund_investment_detail">
+        update td_fund_investment_detail
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_investment_detail">
+        select * from td_fund_investment_detail where investment_detail_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_investment_detail where investment_detail_id=#{id}
+    </delete>
+
+    <select id="getInvestDetailList" parameterType="java.util.Map" resultType="java.util.HashMap">
+        SELECT a.*,modify_time,c.realName user_name,b.product_name,b.product_status from td_fund_investment_detail a
+        INNER JOIN  td_fund_product b ON a.product_id = b.product_id
+        INNER JOIN t_person c ON c.userId = a.user_id
+        LEFT  JOIN (
+        SELECT  product_id,MAX(modify_time) modify_time  FROM td_fund_product_audit  WHERE `status` = 3 GROUP BY product_id
+        ) d ON d.product_id = a.product_id
+        WHERE 1=1
+        <if test="user_name!=null">
+            and c.realName LIKE CONCAT('%',#{user_name},'%')
+        </if>
+
+        <if test="product_id!=null">
+            and a.product_id = #{product_id}
+        </if>
+
+        <if test="product_name!=null">
+            and b.product_name LIKE CONCAT('%',#{product_name},'%')
+        </if>
+        <if test="beginDate!=null and beginDate!=''">
+            and a.invest_time > #{beginDate}
+        </if>
+        <if test="end_date!=null and end_date!=''">
+            <![CDATA[ and a.invest_time < date_add(date_format(#{endDate},'%Y-%m-%d'),interval 1 day) ]]>
+        </if>
+        order by invest_time desc limit 500
+    </select>
+
+    <select id="queryByPros" parameterType="map" resultType="fund_investment_detail">
+        select * FROM td_fund_investment_detail
+        <trim prefix="where" prefixOverrides="or | and">
+            <foreach collection="params" item="item" index="key" separator=" and ">
+                <if test="null != item">${key}=#{item}</if>
+            </foreach>
+        </trim>
+    </select>
+    <select id="queryByNow" parameterType="java.util.Date" resultType="fund_investment_detail">
+        select * FROM td_fund_investment_detail WHERE date_add(invest_time,interval invest_period MONTH) &lt;= #{noww}
+    </select>
+
+    <select id="queryForFundTrade" parameterType="map" resultType="fund_trade">
+        select t.* from td_fund_investment_detail i
+        JOIN td_fund_trade t ON i.fund_trade_id=t.trade_id
+        where i.investment_detail_id=#{investId}
+    </select>
+    <!--select * from td_fund_trade where expect_trade_time &lt;= #{noww} and target_type=#{trade_type} order by expect_trade_time-->
+    <select id="queryForFundTrades" parameterType="map" resultType="fund_trade">
+        select * FROM td_fund_trade WHERE expect_trade_time &gt;= #{noww} and trade_type=#{trade_type} and trade_balance &gt; 0 order by trade_balance DESC
+    </select>
+    <select id="queryForProduct" parameterType="int" resultType="fund_product">
+        SELECT tfp.* FROM td_fund_investment_detail tfid
+        JOIN td_fund_product tfp ON tfp.product_id=tfid.product_id
+        WHERE tfid.investment_detail_id=#{invest_id}
+    </select>
+    <select id="queryByProperties" parameterType="map" resultType="fund_investment_detail">
+        select * from td_fund_investment_detail where ${keyy}=#{valuee}
+    </select>
+    <!--<resultMap id="fund_investment_detailM" type="com.hhn.pojo.FundInvestmentDetail" autoMapping="true">-->
+        <!--<id property="investment_detail_id" column="investment_detail_id"/>-->
+        <!--<association property="fundProduct" javaType="com.hhn.pojo.FundProduct" autoMapping="true">-->
+
+        <!--</association>-->
+    <!--</resultMap>-->
+</mapper>

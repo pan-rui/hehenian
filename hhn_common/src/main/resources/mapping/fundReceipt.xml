@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundReceiptDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="receipt_id != null">receipt_id,</if>
+            <if test="product_id != null">product_id,</if>
+            <if test="trade_id != null">trade_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="principal_amount != null">principal_amount,</if>
+            <if test="interest_amount != null">interest_amount,</if>
+            <if test="penalty_amount != null">penalty_amount,</if>
+            <if test="receipt_type != null">receipt_type,</if>
+            <if test="receipt_status != null">receipt_status,</if>
+            <if test="receipt_date != null">receipt_date,</if>
+            <if test="remark != null">remark,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="receipt_id != null">#{receipt_id},</if>
+            <if test="product_id != null">#{product_id},</if>
+            <if test="trade_id != null">#{trade_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="principal_amount != null">#{principal_amount},</if>
+            <if test="interest_amount != null">#{interest_amount},</if>
+            <if test="penalty_amount != null">#{penalty_amount},</if>
+            <if test="receipt_type != null">#{receipt_type},</if>
+            <if test="receipt_status != null">#{receipt_status},</if>
+            <if test="receipt_date != null">#{receipt_date},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="receipt_id != null">receipt_id=#{receipt_id},</if>
+            <if test="product_id != null">product_id=#{product_id},</if>
+            <if test="trade_id != null">trade_id=#{trade_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="principal_amount != null">principal_amount=#{principal_amount},</if>
+            <if test="interest_amount != null">interest_amount=#{interest_amount},</if>
+            <if test="penalty_amount != null">penalty_amount=#{penalty_amount},</if>
+            <if test="receipt_type != null">receipt_type=#{receipt_type},</if>
+            <if test="receipt_status != null">receipt_status=#{receipt_status},</if>
+            <if test="receipt_date != null">receipt_date=#{receipt_date},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+        where receipt_id=#{receipt_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_receipt" keyProperty="receipt_id"
+            useGeneratedKeys="true">
+        insert into
+        td_fund_receipt(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+    <update id="update" parameterType="fund_receipt">update td_fund_receipt
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_receipt">
+        select * from td_fund_receipt where receipt_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_receipt where receipt_id=#{id}
+    </delete>
+    <select id="queryByDate" parameterType="map" resultType="fund_trade">
+        select * from td_fund_trade where expect_trade_time &lt;= #{noww} and target_type=#{trade_type} order by expect_trade_time
+    </select>
+</mapper>

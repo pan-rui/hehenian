@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IAccountUserDao">
+
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="user_id != null">user_id,</if>
+            <if test="user_type != null">user_type,</if>
+            <if test="user_name != null">user_name,</if>
+            <if test="password != null">password,</if>
+            <if test="real_name != null">real_name,</if>
+            <if test="hear_img != null">hear_img,</if>
+            <if test="id_mumber != null">id_mumber,</if>
+            <if test="card_checked != null">card_checked,</if>
+            <if test="mobile_phone != null">mobile_phone,</if>
+            <if test="phone_checked != null">phone_checked,</if>
+            <if test="email != null">email,</if>
+            <if test="email_checked != null">email_checked,</if>
+            <if test="validate_code != null">validate_code,</if>
+            <if test="sex != null">sex,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="education != null">education,</if>
+            <if test="education_no != null">education_no,</if>
+            <if test="marriaged != null">marriaged,</if>
+            <if test="home_address != null">home_address,</if>
+            <if test="industry != null">industry,</if>
+            <if test="scale != null">scale,</if>
+            <if test="income != null">income,</if>
+            <if test="position != null">position,</if>
+            <if test="vip_status != null">vip_status,</if>
+            <if test="vip_time != null">vip_time,</if>
+            <if test="user_source != null">user_source,</if>
+            <if test="remind_time_chekced != null">remind_time_chekced,</if>
+            <if test="base_point != null">base_point,</if>
+            <if test="verify_point != null">verify_point,</if>
+            <if test="user_status != null">user_status,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="user_id != null">#{user_id},</if>
+            <if test="user_type != null">#{user_type},</if>
+            <if test="user_name != null">#{user_name},</if>
+            <if test="password != null">#{password},</if>
+            <if test="real_name != null">#{real_name},</if>
+            <if test="hear_img != null">#{hear_img},</if>
+            <if test="id_mumber != null">#{id_mumber},</if>
+            <if test="card_checked != null">#{card_checked},</if>
+            <if test="mobile_phone != null">#{mobile_phone},</if>
+            <if test="phone_checked != null">#{phone_checked},</if>
+            <if test="email != null">#{email},</if>
+            <if test="email_checked != null">#{email_checked},</if>
+            <if test="validate_code != null">#{validate_code},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="education != null">#{education},</if>
+            <if test="education_no != null">#{education_no},</if>
+            <if test="marriaged != null">#{marriaged},</if>
+            <if test="home_address != null">#{home_address},</if>
+            <if test="industry != null">#{industry},</if>
+            <if test="scale != null">#{scale},</if>
+            <if test="income != null">#{income},</if>
+            <if test="position != null">#{position},</if>
+            <if test="vip_status != null">#{vip_status},</if>
+            <if test="vip_time != null">#{vip_time},</if>
+            <if test="user_source != null">#{user_source},</if>
+            <if test="remind_time_chekced != null">#{remind_time_chekced},</if>
+            <if test="base_point != null">#{base_point},</if>
+            <if test="verify_point != null">#{verify_point},</if>
+            <if test="user_status != null">#{user_status},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="user_type != null">user_type=#{user_type},</if>
+            <if test="user_name != null">user_name=#{user_name},</if>
+            <if test="password != null">password=#{password},</if>
+            <if test="real_name != null">real_name=#{real_name},</if>
+            <if test="hear_img != null">hear_img=#{hear_img},</if>
+            <if test="id_mumber != null">id_mumber=#{id_mumber},</if>
+            <if test="card_checked != null">card_checked=#{card_checked},</if>
+            <if test="mobile_phone != null">mobile_phone=#{mobile_phone},</if>
+            <if test="phone_checked != null">phone_checked=#{phone_checked},</if>
+            <if test="email != null">email=#{email},</if>
+            <if test="email_checked != null">email_checked=#{email_checked},</if>
+            <if test="validate_code != null">validate_code=#{validate_code},</if>
+            <if test="sex != null">sex=#{sex},</if>
+            <if test="birthday != null">birthday=#{birthday},</if>
+            <if test="education != null">education=#{education},</if>
+            <if test="education_no != null">education_no=#{education_no},</if>
+            <if test="marriaged != null">marriaged=#{marriaged},</if>
+            <if test="home_address != null">home_address=#{home_address},</if>
+            <if test="industry != null">industry=#{industry},</if>
+            <if test="scale != null">scale=#{scale},</if>
+            <if test="income != null">income=#{income},</if>
+            <if test="position != null">position=#{position},</if>
+            <if test="vip_status != null">vip_status=#{vip_status},</if>
+            <if test="vip_time != null">vip_time=#{vip_time},</if>
+            <if test="user_source != null">user_source=#{user_source},</if>
+            <if test="remind_time_chekced != null">remind_time_chekced=#{remind_time_chekced},</if>
+            <if test="base_point != null">base_point=#{base_point},</if>
+            <if test="verify_point != null">verify_point=#{verify_point},</if>
+            <if test="user_status != null">user_status=#{user_status},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+        </trim>
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="account_user" keyProperty="user_id"
+            useGeneratedKeys="true">
+        insert into
+        td_account_user(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+    <select id="existUser" parameterType="account_user" resultType="int">
+        select user_id from td_account_user a where a.user_name = #{user_name} and a.id_mumber = #{id_mumber}
+    </select>
+
+    <select id="getLastUserId" parameterType="map" resultType="int">
+        select user_id from td_account_user order by user_id desc limit 1
+    </select>
+
+    <update id="update" parameterType="account_user">s+update td_account_user
+        <include refid="uuu"></include>
+        where user_id=#{user_id}
+    </update>
+
+    <select id="query" parameterType="int" resultType="account_user">
+        select * from td_account_user where user_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_account_user where user_id=#{id}
+    </delete>
+</mapper>

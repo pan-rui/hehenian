@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ILoanCollateralVerifyDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="collateralId != null">collateralId,</if>
+            <if test="firstWorkerId != null">firstWorkerId,</if>
+            <if test="firstVerifyStatus != null">firstVerifyStatus,</if>
+            <if test="firstRemark != null">firstRemark,</if>
+            <if test="firstVerifyTime != null">firstVerifyTime,</if>
+            <if test="secondWorkerId != null">secondWorkerId,</if>
+            <if test="secondVerifyStatus != null">secondVerifyStatus,</if>
+            <if test="secondRemark != null">secondRemark,</if>
+            <if test="secondVerifyTime != null">secondVerifyTime,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="emailContent != null">emailContent,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="collateralId != null">#{collateralId},</if>
+            <if test="firstWorkerId != null">#{firstWorkerId},</if>
+            <if test="firstVerifyStatus != null">#{firstVerifyStatus},</if>
+            <if test="firstRemark != null">#{firstRemark},</if>
+            <if test="firstVerifyTime != null">#{firstVerifyTime},</if>
+            <if test="secondWorkerId != null">#{secondWorkerId},</if>
+            <if test="secondVerifyStatus != null">#{secondVerifyStatus},</if>
+            <if test="secondRemark != null">#{secondRemark},</if>
+            <if test="secondVerifyTime != null">#{secondVerifyTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="emailContent != null">#{emailContent},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="collateralId != null">collateralId=#{collateralId},</if>
+            <if test="firstWorkerId != null">firstWorkerId=#{firstWorkerId},</if>
+            <if test="firstVerifyStatus != null">firstVerifyStatus=#{firstVerifyStatus},</if>
+            <if test="firstRemark != null">firstRemark=#{firstRemark},</if>
+            <if test="firstVerifyTime != null">firstVerifyTime=#{firstVerifyTime},</if>
+            <if test="secondWorkerId != null">secondWorkerId=#{secondWorkerId},</if>
+            <if test="secondVerifyStatus != null">secondVerifyStatus=#{secondVerifyStatus},</if>
+            <if test="secondRemark != null">secondRemark=#{secondRemark},</if>
+            <if test="secondVerifyTime != null">secondVerifyTime=#{secondVerifyTime},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="emailContent != null">emailContent=#{emailContent},</if>
+        </trim>
+        where collateralId=#{collateralId}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="loan_collateral_verify" keyProperty="collateralId"
+            useGeneratedKeys="true">
+    insert into
+ td_loan_collateral_verify(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="loan_collateral_verify">update td_loan_collateral_verify
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="loan_collateral_verify">
+        select * from td_loan_collateral_verify where collateralId=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_loan_collateral_verify where collateralId=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.ISysSelectTreeDataDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="parent_id != null">parent_id,</if>
+            <if test="name != null">name,</if>
+            <if test="code != null">code,</if>
+            <if test="path != null">path,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="data_status != null">data_status,</if>
+            <if test="create_user_id != null">create_user_id,</if>
+            <if test="update_user_id != null">update_user_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="data_type_code != null">data_type_code,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="parent_id != null">#{parent_id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="code != null">#{code},</if>
+            <if test="path != null">#{path},</if>
+            <if test="create_time != null">#{create_time},</if>
+            <if test="update_time != null">#{update_time},</if>
+            <if test="data_status != null">#{data_status},</if>
+            <if test="create_user_id != null">#{create_user_id},</if>
+            <if test="update_user_id != null">#{update_user_id},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="data_type_code != null">#{data_type_code},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null">id=#{id},</if>
+            <if test="parent_id != null">parent_id=#{parent_id},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="code != null">code=#{code},</if>
+            <if test="path != null">path=#{path},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+            <if test="data_status != null">data_status=#{data_status},</if>
+            <if test="create_user_id != null">create_user_id=#{create_user_id},</if>
+            <if test="update_user_id != null">update_user_id=#{update_user_id},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="data_type_code != null">data_type_code=#{data_type_code},</if>
+        </trim>
+        where id=#{id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="sys_select_tree_data" keyProperty="id"
+            useGeneratedKeys="true">
+    insert into
+ td_sys_select_tree_data(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="sys_select_tree_data">update td_sys_select_tree_data
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="sys_select_tree_data">
+        select * from td_sys_select_tree_data where id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_sys_select_tree_data where id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFinancialVerifyDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="productId != null">productId,</if>
+            <if test="firstVerifyStatus != null">firstVerifyStatus,</if>
+            <if test="firstWorkerId != null">firstWorkerId,</if>
+            <if test="secondVerifyStatus != null">secondVerifyStatus,</if>
+            <if test="secondWorkerId != null">secondWorkerId,</if>
+            <if test="thirdVerifyStatus != null">thirdVerifyStatus,</if>
+            <if test="thirdWorkerId != null">thirdWorkerId,</if>
+            <if test="fourthVerifyStatus != null">fourthVerifyStatus,</if>
+            <if test="fourthWorkerId != null">fourthWorkerId,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="verifyType != null">verifyType,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="productId != null">#{productId},</if>
+            <if test="firstVerifyStatus != null">#{firstVerifyStatus},</if>
+            <if test="firstWorkerId != null">#{firstWorkerId},</if>
+            <if test="secondVerifyStatus != null">#{secondVerifyStatus},</if>
+            <if test="secondWorkerId != null">#{secondWorkerId},</if>
+            <if test="thirdVerifyStatus != null">#{thirdVerifyStatus},</if>
+            <if test="thirdWorkerId != null">#{thirdWorkerId},</if>
+            <if test="fourthVerifyStatus != null">#{fourthVerifyStatus},</if>
+            <if test="fourthWorkerId != null">#{fourthWorkerId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="verifyType != null">#{verifyType},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productId != null">productId=#{productId},</if>
+            <if test="firstVerifyStatus != null">firstVerifyStatus=#{firstVerifyStatus},</if>
+            <if test="firstWorkerId != null">firstWorkerId=#{firstWorkerId},</if>
+            <if test="secondVerifyStatus != null">secondVerifyStatus=#{secondVerifyStatus},</if>
+            <if test="secondWorkerId != null">secondWorkerId=#{secondWorkerId},</if>
+            <if test="thirdVerifyStatus != null">thirdVerifyStatus=#{thirdVerifyStatus},</if>
+            <if test="thirdWorkerId != null">thirdWorkerId=#{thirdWorkerId},</if>
+            <if test="fourthVerifyStatus != null">fourthVerifyStatus=#{fourthVerifyStatus},</if>
+            <if test="fourthWorkerId != null">fourthWorkerId=#{fourthWorkerId},</if>
+            <if test="createTime != null">createTime=#{createTime},</if>
+            <if test="updateTime != null">updateTime=#{updateTime},</if>
+            <if test="verifyType != null">verifyType=#{verifyType},</if>
+        </trim>
+        where productId=#{productId}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="financial_verify" keyProperty="productId"
+            useGeneratedKeys="true">
+    insert into
+ td_financial_verify(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="financial_verify">update td_financial_verify
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="financial_verify">
+        select * from td_financial_verify where productId=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_financial_verify where productId=#{id}
+    </delete>
+</mapper>

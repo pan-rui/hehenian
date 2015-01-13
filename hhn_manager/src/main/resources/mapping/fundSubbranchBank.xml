@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundSubbranchBankDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="subbranch_bank_id != null">subbranch_bank_id,</if>
+            <if test="bank_name != null">bank_name,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="subbranch_name != null">subbranch_name,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="subbranch_bank_id != null">#{subbranch_bank_id},</if>
+            <if test="bank_name != null">#{bank_name},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="subbranch_name != null">#{subbranch_name},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subbranch_bank_id != null">subbranch_bank_id=#{subbranch_bank_id},</if>
+            <if test="bank_name != null">bank_name=#{bank_name},</if>
+            <if test="province != null">province=#{province},</if>
+            <if test="city != null">city=#{city},</if>
+            <if test="subbranch_name != null">subbranch_name=#{subbranch_name},</if>
+        </trim>
+        where subbranch_bank_id=#{subbranch_bank_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_subbranch_bank" keyProperty="subbranch_bank_id"
+            useGeneratedKeys="true">
+    insert into
+ td_fund_subbranch_bank(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+    )
+    </insert>
+
+    <update id="update" parameterType="fund_subbranch_bank">update td_fund_subbranch_bank
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_subbranch_bank">
+        select * from td_fund_subbranch_bank where subbranch_bank_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_subbranch_bank where subbranch_bank_id=#{id}
+    </delete>
+</mapper>

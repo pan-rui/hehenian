@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhn.dao.IFundUserAccountDao">
+    <sql id="kkk">
+        <trim suffix="" suffixOverrides=",">
+            <if test="user_account_id != null">user_account_id,</if>
+            <if test="user_id != null">user_id,</if>
+            <if test="balance_amount != null">balance_amount,</if>
+            <if test="freeze_amount != null">freeze_amount,</if>
+            <if test="invest_amount != null">invest_amount,</if>
+            <if test="total_invest_amount != null">total_invest_amount,</if>
+            <if test="loan_amount != null">loan_amount,</if>
+            <if test="total_loan_amount != null">total_loan_amount,</if>
+            <if test="total_income != null">total_income,</if>
+            <if test="total_recharge_amount != null">total_recharge_amount,</if>
+            <if test="total_withdraw_amount != null">total_withdraw_amount,</if>
+            <if test="trade_password != null">trade_password,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="create_time != null">create_time,</if>
+        </trim>
+    </sql>
+    <sql id="vvv">
+        <trim suffix="" suffixOverrides=",">
+            <if test="user_account_id != null">#{user_account_id},</if>
+            <if test="user_id != null">#{user_id},</if>
+            <if test="balance_amount != null">#{balance_amount},</if>
+            <if test="freeze_amount != null">#{freeze_amount},</if>
+            <if test="invest_amount != null">#{invest_amount},</if>
+            <if test="total_invest_amount != null">#{total_invest_amount},</if>
+            <if test="loan_amount != null">#{loan_amount},</if>
+            <if test="total_loan_amount != null">#{total_loan_amount},</if>
+            <if test="total_income != null">#{total_income},</if>
+            <if test="total_recharge_amount != null">#{total_recharge_amount},</if>
+            <if test="total_withdraw_amount != null">#{total_withdraw_amount},</if>
+            <if test="trade_password != null">#{trade_password},</if>
+            <if test="update_time != null">#{update_time},</if>
+            <if test="create_time != null">#{create_time},</if>
+        </trim>
+    </sql>
+    <sql id="uuu">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="user_account_id != null">user_account_id=#{user_account_id},</if>
+            <if test="user_id != null">user_id=#{user_id},</if>
+            <if test="balance_amount != null">balance_amount=#{balance_amount},</if>
+            <if test="freeze_amount != null">freeze_amount=#{freeze_amount},</if>
+            <if test="invest_amount != null">invest_amount=#{invest_amount},</if>
+            <if test="total_invest_amount != null">total_invest_amount=#{total_invest_amount},</if>
+            <if test="loan_amount != null">loan_amount=#{loan_amount},</if>
+            <if test="total_loan_amount != null">total_loan_amount=#{total_loan_amount},</if>
+            <if test="total_income != null">total_income=#{total_income},</if>
+            <if test="total_recharge_amount != null">total_recharge_amount=#{total_recharge_amount},</if>
+            <if test="total_withdraw_amount != null">total_withdraw_amount=#{total_withdraw_amount},</if>
+            <if test="trade_password != null">trade_password=#{trade_password},</if>
+            <if test="update_time != null">update_time=#{update_time},</if>
+            <if test="create_time != null">create_time=#{create_time},</if>
+        </trim>
+        where user_account_id=#{user_account_id}
+    </sql>
+    <!--执行SQL-->
+    <insert id="save" parameterType="fund_user_account" keyProperty="user_account_id"
+            useGeneratedKeys="true">
+        insert into
+        td_fund_user_account(
+        <include refid="kkk"/>
+        ) values(
+        <include refid="vvv"/>
+        )
+    </insert>
+
+    <select id="existUserAccount" parameterType="int" resultType="int">
+         select COUNT(1) from td_fund_user_account a where a.user_id =#{user_id}
+    </select>
+
+    <update id="update" parameterType="fund_user_account">update td_fund_user_account
+        <include refid="uuu"></include>
+    </update>
+
+    <select id="query" parameterType="int" resultType="fund_user_account">
+        select * from td_fund_user_account where user_account_id=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        delete from td_fund_user_account where user_account_id=#{id}
+    </delete>
+
+    <select id="queryUserAccount" parameterType="int" resultType="fund_user_account">
+        select * from td_fund_user_account where user_id=#{user_id}
+    </select>
+
+    <update id="updateAccountMoney" parameterType="java.util.Map">update td_fund_user_account set balance_amount =
+        balance_amount-#{balance_amount},update_time = #{update_time}
+        where user_id = #{user_id}
+    </update>
+
+    <select id="queryPhone" parameterType="int" resultType="java.util.HashMap">
+        select u.mobilePhone,p.realName FROM t_user u,t_person p where u.id=#{userId} AND p.userId=#{userId}
+    </select>
+
+</mapper>

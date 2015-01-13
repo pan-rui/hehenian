@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>com.hhn</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>server</artifactId>
+    <packaging>war</packaging>
+    <name>server</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.hhn</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0</version>
+        </dependency>
+<!--        <dependency>
+            <groupId>com.allinpay</groupId>
+            <artifactId>allinpay-security</artifactId>
+            <version>1.3.1</version>
+            <scope>system</scope>
+            <systemPath>/WEB-INF/lib/pdsinter-1.0.0-release.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>1.46</version>
+            <scope>system</scope>
+            <systemPath>src/main/webapp/WEB-INF/lib/bcprov-jdk16-1.46.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.aipg</groupId>
+            <artifactId>pdsinter</artifactId>
+            <version>1.0.0-release</version>
+            <scope>system</scope>
+            <systemPath>src/main/webapp/WEB-INF/lib/pdsinter-1.0.0-release.jar</systemPath>
+        </dependency>-->
+    </dependencies>
+    <build>
+        <finalName>hhn_server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <resourceEncoding>UTF-8</resourceEncoding>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                                        <webResources>
+                                            <resource>
+                                                <directory>src/main/webapp</directory>
+                                                <targetPath>/</targetPath>
+                                            </resource>
+                                        </webResources>
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+<!--            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>    &lt;!&ndash;这里也可以使用tomcat7-maven-plugin&ndash;&gt;
+                <version>2.2</version>   &lt;!&ndash;最新版本&ndash;&gt;
+                <configuration>
+                    <url>http://localhost:8080/jcyt-hhn</url>    &lt;!&ndash;配置远程tomcat的路劲&ndash;&gt;
+                    <username>admin</username>
+                    <password>admin123</password>
+                    <uriEncoding>UTF-8</uriEncoding>   &lt;!&ndash;tomcat的url编码  达到和修改server.xml文件一样的功能&ndash;&gt;
+                </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>
