@@ -18,12 +18,14 @@
     //流标
     function loseSign(id) {
       if (confirm("确认流标吗？")) {
+        $("#btn1").attr("disabled", true);
         $.ajax({
           type: "POST",
           url: "<c:url value="/processConfirm.do"/>",
           data: {productId: id, status:4},
           async: true,
           dataType: "json",
+          timeout:60000,
           success: function (data) {
             if (data) {
               alert("流标成功！");
@@ -39,12 +41,14 @@
     //冻结
     function lockSign(id) {
       if (confirm("确认冻结吗？")) {
+        $("#btn2").attr("disabled", true);
         $.ajax({
           type: "POST",
           url: "<c:url value="/processConfirm.do"/>",
           data: {productId: id, status:7},
           async: true,
           dataType: "json",
+          timeout:60000,
           success: function (data) {
             if (data) {
               alert("冻结成功！");
@@ -80,7 +84,7 @@
           <td class="lftd">借款期限：</td><td class="ritd"><c:out value="${productDetail.loan_period}" />个月</td>
         </tr>
         <tr>
-          <td class="lftd">发布时间：</td><td class="ritd"><c:out value="${productDetail.publishTime}" /></td>
+          <td class="lftd">发布时间：</td><td class="ritd"><f:formatDate value="${productDetail.publishTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
         </tr>
         <tr>
           <td class="lftd">计划筹款金额：</td><td class="ritd"><c:out value="${productDetail.invest_amount}" /></td>
@@ -92,8 +96,8 @@
           <td colspan="2">&nbsp;</td>
         </tr>
         <tr>
-          <td colspan="2" style="text-align: center;padding-bottom: 5px;"><input type="button" value="流标" onclick="loseSign('<c:out value="${productDetail.product_id}"/>')" />
-            &nbsp;&nbsp;<input type="button" value="冻结" onclick="lockSign('<c:out value="${productDetail.product_id}"/>')" />&nbsp;&nbsp;<input type="button" value="取消" onclick="window.close();" /></td>
+          <td colspan="2" style="text-align: center;padding-bottom: 5px;"><input type="button" value="流标" id="btn1" onclick="loseSign('<c:out value="${productDetail.product_id}"/>')" />
+            &nbsp;&nbsp;<input type="button" value="冻结" id="btn2" onclick="lockSign('<c:out value="${productDetail.product_id}"/>')" />&nbsp;&nbsp;<input type="button" value="取消" onclick="window.close();" /></td>
         </tr>
         </table>
   </div>

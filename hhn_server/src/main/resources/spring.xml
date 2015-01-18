@@ -16,9 +16,11 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
     <import resource="base.xml"/>
 
     <!-- 引入属性文件 -->
-    <!--<context:property-placeholder location="classpath:config.properties" />-->
-    <util:properties id="payConfig" location="classpath:payConfig/payConfig.properties"/>
+    <!--<context:property-placeholder location="classpath:config.properties" />
     <util:properties id="process" location="classpath:processInfo.properties"/>
+    <util:properties id="process" location="classpath:processInfo.properties"/>
+    -->
+    
     <!-- 自动扫描(自动注入) -->
     <context:component-scan base-package="com.hhn.service,com.hhn.hessian,com.hhn.util,com.hhn.test" />
     <context:annotation-config/>
@@ -111,6 +113,13 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
         <property name="overloadEnabled" value="true"/>
     </bean>
 
+    <!-- 信用卡绑定-->
+    <bean id="identifyCodeService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean" p:readTimeout="${hessian.readTimeout}">
+        <property name="serviceUrl" value="${remoteVerifyCodeUrl}/identifyCodeService"/>
+        <property name="serviceInterface" value="com.hhn.hessian.cardverify.IIdentifyCodeService"/>
+        <property name="overloadEnabled" value="true"/>
+    </bean>
+
     <!--定时器 -->
     <!--<task:annotation-driven/>-->
     <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
@@ -119,7 +128,7 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
         <task:scheduled ref="paymentServiceimpl" method="payment" cron="#{process['invest.returned.task']}"/>
     </task:scheduled-tasks>-->
         <task:scheduled-tasks>
-            <task:scheduled ref="investServiceImpl" method="autoInvest" cron="#{process['invest.returned.task']}"/>
+            <task:scheduled ref="investServiceImpl" method="autoInvest" cron="${invest.returned.task}"/>
         </task:scheduled-tasks>
 
 </beans>

@@ -2,9 +2,9 @@ package com.hhn.service.impl;
 
 import com.hhn.dao.*;
 import com.hhn.pojo.*;
-import com.hhn.service.ProcessInfo;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
+import com.hhn.util.DqlcConfig;
 import com.hhn.util.FundUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,7 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 回款(手动或自动赎回）
@@ -33,7 +36,7 @@ public class PaymentServiceimpl extends BaseService<FundReceipt> {
     @Resource
     private IProductRateDao productRateDao;
     @Resource
-    private ProcessInfo processInfo;
+    private DqlcConfig processInfo;
     @Resource
     private IFundInvestmentDetailDao fundInvestmentDetailDao;
     @Resource

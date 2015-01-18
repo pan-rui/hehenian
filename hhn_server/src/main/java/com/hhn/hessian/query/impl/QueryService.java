@@ -1,17 +1,15 @@
 package com.hhn.hessian.query.impl;
 
-import com.hhn.dao.IFundTradeDao;
+import javax.annotation.Resource;
+
+import com.hhn.util.DqlcConfig;
+import org.springframework.stereotype.Controller;
+
 import com.hhn.hessian.query.IQueryService;
 import com.hhn.pojo.FundUserAccount;
-import com.hhn.service.ProcessInfo;
 import com.hhn.service.impl.QueryServiceImpl;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
-import org.springframework.stereotype.Controller;
-
-import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Created by hynpublic on 2014/12/26.
@@ -21,14 +19,14 @@ public class QueryService extends BaseService<FundUserAccount> implements IQuery
     @Resource
     private QueryServiceImpl queryServiceImpl;
 @Resource
-private ProcessInfo processInfo;
+private DqlcConfig processInfo;
 
     @Override
     public BaseReturn queryUserBalance(Integer userId) {
         try {
             return queryServiceImpl.queryUserBalance(userId);
         }catch (Exception ex){
-            return new BaseReturn(BaseReturn.Err_data_inValid, processInfo.DATA_INVALID);
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
         }
     }
 
@@ -37,25 +35,25 @@ private ProcessInfo processInfo;
         try {
             return queryServiceImpl.queryPay();
         }catch (Exception ex){
-            return new BaseReturn(BaseReturn.Err_data_inValid, processInfo.DATA_INVALID);
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
         }
     }
 
     @Override
-    public BaseReturn queryPrincipal(Integer userId) {
+    public BaseReturn queryTotalInvest(Integer userId) {
         try {
-            return queryServiceImpl.queryPrincipal(userId);
+            return queryServiceImpl.queryTotalInvest(userId);
         }catch (Exception ex){
-            return new BaseReturn(BaseReturn.Err_data_inValid, processInfo.DATA_INVALID);
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
         }
     }
 
     @Override
-    public BaseReturn queryFreeze(Integer usesId) {
+    public BaseReturn queryRound(Integer usesId) {
         try {
-            return queryServiceImpl.queryFreeze(usesId);
+            return queryServiceImpl.queryRound(usesId);
         }catch (Exception ex){
-            return new BaseReturn(BaseReturn.Err_data_inValid, processInfo.DATA_INVALID);
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
         }
     }
 
@@ -64,7 +62,7 @@ private ProcessInfo processInfo;
         try {
             return queryServiceImpl.queryInterested(userId);
         }catch (Exception ex){
-            return new BaseReturn(BaseReturn.Err_data_inValid, processInfo.DATA_INVALID);
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
         }
     }
 
@@ -73,7 +71,7 @@ private ProcessInfo processInfo;
         try {
             return queryServiceImpl.queryInterest(userId);
         }catch (Exception ex){
-            return new BaseReturn(BaseReturn.Err_data_inValid, processInfo.DATA_INVALID);
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
         }
     }
 
@@ -82,7 +80,7 @@ private ProcessInfo processInfo;
         try {
             return queryServiceImpl.queryOtherInterest(userId);
         }catch (Exception ex){
-            return new BaseReturn(BaseReturn.Err_data_inValid, processInfo.DATA_INVALID);
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
         }
     }
 
@@ -91,7 +89,21 @@ private ProcessInfo processInfo;
         try {
             return queryServiceImpl.queryPhone(userId);
         }catch (Exception ex){
-            return new BaseReturn(BaseReturn.Err_data_inValid, processInfo.DATA_INVALID);
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
         }
     }
+
+    /**
+     * 查询银行卡号
+     * @param userId
+     * @return
+     */
+    public BaseReturn queryBankCard(Integer userId){
+        try{
+            return queryServiceImpl.queryBankCard(userId);
+        }catch (Exception ex){
+            return new BaseReturn(BaseReturn.Err_data_inValid, this.getMessage(processInfo.DATA_INVALID));
+        }
+    }
+
 }

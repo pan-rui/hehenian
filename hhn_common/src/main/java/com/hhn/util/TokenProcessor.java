@@ -13,14 +13,18 @@ public class TokenProcessor
 {
    public static final String TOKEN_KEY="boss-token";
 
-    private static TokenProcessor instance = new TokenProcessor();
+    public static TokenProcessor instance;
 
     /**
      * getInstance()方法得到单例类的实例。
      */
     public static TokenProcessor getInstance()
     {
-        return instance;
+        if (instance!=null) {
+            return instance;
+        }else{
+            return new TokenProcessor();
+        }
     }
 
     /**

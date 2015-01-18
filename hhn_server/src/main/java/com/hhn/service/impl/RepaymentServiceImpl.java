@@ -2,9 +2,9 @@ package com.hhn.service.impl;
 
 import com.hhn.dao.*;
 import com.hhn.pojo.*;
-import com.hhn.service.ProcessInfo;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
+import com.hhn.util.DqlcConfig;
 import com.hhn.util.FundUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,11 +34,15 @@ public class RepaymentServiceImpl extends BaseService<FundPreRepayment> {
     @Resource
     private FundUtil fundUtil;
     @Resource
-    private ProcessInfo processInfo;
+    private DqlcConfig processInfo;
     @Resource
     private IFundProductAuditDao fundProductAuditDao;
     @Resource
     private IFundPaymentDao fundPaymentDao;
+    @Resource
+    private IFundInvestmentDetailDao fundInvestmentDetailDao;
+    @Resource
+    private IFundTradeDao fundTradeDao;
 
     public BaseReturn repay(Integer loan_id,Integer count, String operator,BigDecimal capital,BigDecimal interest,BigDecimal fee,String comment) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -80,6 +84,11 @@ public class RepaymentServiceImpl extends BaseService<FundPreRepayment> {
                 fundPayment1.setUtime(calendar.getTime());
                 fundPayment1.setPayment_status(1);//回款表状态
                 fundPaymentDao.update(fundPayment1);
+            FundTrade fundTrade = fundInvestmentDetailDao.queryForFundTrade(fundInvestmentDetail.getInvestment_detail_id());
+            FundTrade fundTrade1 = new FundTrade(fundTrade.getTrade_id());
+            fundTrade1.setTrade_balance(fundTrade.getTrade_balance().add(fundPayment1.getPayment_money()).setScale(2,RoundingMode.HALF_UP));
+            fundTrade1.setUpdate_time(calendar.getTime());
+            fundTradeDao.update(fundTrade1);
             logger.info("回款成功，投资人ID:"+fundPayment1.getUser_id()+"回款金额"+fundPayment1.getPayment_money()+"\t回款期数："+fundPayment1.getPeriods()+"\t借款用户ID:"+loanDetail.getUser_id());
         }
         Invest invest = new Invest(fundUserAccount.getUser_id(), fundUserAccount.getUser_account_id(), loan_id, 0,capital.add(interest).add(fee));

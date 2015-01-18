@@ -2,9 +2,9 @@ package com.hhn.service.impl;
 
 import com.hhn.dao.*;
 import com.hhn.pojo.*;
-import com.hhn.service.ProcessInfo;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
+import com.hhn.util.DqlcConfig;
 import com.hhn.util.FundUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,11 +27,9 @@ public class LoanDetailServiceImpl extends BaseService<LoanDetail> {
     @Resource
     private IFundUserAccountDao fundUserAccountDao;
     @Resource
-    private ProcessInfo processInfo;
+    private DqlcConfig processInfo;
     @Resource
     private FundUtil fundUtil;
-    @Resource
-    private IFundInvestmentDetailDao fundInvestmentDetailDao;
     @Resource
     private IFundProductDao fundProductDao;
     @Resource
@@ -87,6 +85,10 @@ public class LoanDetailServiceImpl extends BaseService<LoanDetail> {
      */
     public BaseReturn loanVerify(Integer loanDetailId,String operator) {
         LoanDetail loanDetail1 = loanDetailDao.query(loanDetailId);
+        if(loanDetail1.getLoan_status().intValue()==4) {
+            logger.info("标的已放款，请勿重复提交请求，标的ID:"+loanDetailId);
+            return new BaseReturn(1, "该标的已放款，请勿重复提交。。。");
+        }
         LoanDetail loanDetail = new LoanDetail(loanDetailId);
         Calendar calendar = Calendar.getInstance();
         loanDetail.setLoan_status(Byte.valueOf("4"));//已放款
@@ -116,7 +118,7 @@ public class LoanDetailServiceImpl extends BaseService<LoanDetail> {
             logger.info("当前时间："+calendar.getTime()+"新增预还款记录失败。");
             return baseReturn;
         }
-        logger.info("当前时间："+calendar.getTime()+"对借款人放款审核成功，借款ID:"+loanDetail.getLoan_id()+"\t借款用户ID:"+loanDetail.getUser_id());
+        logger.info("当前时间："+calendar.getTime()+"对借款人放款审核成功，借款ID:"+loanDetail1.getLoan_id()+"\t借款用户ID:"+loanDetail1.getUser_id());
         return new BaseReturn(0, loanDetail1, processInfo.OPERATE_SUCCESS);
     }
 }

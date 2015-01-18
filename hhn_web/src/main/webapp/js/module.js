@@ -561,7 +561,7 @@ function getSource(){
 	system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
 	//跳转语句，如果是手机访问就自动跳转到wap.seostudying.com页面
 	if(system.win||system.mac||system.xll){
-		return('pc');
+		return('PC');
 	}else{
 		getPhoneSource();
 	}
@@ -569,10 +569,12 @@ function getSource(){
 function getPhoneSource(){
 	var u = navigator.userAgent;
 	if (u.indexOf("Android") > -1 || u.indexOf("Linux") > -1){
-		return('android');
+		return('ANDROID');
 	}else if(u.indexOf("iPhone") > -1) {
-		return('iphone');
+		return('ISO');
 	}else if(u.indexOf("Windows Phone") > -1) {
-		return('winphone');
+		return('WP');
+	}else{
+		return('OTHER');
 	}
 }

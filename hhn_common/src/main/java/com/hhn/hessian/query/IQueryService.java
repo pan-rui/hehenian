@@ -5,7 +5,7 @@ import com.hhn.util.BaseReturn;
 import java.math.BigDecimal;
 
 /**
- * 查询用户余额,待收本金,冻结金额,已赚利息,待收利息,其它收益
+ * 查询可用余额,投资金额,赎回金额,已赚利息,待收利息,其它收益
  * Created by hynpublic on 2014/12/26.
  */
 public interface IQueryService {
@@ -23,19 +23,19 @@ public interface IQueryService {
     public BaseReturn queryPay();
 
     /**
-     * 待收本金
+     * 投资金额
      * @param userId
      * @return
      */
-    public BaseReturn queryPrincipal(Integer userId);
+    public BaseReturn queryTotalInvest(Integer userId);
 
     /**
-     * 冻结金额
+     * 赎回金额
      * @param userId
      * @return
      */
 
-    public BaseReturn queryFreeze(Integer userId);
+    public BaseReturn queryRound(Integer userId);
 
     /**
      * 已赚利息
@@ -68,4 +68,12 @@ public interface IQueryService {
      */
 
     public BaseReturn queryPhone(Integer userId);
+
+    /**
+     * 查询银行卡号
+     * @param userId
+     * @return
+     */
+    public BaseReturn queryBankCard(Integer userId);
+
 }

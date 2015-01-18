@@ -135,6 +135,7 @@ public class ExportSign extends BaseUserAction {
                         detail.setLoan_usage(getCellData(row, 24));
                         detail.setLoan_period(Float.valueOf(getCellData(row, 19)).shortValue());
                         detail.setAnnual_rate(BigDecimal.valueOf(Float.valueOf(getCellData(row, 22))));
+                        detail.setLoan_rate(BigDecimal.valueOf(Float.valueOf(getCellData(row, 22))));
                         detail.setRepay_type(Constants.getRepayTypeCode(getCellData(row, 21)));
                         detail.setTender_day(Float.valueOf(getCellData(row, 23)).shortValue());
                         detail.setLoan_desc(getCellData(row, 25));
@@ -150,6 +151,7 @@ public class ExportSign extends BaseUserAction {
                         product.setProduct_usage(getCellData(row, 24));
                         product.setLoan_period(Float.valueOf(getCellData(row, 19)).shortValue());
                         product.setAnnual_rate(BigDecimal.valueOf(Float.valueOf(getCellData(row, 22))));
+                        product.setLoan_rate(BigDecimal.valueOf(Float.valueOf(getCellData(row, 22))));
                         product.setRepay_type(Constants.getRepayTypeCode(getCellData(row, 21)));
                         product.setTender_day(Float.valueOf(getCellData(row, 23)).shortValue());
                         product.setRemark(getCellData(row, 24));

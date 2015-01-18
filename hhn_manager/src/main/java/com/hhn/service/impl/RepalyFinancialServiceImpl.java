@@ -1,12 +1,17 @@
 package com.hhn.service.impl;
 
+import com.hhn.dao.IFundBankCardDao;
+import com.hhn.dao.IFundProductDao;
 import com.hhn.dao.IFundTradeDao;
+import com.hhn.hessian.withdraw.IWithdrawService;
 import com.hhn.pojo.FundTrade;
 import com.hhn.service.IRepalyFinancialService;
 import com.hhn.util.BaseReturn;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,24 +21,43 @@ import java.util.Map;
 @Service
 public class RepalyFinancialServiceImpl implements IRepalyFinancialService {
     @Autowired
-    private IFundTradeDao fundTradeDao;
-
+    private IFundProductDao fundProductDao;
+    @Autowired
+    private IFundBankCardDao fundBankCardDao;
+    @Autowired
+    private IWithdrawService withdrawService;
+    private Logger logger = Logger.getLogger(this.getClass());
     /**
      * 查询提现申请列表
      * @param map
      * @return
      */
-    public List<FundTrade> getRepalyList(Map<String, Object> map){
-        return fundTradeDao.findByPage(map);
+    public List<HashMap> getRepalyList(Map<String, Object> map){
+        return fundProductDao.getWithdrawList(map);
     }
 
     /**
-     * 提现审核处理
+     * 提现查询卡信息
+     * @param product_id
+     * @return
+     */
+    public HashMap getUserBankDetail(Integer product_id){
+        return fundBankCardDao.getUserBankDetail(product_id);
+    }
+
+    /**
+     * 提交处理
+     * 调服务接口提现
      * @param map
      * @return
      */
-    public BaseReturn repalyStatus(Map<String, Object> map){
-
-        return new BaseReturn(0,true, "成功放款!");
+    public BaseReturn widthDrawTrade(Map<String, Object> map){
+        try {
+            return withdrawService.withdraw(map);
+        }catch (Exception e){
+            logger.error("error", e);
+            return new BaseReturn(1, "提现调接口异常:"+e.getMessage());
+        }
     }
+
 }

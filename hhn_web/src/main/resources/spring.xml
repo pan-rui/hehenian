@@ -82,14 +82,12 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
 
     </aop:config>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
     <aop:aspectj-autoproxy/>
    <!--定时器 -->
    <!--<task:annotation-driven/>-->
    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
    <task:scheduler id="qbScheduler" pool-size="10"/>
-
-
 
     <bean id="sessionManager" class="com.hehenian.common.memcache.MemcachedSessionManager">
         <property name="sessionKey" value="s" />
@@ -97,6 +95,13 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
         <property name="memcachedServers" value="${memcache.session.address}" />
     </bean>
 
+    <!-- 用户登录filter -->
+    <bean id="userLoginFilter" class="com.hhn.filter.UserLoginFilter" >
+        <property name="loginView" value="${hhn.login}"/>
+        <property name="topView" value="${hhn.top.url}"/>
+        <property name="footerView" value="${hhn.footer.url}"/>
+        <property name="leftMenuView" value="${hhn.leftMenu.url}"/>
+    </bean>
 
     <!-- 借款申请与审核 -->
     <bean id="loanDetailService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean" p:readTimeout="${hessian.readTimeout}">
@@ -151,5 +156,10 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
         <property name="overloadEnabled" value="true"/>
     </bean>
 
+    <bean id="cardVerifyService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean" p:readTimeout="${hessian.readTimeout}">
+        <property name="serviceUrl" value="${remoteHessionInvocationUrl}/server/CardVerifyService"/>
+        <property name="serviceInterface" value="com.hhn.hessian.cardverify.ICardVerifyService"/>
+        <property name="overloadEnabled" value="true"/>
+    </bean>
 
 </beans>

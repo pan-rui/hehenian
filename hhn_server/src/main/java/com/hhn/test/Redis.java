@@ -1,22 +1,25 @@
 package com.hhn.test;
 
-import com.hhn.dao.ILoanDetailDao;
-import com.hhn.service.impl.LoanDetailServiceImpl;
-import com.hhn.service.pay.MessageInfo;
-import org.springframework.beans.factory.annotation.Value;
+import java.math.BigDecimal;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.math.BigDecimal;
+import com.hhn.dao.ILoanDetailDao;
+import com.hhn.service.impl.LoanDetailServiceImpl;
 
 /**
  * Created by lenovo on 2014/12/6.
  */
 @Component("redis")
 public class Redis {
-private @Value("#{config['mysql.host']}") String operate;
+    // private @Value("${'mysql.host}")
+    // String operate;
+
+    private
+    String operate;
+
 //    private @Value("${mysql.host}") String rootLog;
 
 /*    public String getRootLog() {
@@ -62,8 +65,10 @@ private @Value("#{config['mysql.host']}") String operate;
 
     public static void mn(String[] args) {
         new BigDecimal(0).divide(new BigDecimal(23), 2);
-        System.out.println(MessageInfo.getMessage("pfxPath"));
-        File file = new File("/E:/workspace/hhn/hhn_server/target/hhn_server/WEB-INF/classes/"+ MessageInfo.getMessage("pfxPath"));
+        // System.out.println(MessageInfo.getMessage("pfxPath"));
+        // File file = new
+        // File("/E:/workspace/hhn/hhn_server/target/hhn_server/WEB-INF/classes/"+
+        // MessageInfo.getMessage("pfxPath"));
         System.out.println(ClassLoader.getSystemClassLoader().getResource(""));
     Redis redis=new Redis();
         System.out.println("new Redis()====>"+redis.operate);

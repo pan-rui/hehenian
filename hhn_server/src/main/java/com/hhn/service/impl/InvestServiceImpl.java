@@ -3,9 +3,9 @@ package com.hhn.service.impl;
 import com.hhn.dao.*;
 import com.hhn.hessian.VerifyAfter;
 import com.hhn.pojo.*;
-import com.hhn.service.ProcessInfo;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
+import com.hhn.util.DqlcConfig;
 import com.hhn.util.FundUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,7 +39,7 @@ public class InvestServiceImpl extends BaseService<FundInvestmentDetail> {
     @Resource
     private IProductRateDao productRateDao;
     @Resource
-    private ProcessInfo processInfo;
+    private DqlcConfig processInfo;
     @Resource
     private ILoanDetailDao loanDetailDao;
     @Resource
@@ -59,7 +58,7 @@ public class InvestServiceImpl extends BaseService<FundInvestmentDetail> {
         BigDecimal money = invest.getMoney();
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, Integer.valueOf(processInfo.LOAN_AHEAD));
-        BigDecimal surplusMoney = fundTradeDao.queryPay(now.getTime(), IFundTradeDao.TradeType.INVESTMENT.name());
+        BigDecimal surplusMoney = fundTradeDao.queryPay(now.getTime());
         if (surplusMoney == null || surplusMoney.compareTo(money) < 0)
             return new BaseReturn(1, null, processInfo.NOT_PRODUCT); //判断可投金额
         FundUserAccount fundUserAccount = fundUserAccountDao.queryUserAccount(invest.getUser_id());//查询资金账户
@@ -77,7 +76,7 @@ public class InvestServiceImpl extends BaseService<FundInvestmentDetail> {
         //log...........
         invest.setUser_account_id(fundUserAccount.getUser_account_id());
         invest.setTradeType(IFundTradeDao.TradeType.INVESTMENT);
-        invest.setTradeStatus(IFundTradeDao.TradeStatus.TRANSFEREDMONEY);
+        invest.setTradeStatus(IFundTradeDao.TradeStatus.PROCESSING);
         invest.setBalance(invest.getMoney());
         invest.setLogType(IFundAccountLogDao.LogType.BUY);
         FundTrade trade = fundUtil.Tradelog(invest);
@@ -86,9 +85,11 @@ public class InvestServiceImpl extends BaseService<FundInvestmentDetail> {
     }
 
     public void autoInvest() throws InterruptedException {
+
         Calendar calendar = Calendar.getInstance();
         logger.info("当前日期："+calendar.getTime()+"自动投标开始=======================================");
         List<FundInvestmentDetail> fundInvestmentDetails = fundInvestmentDetailDao.queryByNow(calendar.getTime());
+        // TODO
         for (FundInvestmentDetail fundInvestmentDetail : fundInvestmentDetails) {
             FundTransfer fundTransfer1 = fundTransferDao.query(fundInvestmentDetail.getProduct_id());
             if(fundTransfer1!=null&&fundTransfer1.getPeriods_surplus()!=0){
@@ -99,11 +100,11 @@ public class InvestServiceImpl extends BaseService<FundInvestmentDetail> {
                     makeOver(fundInvestmentDetail);
                 }
             }
-            FundTrade fundTrade1 = fundInvestmentDetailDao.queryForFundTrade(fundInvestmentDetail.getInvestment_detail_id());
+/*            FundTrade fundTrade1 = fundInvestmentDetailDao.queryForFundTrade(fundInvestmentDetail.getInvestment_detail_id());
             FundTrade fundTrade2 = new FundTrade(fundTrade1.getTrade_id());
             fundTrade2.setUpdate_time(calendar.getTime());
             fundTrade2.setTrade_balance(fundTrade1.getTrade_balance().add(fundInvestmentDetail.getTrade_amount()).add(fundInvestmentDetail.getIncome()));
-            fundTradeDao.update(fundTrade2);
+            fundTradeDao.update(fundTrade2);*/
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("noww", calendar.getTime());
@@ -111,41 +112,46 @@ public class InvestServiceImpl extends BaseService<FundInvestmentDetail> {
         List<FundTrade> fundTrades = fundInvestmentDetailDao.queryForFundTrades(params);
         for (FundTrade fundTrade : fundTrades) {
             BigDecimal money = fundTrade.getTrade_balance();
+            logger.debug("------------------money[fundTrade.getTrade_balance()]::"+money);
             Short month = Short.valueOf(fundUtil.getMonth(fundTrade.getTrade_time(), fundTrade.getExpect_trade_time()) + "");
-            BigDecimal bMoney = new BigDecimal(money.longValue());
+            BigDecimal bMoney = new BigDecimal(money.doubleValue());
             Integer product_id = 0;
             boolean need = money.compareTo(BigDecimal.ZERO) > 0;
+            logger.debug("------------------need[ money.compareTo(BigDecimal.ZERO) > 0]::"+need);
             boolean flag = false;
             while (need) {
-                FundInvestmentDetail fundInvestmentDetail1 = null;
-                Integer size = null;
+                FundInvestmentDetail fundInvestmentDetail = null;
                 if (product_id != 0) {
                     Object[] data = (Object[]) payProduct(money, product_id, fundTrade, flag).getData();
-                    fundInvestmentDetail1 = (FundInvestmentDetail) data[0];
-                    size = (Integer) data[1];
-                    money = (BigDecimal) data[2];
+                    if(data==null) continue;
+                    fundInvestmentDetail = (FundInvestmentDetail) data[0];
+                    money = (BigDecimal) data[1];
                 }
                 if (bMoney.compareTo(money) != 0) {
-                    FundInvestmentDetail fundInvestmentDetail = new FundInvestmentDetail();
+//                    FundInvestmentDetail fundInvestmentDetail = new FundInvestmentDetail();
                     Calendar calendar2 = Calendar.getInstance();
                     fundInvestmentDetail.setUpdate_time(calendar2.getTime());
                     fundInvestmentDetail.setProduct_id(product_id);
                     fundInvestmentDetail.setUser_id(fundTrade.getUser_id());
                     fundInvestmentDetail.setUser_account_id(fundTrade.getUser_account_id());
                     fundInvestmentDetail.setInvest_time(calendar2.getTime());
-                    fundInvestmentDetail.setTrade_amount(money.compareTo(BigDecimal.ZERO) >= 0 ? bMoney.subtract(money) : bMoney);
+//                    fundInvestmentDetail.setTrade_amount(money.compareTo(BigDecimal.ZERO) >= 0 ? bMoney.subtract(money).setScale(2,RoundingMode.HALF_UP) : bMoney);
+//                    fundInvestmentDetail.setTrade_amount(fundInvestmentDetail1.getTrade_amount());
                     fundInvestmentDetail.setFund_trade_id(fundTrade.getTrade_id());
-                    fundInvestmentDetail.setInvest_period(fundInvestmentDetail1.getInvest_period());
+//                    fundInvestmentDetail.setInvest_period(fundInvestmentDetail1.getInvest_period());
 //                    fundInvestmentDetail.setIncome(fundInvestmentDetail1.getIncome());
-                    fundInvestmentDetail.setLoan_user_id(fundInvestmentDetail1.getLoan_user_id());
+//                    fundInvestmentDetail.setLoan_user_id(fundInvestmentDetail1.getLoan_user_id());
                     fundInvestmentDetailDao.save(fundInvestmentDetail);
 
                     FundTrade fundTrade3 = new FundTrade(fundTrade.getTrade_id());
                     fundTrade3.setTrade_balance(fundTrade.getTrade_balance().subtract(fundInvestmentDetail.getTrade_amount()));
                     fundTrade3.setUpdate_time(calendar2.getTime());
+                    if(fundTrade3.getTrade_balance().compareTo(BigDecimal.ZERO)==0)
+                        fundTrade3.setTrade_status(IFundTradeDao.TradeStatus.SUCCESS.name());
                     fundTradeDao.update(fundTrade3);
-                    bMoney = new BigDecimal(money.longValue());
-                    logger.info("当前时间"+calendar2.getTime()+"======投资标的:"+product_id+"\t投资明细ID："+fundInvestmentDetail.getInvestment_detail_id()+"\t投资用户ID:"+fundTrade.getUser_id());
+                    fundTrade.setTrade_balance(fundTrade3.getTrade_balance());
+                    bMoney = new BigDecimal(money.doubleValue());
+                    logger.info("当前时间"+calendar2.getTime()+"======投资标的:"+product_id+"\t投资明细ID："+fundInvestmentDetail.getInvestment_detail_id()+"\t投资用户ID:"+fundTrade.getUser_id()+"\t投资金额："+fundInvestmentDetail.getTrade_amount());
                 }
                 if (money.compareTo(BigDecimal.ZERO) > 0) {
                     List<FundTransfer> fundTransfers = fundTransferDao.querys();
@@ -163,7 +169,10 @@ public class InvestServiceImpl extends BaseService<FundInvestmentDetail> {
                             product_id = productList.get(0).getProduct_id();
                         } else if (!(productList = fundProductDao.queryProduct4(money, month)).isEmpty()) {
                             product_id = productList.get(0).getProduct_id();
-                        } else need=false;
+                        } else {
+                            product_id = 0;
+                            need = false;
+                        }
                     }
                 } else need=false;
             }
@@ -223,63 +232,89 @@ public class InvestServiceImpl extends BaseService<FundInvestmentDetail> {
                 fundTransfer1.setShare_surplus(BigDecimal.ZERO);
                 fundTransfer1.setTransfer_status(3);
                 fundTransfer1.setUtime(calendar.getTime());
-                fundTransferDao.update(fundTransfer1);
+               int size=fundTransferDao.update(fundTransfer1);
+                if(size!=1){
+                    logger.info("债权转让已满标，投资失败。债权转让ID:"+product_id+"\t投资用户ID:"+trade.getUser_id()+"\t投资金额："+money+"\t转让用户ID:"+fundTransfer.getTransfer_user_id());
+                    return null;
+                }
 //                loan(fundTransfer1, loanDetail1).getData();
                 fundInvestmentDetail.setStatus(fundTransfer1.getTransfer_status().intValue());
                 fundInvestmentDetail.setRemark("transfer");
                 fundInvestmentDetail.setTrade_amount(fundTransfer.getTransfer_amount());
-                fundInvestmentDetail.setIncome(fundTransfer.getShare_surplus().multiply(totalRate).round(new MathContext(12, RoundingMode.HALF_UP)));
+                fundInvestmentDetail.setIncome(fundTransfer.getShare_surplus().multiply(totalRate).setScale(2,RoundingMode.HALF_UP));
                 fundInvestmentDetail.setLoan_user_id(fundProduct1.getUser_id());
             } else {
                 fundTransfer1.setShare_transfer(fundTransfer.getShare_transfer().add(money));
                 fundTransfer1.setUtime(calendar.getTime());
-                fundTransferDao.update(fundTransfer1);
+               int size=fundTransferDao.update(fundTransfer1);
+                if(size!=1){
+                    logger.info("债权转让已满标，投资失败。债权转让ID:"+product_id+"\t投资用户ID:"+trade.getUser_id()+"\t投资金额："+money+"\t转让用户ID:"+fundTransfer.getTransfer_user_id());
+                    return null;
+                }
                 fundInvestmentDetail.setTrade_amount(money);
                 fundInvestmentDetail.setStatus(fundTransfer.getTransfer_status().intValue());
-                fundInvestmentDetail.setIncome(money.multiply(totalRate).round(new MathContext(12, RoundingMode.HALF_UP)));
+                fundInvestmentDetail.setIncome(money.multiply(totalRate).setScale(2,RoundingMode.HALF_UP));
                 fundInvestmentDetail.setLoan_user_id(fundProduct1.getUser_id());
             }
             fundInvestmentDetail.setInvest_period(period);
-            return new Object[]{fundInvestmentDetail, fundTransfer.getPeriods_surplus(),surplus};
+            return new Object[]{fundInvestmentDetail,surplus};
         } else {
             final FundProduct fundProduct = fundProductDao.query(product_id);
             LoanDetail loanDetail1 = loanDetailDao.query(fundProduct.getLoan_id());
-            FundProduct fundProduct1 = new FundProduct(fundProduct.getProduct_id());
+//            FundProduct fundProduct1 = new FundProduct(fundProduct.getProduct_id());
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("product_id", fundProduct.getProduct_id());
             BigDecimal surplus = money.subtract(fundProduct.getInvest_amount().subtract(fundProduct.getInvested_amount()));
+            logger.info("++++surplus::"+surplus+"+++++++++++money::"+money+"++++++++++++fundProduct.getInvest_amount()::"+fundProduct.getInvest_amount()+"++fundProduct.getInvested_amount()::"+fundProduct.getInvested_amount());
             FundInvestmentDetail fundInvestmentDetail = new FundInvestmentDetail();
             Short month = Short.valueOf(fundUtil.getMonth(trade.getTrade_time(), trade.getExpect_trade_time()) + "");
             Short period = fundProduct.getLoan_period() >= month ? month : fundProduct.getLoan_period();///////////////////////////////
             BigDecimal totalRate = productRateDao.query(trade.getRate_id()).getRate().multiply(new BigDecimal(month / 12d));
+
             if (surplus.compareTo(BigDecimal.ZERO) >= 0) {
-                fundProduct1.setInvest_amount(fundProduct.getInvest_amount());
-                loan(fundProduct1, loanDetail1).getData();
-                fundInvestmentDetail.setStatus(fundProduct1.getProduct_status().intValue());
+//                fundProduct1.setInvest_amount(fundProduct.getInvest_amount());
+                params.put("money", fundProduct.getInvest_amount().subtract(fundProduct.getInvested_amount()));
+                params.put("invested_amount", fundProduct.getInvest_amount());
+                BaseReturn aReturn= loan(params, loanDetail1);
+                if(aReturn==null){
+                    logger.info("标的已满标，投资失败。标的ID:"+product_id+"\t投资用户ID:"+trade.getUser_id()+"\t投资金额："+money+"\t标的借款ID:"+fundProduct.getLoan_id()+"\t借款用户ID:"+fundProduct.getUser_id());
+                    return null;
+                }
+                fundInvestmentDetail.setStatus(Integer.parseInt(params.get("product_status") + ""));
                 fundInvestmentDetail.setTrade_amount(fundProduct.getInvest_amount().subtract(fundProduct.getInvested_amount()));
-                fundInvestmentDetail.setIncome(fundProduct.getInvest_amount().subtract(fundProduct.getInvested_amount()).multiply(totalRate).round(new MathContext(12, RoundingMode.HALF_UP)));
+                fundInvestmentDetail.setIncome(fundProduct.getInvest_amount().subtract(fundProduct.getInvested_amount()).multiply(totalRate).setScale(2,RoundingMode.HALF_UP));
                 fundInvestmentDetail.setLoan_user_id(fundProduct.getUser_id());
             } else {
-                fundProduct1.setInvested_amount(fundProduct.getInvested_amount().add(money));
-                fundProduct1.setUpdate_time(calendar.getTime());
-                fundProductDao.update(fundProduct1);
+//                fundProduct1.setInvested_amount(fundProduct.getInvested_amount().add(money));
+//                fundProduct1.setUpdate_time(calendar.getTime());
+                params.put("invested_amount", fundProduct.getInvested_amount().add(money));
+                params.put("update_time", calendar.getTime());
+                logger.info("+++++++++++++++++++fundProduct.getInvested_amount():::" + fundProduct.getInvested_amount());
+                logger.info("+++++++++++++++++++money:::"+money);
+               int size=fundProductDao.updateProduct(params,product_id,money);
+                if(size!=1){
+                    logger.info("标的已满标，投资失败。标的ID:"+product_id+"\t投资用户ID:"+trade.getUser_id()+"\t投资金额："+money+"\t标的借款ID:"+fundProduct.getLoan_id()+"\t借款用户ID:"+fundProduct.getUser_id());
+                    return null;
+                }
                 fundInvestmentDetail.setTrade_amount(money);
                 fundInvestmentDetail.setStatus(fundProduct.getProduct_status().intValue());
-                fundInvestmentDetail.setIncome(money.multiply(totalRate).round(new MathContext(12, RoundingMode.HALF_UP)));
+                fundInvestmentDetail.setIncome(money.multiply(totalRate).setScale(2,RoundingMode.HALF_UP));
                 fundInvestmentDetail.setLoan_user_id(fundProduct.getUser_id());
             }
             fundInvestmentDetail.setInvest_period(period);
-            int size = Integer.parseInt(String.valueOf(Math.round(Math.ceil(loanDetail1.getLoan_period() / loanDetail1.getRepay_period()))));
-            return new Object[]{fundInvestmentDetail, size,surplus};
+//            int size = Integer.parseInt(String.valueOf(Math.round(Math.ceil(loanDetail1.getLoan_period() / loanDetail1.getRepay_period()))));
+            return new Object[]{fundInvestmentDetail,surplus};
         }
     }
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.NESTED)
-    public BaseReturn loan(FundProduct fundProduct, LoanDetail loanDetail1) {
+    public BaseReturn loan(Map<String,Object> fundProduct, LoanDetail loanDetail1) {
         Calendar calendar = Calendar.getInstance();
-        fundProduct.setInvested_amount(fundProduct.getInvest_amount());
-        fundProduct.setProduct_status(Byte.valueOf("3")); //满标
-        fundProduct.setUpdate_time(calendar.getTime());
-        fundProductDao.update(fundProduct);
-        fundProductAuditDao.save(new FundProductAudit(null, fundProduct.getProduct_id(), 3, "0000", new Date()));
+        fundProduct.put("product_status", 3);
+        fundProduct.put("update_time", calendar.getTime());
+        int size = fundProductDao.updateProduct(fundProduct, Integer.parseInt(fundProduct.get("product_id") + ""), new BigDecimal(fundProduct.remove("money") + ""));
+        if(size!=1) return null;
+        fundProductAuditDao.save(new FundProductAudit(null, Integer.parseInt(fundProduct.get("product_id")+""), 3, "0000", new Date()));
         LoanDetail loanDetail = new LoanDetail(loanDetail1.getLoan_id());
         loanDetail.setLoan_status(Byte.valueOf("3")); //待放款
         loanDetail.setUpdate_time(calendar.getTime());

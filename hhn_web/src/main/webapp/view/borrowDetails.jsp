@@ -153,7 +153,7 @@
   </script>
 </head>
 <body>
-<jsp:include page="include/top.jsp" flush="true" />
+<jsp:include page="./include/top.jsp" flush="true" />
 <div class="user-all transactionDetails">
   <div class="user-center">
     <div style=" width:1170px;height:6px; margin:0px auto; padding-bottom:24px;position: relative;">
@@ -161,102 +161,7 @@
     </div>
     <div style=" overflow:hidden">
       <div class="u-left">
-        <div class="sidebarmenu">
-          <a class="menuitem submenuheader " href="" headerindex="0h">
-                                <span class="accordprefix">
-                                </span>
-            个人中心
-                                <span class="accordsuffix">
-                                    <img src="../images/plus.gif" class="statusicon">
-                                </span>
-          </a>
-          <a class="menuitem submenuheader " href="" headerindex="1h">
-                                <span class="accordprefix">
-                                </span>
-            理财管理
-                                <span class="accordsuffix">
-                                    <img src="../images/minus.gif" class="statusicon">
-                                </span>
-          </a>
-          <div class="submenu" contentindex="1c" style="display: block;">
-            <ul>
-              <li>
-                <a href="investCurrentRecord.do">
-                  当前投资
-                </a>
-              </li>
-              <li>
-                <a href="investSuccessedRecord.do">
-                  成功投资
-                </a>
-              </li>
-              <li>
-                <a href="automaticBidInit.do">
-                  自动投标
-                </a>
-              </li>
-              <li>
-                <a href="queryMyPayingBorrowList.do">
-                  我的借款
-                </a>
-              </li>
-              <li>
-                <a href="./transactionDetails.jsp">
-                  购买记录
-                </a>
-              </li>
-              <li>
-                <a href="./borrowDetails.jsp">
-                  投资记录
-                </a>
-              </li>
-            </ul>
-          </div>
-          <a class="menuitem submenuheader " href="" headerindex="2h">
-                                <span class="accordprefix">
-                                </span>
-            资金管理
-                                <span class="accordsuffix">
-                                    <img src="../images/plus.gif" class="statusicon">
-                                </span>
-          </a>
-          <a class="menuitem_red" href="logout.do">
-            退出登录
-          </a>
-        </div>
-        <!--<div style=" width:220px; overflow:hidden; border:1px solid #e6e6e6;
-        background:#FFF; margin-right:20px; float:left; ">
-        <div style=" background:#f60; line-height:32px; font-size:16px;padding-left:20px; color:#FFF;border-bottom:1px solid #fff; ">我的合和年</div>
-        <div class="leftbt">个人中心</div>
-        <div class="leftbt-two">
-        <ul>
-        <li><a href="home.do">个人主页</a></li>
-        <li><a href="owerInformationInit.do">基本资料</a></li>
-        <li><a href="updatexgmm.do">安全中心</a></li>
-        </ul>
-        </div>
-        <div class="leftbt">理财管理</div>
-        <div  class="leftbt-two">
-        <ul>
-        <li><a href="investCurrentRecord.do">我的投资</a></li>
-        <li><a href="investSuccessedRecord.do">成功投资</a></li>
-        <li><a href="automaticBidInit.do">自动投标</a></li>
-        <li><a href="investDetailCount.do">理财统计</a></li>
-        </ul>
-        </div>
-        <div class="leftbt">资金管理</div>
-        <div  class="leftbt-two">
-        <ul>
-        <li><a href="fundManager.do">资金记录</a></li>
-        <li><a href="queryFontFundrecordReback.do">回收本息</a></li>
-        <li><a href="queryFontRechargeHistory.do">充值记录</a></li>
-        <li><a href="queryWithdrawList.do">提现记录</a></li>
-        <li><a href="rechargeInit.do">充值</a></li>
-        <li><a href="withdrawLoad.do">提现</a></li>
-        <li><a href="bankInfoSetInit.do">银行卡管理</a></li>
-        </ul>
-        </div>
-        </div>-->
+        <jsp:include page="./include/leftMenu.jsp" flush="true"/>
       </div>
       <div class="u-right">
         <div class="user-right">

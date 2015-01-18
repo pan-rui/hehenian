@@ -16,6 +16,8 @@
             <if test="is_default != null">is_default,</if>
             <if test="create_time != null">create_time,</if>
             <if test="update_time != null">update_time,</if>
+            <if test="bank_code != null">bank_code,</if>
+            <if test="bank_status != null">bank_status,</if>
         </trim>
     </sql>
     <sql id="vvv">
@@ -32,6 +34,8 @@
             <if test="is_default != null">#{is_default},</if>
             <if test="create_time != null">#{create_time},</if>
             <if test="update_time != null">#{update_time},</if>
+            <if test="bank_code != null">#{bank_code},</if>
+            <if test="bank_status != null">#{bank_status},</if>
         </trim>
     </sql>
     <sql id="uuu">
@@ -48,6 +52,8 @@
             <if test="is_default != null">is_default=#{is_default},</if>
             <if test="create_time != null">create_time=#{create_time},</if>
             <if test="update_time != null">update_time=#{update_time},</if>
+            <if test="bank_code != null">bank_code=#{bank_code},</if>
+            <if test="bank_status != null">bank_status=#{bank_status},</if>
         </trim>
         where bank_card_id=#{bank_card_id}
     </sql>
@@ -83,4 +89,44 @@
             </foreach>
         </trim>
     </select>
+
+    <select id="getBankCard" parameterType="int" resultType="fund_bank_card">
+        select * from td_fund_bank_card where user_id =#{userId} and is_default=1 and bank_status=3
+    </select>
+    
+    <select id="getUserNameById" parameterType="int" resultType="java.lang.String" useCache="true">
+        SELECT realName FROM t_person  WHERE userId = #{userId}
+    </select>
+
+    <select id="getBankCardListByUserId" parameterType="int" resultType="fund_bank_card">
+          SELECT * FROM td_fund_bank_card a WHERE a.user_id = #{userId}
+    </select>
+
+
+    <select id="getBankCardListByCardNo" parameterType="java.lang.String" resultType="fund_bank_card">
+        SELECT * FROM td_fund_bank_card a WHERE a.card_no=#{cardNo}
+    </select>
+
+    <select id="updateBankStatus" parameterType="map">
+        UPDATE td_fund_bank_card a SET a.bank_status = #{status} WHERE a.bank_card_id = #{id}
+    </select>
+    
+    <select id="getUserBindingCard" parameterType="int" resultType="fund_bank_card">
+         select * from  td_fund_bank_card WHERE  bank_status = 3 AND  user_id = #{userId};
+    </select>
+
+    <select id="getBankNoCount" parameterType="string" resultType="integer">
+        SELECT COUNT(1) FROM td_fund_bank_card a WHERE FIND_IN_SET(a.bank_status,'1,2,3,5') AND a.card_no = #{bankNo};
+    </select>
+
+    <select id="getUserBankDetail" parameterType="int" resultType="java.util.HashMap">
+        select b.*,c.realName,d.user_account_id,d.balance_amount
+        from td_fund_product a,td_fund_bank_card b,t_person c,td_fund_user_account d
+        where a.user_id = b.user_id
+          and a.user_id = c.userId
+          and a.user_id = d.user_id
+          and a.product_status = 5
+          and a.product_id =#{product_id}
+    </select>
+
 </mapper>

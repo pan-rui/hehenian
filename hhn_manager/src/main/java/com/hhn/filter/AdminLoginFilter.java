@@ -31,7 +31,8 @@ public class AdminLoginFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        String fromUrl =req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort()+req.getRequestURI();
+        //String fromUrl =req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort()+req.getRequestURI();
+        String fromUrl = req.getRequestURI();
         Object obj=req.getSession().getAttribute("admin");
         JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(obj));
         if (obj == null || StringUtils.isEmpty(jsonObject.get("id"))) {

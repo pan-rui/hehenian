@@ -68,14 +68,14 @@ public class PhoneOperation extends BaseLoginAction {
                 //查询当前利率
                 map.put("mounth", Integer.valueOf(mounth));
                 BaseReturn baseReturn = investProductService.getProductRate(map);
-                map.put("balance", balanceAmount.setScale(0, BigDecimal.ROUND_HALF_UP));
+                map.put("balance", balanceAmount);
                 map.put("rate", baseReturn.getData());
                 baseReturn.setData(map);
                 return baseReturn;
             }
         }catch (Exception e){
             logger.error("error",e);
-            return new BaseReturn(1,"数据解析失败!");
+            return new BaseReturn(1,"系统正忙请稍后重试！");
         }
     }
 
@@ -98,7 +98,7 @@ public class PhoneOperation extends BaseLoginAction {
         }
         if (amount != null && !"".equals(amount)) {
             BigDecimal investAmount = new BigDecimal(amount);
-            investAmount = investAmount.setScale(0, BigDecimal.ROUND_HALF_UP);
+            investAmount = investAmount;
             map.put("amount", investAmount);
         } else {
             return new BaseReturn(1, "投资金额不能为空！");
@@ -136,10 +136,10 @@ public class PhoneOperation extends BaseLoginAction {
                 String realName = (String)userMap.get("realName");
                 map.put("userName",realName);
                 map.put("phone",mobilePhone);
-                map.put("balance",balance.setScale(0,BigDecimal.ROUND_HALF_UP));
-                BigDecimal phAmount = investAmount.subtract(balance).setScale(0, BigDecimal.ROUND_HALF_UP);
+                map.put("balance",balance);
+                BigDecimal phAmount = investAmount.subtract(balance);
                 map.put("amount", phAmount);
-                BigDecimal phTotalAmount = new BigDecimal(amount).setScale(0, BigDecimal.ROUND_HALF_UP);
+                BigDecimal phTotalAmount = new BigDecimal(amount);
                 map.put("totalAmount", phTotalAmount);
                 HttpSession session = request.getSession();
                 session.setAttribute("phMounth",mounth);
@@ -221,13 +221,7 @@ public class PhoneOperation extends BaseLoginAction {
                 return new BaseReturn(1, "登录密码不能为空！");
             }
             if (bankCode!=null && !"".equals(bankCode)){
-                Integer code = Integer.valueOf(bankCode);
-                String bc = BankCodeUtil.getBankCode(code);
-                if (bc!=null && !"".equals(bc)){
-                    map.put("BANK_CODE", bc);
-                }else {
-                    return new BaseReturn(1, "选择银行错误，请重新选择！");
-                }
+                map.put("BANK_CODE", bankCode);
             }else{
                 return new BaseReturn(1, "未选择银行！");
             }
@@ -262,7 +256,7 @@ public class PhoneOperation extends BaseLoginAction {
             }
         }catch (Exception e){
             logger.error("error",e);
-            return new BaseReturn(1,"数据解析失败!");
+            return new BaseReturn(1,"系统正忙请稍后重试！");
         }
     }
 
@@ -285,7 +279,6 @@ public class PhoneOperation extends BaseLoginAction {
         invest.setUser_id(Integer.valueOf(userId));
         invest.setMonth(Integer.valueOf(mounth));
         BigDecimal withdraw_amount = new BigDecimal(amount);
-        withdraw_amount = withdraw_amount.setScale(0, BigDecimal.ROUND_HALF_UP);
         invest.setMoney(withdraw_amount);
         if ("pc".equals(source)){
             invest.setTargetType(IFundTradeDao.TargetType.PC);

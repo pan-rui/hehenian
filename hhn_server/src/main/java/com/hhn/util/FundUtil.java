@@ -1,10 +1,13 @@
 package com.hhn.util;
 
+import com.alibaba.fastjson.JSON;
 import com.hehenian.biz.common.system.dataobject.SettDetailDo;
 import com.hehenian.biz.common.trade.ISettleCalculatorService;
 import com.hhn.dao.*;
 import com.hhn.pojo.*;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -32,6 +35,12 @@ public class FundUtil extends BaseService {
     private ISettleCalculatorService remoteRepaymentService;
     @Resource
     private IFundPaymentDao fundPaymentDao;
+    @Resource
+    private ITransInfoDao transInfoDao;
+    @Resource
+    private IFundActualAccountLogDao fundActualAccountLogDao;
+    @Resource
+    private IFundUserAccountDao fundUserAccountDao;
 
     /**
      * 获取相差月份
@@ -109,9 +118,12 @@ public class FundUtil extends BaseService {
      * @return
      */
     public BaseReturn preRepayment(LoanDetail loanDetail, FundProduct fundProduct, List<FundInvestmentDetail> fundInvestmentDetails) {
+        logger.info("调用还款费用查询接口(ISettleCalculatorService)参数：借款金额-" + loanDetail.getLoan_amount().doubleValue() + "\t年利率-" + loanDetail.getLoan_rate().doubleValue() + "\t借款期数-" + loanDetail.getLoan_period().intValue() + "\t结算方式-" + fundProduct.getRepay_type().longValue());
         List<SettDetailDo> settDetailDos = remoteRepaymentService.calSettDetail(loanDetail.getLoan_amount().doubleValue(), loanDetail.getLoan_rate().doubleValue(), loanDetail.getLoan_period().intValue(), fundProduct.getRepay_type().longValue());
+        logger.info("调用还款费用查询接口返回值。。。。。。。" + JSON.toJSONString(settDetailDos));
         Calendar calendar = Calendar.getInstance();
         if (settDetailDos == null || settDetailDos.isEmpty()) return new BaseReturn(1, "还款费用远程接口返回数据为空");
+        BigDecimal[] bigDecimals = new BigDecimal[fundInvestmentDetails.size()];
         for (int i = 0; i < settDetailDos.size(); i++) {
             SettDetailDo settDetailDo = settDetailDos.get(i);
             FundPreRepayment fundPreRepayment = new FundPreRepayment();
@@ -120,7 +132,7 @@ public class FundUtil extends BaseService {
             fundPreRepayment.setCapital(BigDecimal.valueOf(settDetailDo.getPrincipal()));
             fundPreRepayment.setInterest(BigDecimal.valueOf(settDetailDo.getInterest()));
             fundPreRepayment.setFee_amount(BigDecimal.valueOf(settDetailDo.getConsultFee() + settDetailDo.getServFee()));
-            fundPreRepayment.setPre_repay_amount(BigDecimal.valueOf(settDetailDo.getPrincipal() + settDetailDo.getInterest() + settDetailDo.getConsultFee() + settDetailDo.getServFee()));
+            fundPreRepayment.setPre_repay_amount(BigDecimal.valueOf(settDetailDo.getPrincipal() + settDetailDo.getInterest() + settDetailDo.getConsultFee() + settDetailDo.getServFee()).setScale(2, RoundingMode.HALF_UP));
             fundPreRepayment.setRepay_status(IFundPreRepaymentDao.RepayStatus.NO_REPAYMENT.name());
             fundPreRepayment.setRepay_type(IFundPreRepaymentDao.RepayType.STAGES.name());
             fundPreRepayment.setCreate_time(calendar.getTime());
@@ -128,21 +140,31 @@ public class FundUtil extends BaseService {
             fundPreRepayment.setUpdate_time(calendar.getTime());
             fundPreRepayment.setPre_repay_date(settDetailDo.getRepayDate());
             fundPreRepaymentDao.save(fundPreRepayment);
+            BigDecimal capitals = BigDecimal.ZERO;
+            BigDecimal interests = BigDecimal.ZERO;
             for (int j = 0; j < fundInvestmentDetails.size(); j++) {
-                FundInvestmentDetail fundInvestmentDetail = fundInvestmentDetails.get(0);
-                BigDecimal proportion = BigDecimal.ZERO;
-                BigDecimal capital = BigDecimal.valueOf(settDetailDo.getPrincipal()).multiply(proportion).setScale(2, RoundingMode.HALF_DOWN);
-                BigDecimal interest = BigDecimal.valueOf(settDetailDo.getInterest()).multiply(proportion).setScale(2, RoundingMode.HALF_DOWN);
-                BigDecimal proportions = proportion;
-                if (j < fundInvestmentDetails.size() - 1) {
-                    proportion = fundInvestmentDetail.getTrade_amount().divide(loanDetail.getLoan_amount(), new MathContext(12, RoundingMode.HALF_UP));
-                    proportions = proportions.add(proportion);
-                } else proportion = BigDecimal.ONE.subtract(proportions);
+                FundInvestmentDetail fundInvestmentDetail = fundInvestmentDetails.get(j);
                 FundPayment fundPayment = new FundPayment();
+                if (j < fundInvestmentDetails.size() - 1) {
+                    BigDecimal proportion = fundInvestmentDetail.getTrade_amount().divide(loanDetail.getLoan_amount(), new MathContext(12, RoundingMode.HALF_UP));
+                    BigDecimal capital = BigDecimal.valueOf(settDetailDo.getPrincipal()).multiply(proportion).setScale(2, RoundingMode.HALF_DOWN);
+                    BigDecimal interest = BigDecimal.valueOf(settDetailDo.getInterest()).multiply(proportion).setScale(2, RoundingMode.HALF_DOWN);
+                    capitals = capitals.add(capital);
+                    interests = interests.add(interest);
+                    if(i<settDetailDos.size()-1) {
+                        fundPayment.setCapital(capital);
+                    }else
+                        fundPayment.setCapital(fundInvestmentDetail.getTrade_amount().subtract(bigDecimals[j]).setScale(2,RoundingMode.HALF_UP));
+                        fundPayment.setInterest(interest);
+                } else {
+                    if (i < settDetailDos.size() - 1) {
+                    fundPayment.setCapital(BigDecimal.valueOf(settDetailDo.getPrincipal()).subtract(capitals).setScale(2, RoundingMode.HALF_DOWN));
+                    }else fundPayment.setCapital(fundInvestmentDetail.getTrade_amount().subtract(bigDecimals[j]).setScale(2,RoundingMode.HALF_UP));
+                    fundPayment.setInterest(BigDecimal.valueOf(settDetailDo.getInterest()).subtract(interests).setScale(2, RoundingMode.HALF_DOWN));
+                }
+                bigDecimals[j] = fundPayment.getCapital().add(bigDecimals[j] == null ? BigDecimal.ZERO : bigDecimals[j]);
                 fundPayment.setUser_id(fundInvestmentDetail.getUser_id());
                 fundPayment.setInvest_detail_id(fundInvestmentDetail.getInvestment_detail_id());
-                fundPayment.setCapital(capital);
-                fundPayment.setInterest(interest);
                 fundPayment.setPre_payment_money(fundPayment.getCapital().add(fundPayment.getInterest()));
                 fundPayment.setPre_payment_time(calendar.getTime());
                 fundPayment.setCtime(calendar.getTime());
@@ -156,6 +178,40 @@ public class FundUtil extends BaseService {
         logger.info("当前时间：" + calendar.getTime() + "新增预还款记录，借款ID:" + loanDetail.getLoan_id());
         return new BaseReturn(0, loanDetail.getLoan_id());
     }
-
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.NESTED)
+    public void saveFundInfo(BaseReturn baseReturn,FundUserAccount fundUserAccount,FundActualAccountLog fundActualAccountLog,String trxCode,IFundAccountLogDao.LogType logType){
+        if (baseReturn.getReturnCode() == 0) {
+            TransInfo transInfo = (TransInfo) baseReturn.getData();
+            transInfoDao.save(transInfo);
+            Calendar calendar = Calendar.getInstance();
+            FundUserAccount fundUserAccount1 = new FundUserAccount();
+            fundUserAccount1.setUser_account_id(fundUserAccount.getUser_account_id());
+            if(trxCode.equals("100011")){
+            fundUserAccount1.setBalance_amount(fundUserAccount.getBalance_amount().add(transInfo.getTrans_money()));
+            fundUserAccount1.setTotal_recharge_amount(fundUserAccount.getTotal_withdraw_amount().add(transInfo.getTrans_money()));
+            }else if (trxCode.equals("100014")) {
+                fundUserAccount1.setBalance_amount(fundUserAccount.getBalance_amount().subtract(transInfo.getTrans_money()));
+                fundUserAccount1.setTotal_withdraw_amount(fundUserAccount.getTotal_withdraw_amount().add(transInfo.getTrans_money()));
+            }
+            FundActualAccountLog fundActualAccountLog1 = new FundActualAccountLog(fundActualAccountLog.getActual_account_log_id());
+            fundUserAccount1.setUpdate_time(calendar.getTime());
+            if(!trxCode.equals("100019"))
+            fundUserAccountDao.update(fundUserAccount1); //更新资金账户
+            fundActualAccountLog1.setUpdate_time(calendar.getTime());
+            fundActualAccountLog1.setTransfer_status(IFundActualAccountLogDao.TransferStatus.TRANSFERRED.name());
+            fundActualAccountLog1.setThird_pay_id(transInfo.getThird_sn());
+            fundActualAccountLogDao.update(fundActualAccountLog1);
+            FundAccountLog fundAccountLog = new FundAccountLog();
+            fundAccountLog.setTrade_id(fundActualAccountLog.getActual_account_log_id());
+            fundAccountLog.setUser_id(transInfo.getUser_id());
+            fundAccountLog.setUser_account_id(fundUserAccount.getUser_account_id());
+            fundAccountLog.setRemark(transInfo.getThird_sn());
+            fundAccountLog.setTrade_amount(transInfo.getTrans_money());
+            fundAccountLog.setTrade_time(calendar.getTime());
+            fundAccountLog.setLog_type(logType);
+            fundAccountLogDao.save(fundAccountLog);
+            logger.info("新增用户实际流水,实际流水ID;"+fundAccountLog.getAccount_log_id()+"\t用户ID:"+fundAccountLog.getUser_id()+"交易金额："+fundAccountLog.getTrade_amount()+"交易类型：充值");
+        }
+    }
 
 }

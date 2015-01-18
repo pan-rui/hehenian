@@ -93,12 +93,12 @@ public class DateUtil{
         return (cal.get(Calendar.MONTH)+1)+"月"+cal.get(Calendar.DATE)+"日";
     }
 
-    //加三天
-    public static String getThirtDate(Date date) {
+    //当前时间加N天
+    public static String getThirtDate(Date date, int n){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.DAY_OF_MONTH, 3);
-        return (cal.get(Calendar.MONTH)+1)+"月"+cal.get(Calendar.DATE)+"日";
+        cal.add(Calendar.DAY_OF_MONTH, n);
+        return (cal.get(Calendar.YEAR)+"年"+cal.get(Calendar.MONTH)+1)+"月"+cal.get(Calendar.DATE)+"日";
     }
 
 }

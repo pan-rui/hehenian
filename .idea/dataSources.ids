@@ -2340,6 +2340,20 @@
       <primary-key name="PRIMARY" columns="user_id"/>
       <index name="idx_account_user_user_name" unique="true" columns="user_name"/>
     </table>
+    <table name="td_bank_bing" schema="" catalog="test_dev_hhn" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" remarks="SUQg5Li76ZSu" autoIncrement="true"/>
+      <column name="userId" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" remarks="55So5oi3SUQ="/>
+      <column name="bankCode" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12" remarks="6ZO26KGM5Y2h5Y+3"/>
+      <column name="amount" sqlType="DECIMAL" precision="12" scale="2" nullable="false" jdbcType="3" remarks="5YWF5YC855qE6YeR6aKd"/>
+      <column name="sendFlag" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12" def="J0Yn" remarks="5Y+R6YCB5oiQ5Yqf77yaVCwg5Y+R6YCB5aSx6LSlRg=="/>
+      <column name="checkNumber" sqlType="SMALLINT" precision="5" scale="0" nullable="true" jdbcType="5" remarks="6aqM6K+B5qyh5pWw"/>
+      <column name="checkFlag" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12" def="J0Yn" remarks="6aqM6K+B6YCa6L+HOlQsIOmqjOivgeWksei0pUY="/>
+      <column name="sendTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93" remarks="5Y+R6YCB5pe26Ze0"/>
+      <column name="checkTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93" remarks="6aqM6K+B5pe26Ze0"/>
+      <column name="recordStatus" sqlType="VARCHAR" precision="1" scale="0" nullable="true" jdbcType="12" remarks="5pyJ5pWI6K6w5b2VVCwg5peg5pWI6K6w5b2VRg=="/>
+      <column name="businessRecordId" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12" remarks="5Lia5Yqh5pWw5o2u55u45YWz55qESUQ65YWF5YC86K6w5b2VSUQ="/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
     <table name="td_bank_code" schema="" catalog="test_dev_hhn" type="TABLE">
       <column name="bank_code_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="code" sqlType="VARCHAR" precision="4" scale="0" nullable="true" jdbcType="12"/>
@@ -2379,13 +2393,14 @@
       <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" remarks="55So5oi3SUQ="/>
       <column name="account_name" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12" remarks="5byA5oi35ZCN56ew"/>
       <column name="bank_name" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12" remarks="5byA5oi36ZO26KGM"/>
+      <column name="bank_code" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12" remarks="6ZO26KGM5Luj56CB"/>
       <column name="province" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12" remarks="5byA5oi35omA5Zyo55yB5Lu9"/>
       <column name="city" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12" remarks="5byA5oi35omA5Zyo5biC5Yy6"/>
       <column name="detail_address" sqlType="VARCHAR" precision="500" scale="0" nullable="true" jdbcType="12"/>
       <column name="card_no" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12" remarks="5Y2h5Y+3"/>
       <column name="card_type" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" remarks="5Y+C6ICD5a2X5YW46KGoOmRpY19iYW5r"/>
       <column name="is_default" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" remarks="5piv5ZCm6buY6K6kICAw77yM5LiN6buY6K6kICAx77yM6buY6K6k"/>
-      <column name="bank_status" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="bank_status" sqlType="TINYINT UNSIGNED" precision="3" scale="0" nullable="true" jdbcType="-6" def="MQ==" remarks="57uR5a6a54q25oCBKDEu5pyq57uR5a6aIDIu57uR5a6a5LitIDMu5bey57uR5a6aIDQu57uR5a6a5aSx6LSlIDUu5Ya757uTKQ=="/>
       <column name="create_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93" remarks="5Yib5bu65pe26Ze0"/>
       <column name="update_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93" remarks="5pyA5ZCO5L+u5pS55pe26Ze0"/>
       <column name="verify_quota" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>

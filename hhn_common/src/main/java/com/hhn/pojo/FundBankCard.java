@@ -24,6 +24,8 @@ public class FundBankCard implements java.io.Serializable {
 	private Byte is_default;
 	private Date create_time;
 	private Date update_time;
+	private Integer bank_status;
+	private String bank_code;
 
 	public FundBankCard() {
 	}
@@ -127,5 +129,21 @@ public class FundBankCard implements java.io.Serializable {
 
 	public void setUpdate_time(Date update_time) {
 		this.update_time = update_time;
+	}
+
+	public void setBank_status(Integer bank_status) {
+		this.bank_status = bank_status;
+	}
+
+	public Integer getBank_status() {
+		return bank_status;
+	}
+
+	public String getBank_code() {
+		return bank_code;
+	}
+
+	public void setBank_code(String bank_code) {
+		this.bank_code = bank_code;
 	}
 }

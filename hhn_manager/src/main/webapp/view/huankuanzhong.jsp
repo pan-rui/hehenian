@@ -92,7 +92,7 @@
                             <th width="5%" class="thalign2"><input name="chkAll" id="chkAll" type="checkbox" class="iptalign2" />全选</th>
                             <th width="4%">标的ID</th>
                             <th width="8%">借款人</th>
-                            <th width="6%">标的类型</th>
+                            <%--<th width="6%">标的类型</th>--%>
                             <th width="10%">借款标题</th>
                             <th width="7%">借款金额</th>
                             <th width="6%">剩余金额</th>
@@ -120,17 +120,17 @@
                                                               type="checkbox" name="sign_ids" /></td>
                                     <td align="center"><c:out value="${list.product_id}"/></td>
                                     <td align="center"><c:out value="${list.realName}"/></td>
-                                    <td align="center">&nbsp;
-                                        <c:if test="${list.loan_type==0}">个人借款</c:if>
-                                        <c:if test="${list.loan_type==1}">企业借款</c:if>
-                                        <c:if test="${list.loan_type==2}">车易贷</c:if>
-                                        <c:if test="${list.loan_type==3}">房易贷</c:if>
-                                        <c:if test="${list.loan_type==4}">担保</c:if>
-                                    </td>
+                                    <%--<td align="center">&nbsp;--%>
+                                        <%--<c:if test="${list.loan_type==0}">个人借款</c:if>--%>
+                                        <%--<c:if test="${list.loan_type==1}">企业借款</c:if>--%>
+                                        <%--<c:if test="${list.loan_type==2}">车易贷</c:if>--%>
+                                        <%--<c:if test="${list.loan_type==3}">房易贷</c:if>--%>
+                                        <%--<c:if test="${list.loan_type==4}">担保</c:if>--%>
+                                    <%--</td>--%>
                                     <td align="center"><c:out value="${list.product_name}"/></td>
                                     <td align="center"><c:out value="${list.invest_amount}"/></td>
                                     <td align="center"><c:out value="${list.invest_amount-list.invested_amount}"/></td>
-                                    <td align="center"><c:out value="${list.annual_rate}"/></td>
+                                    <td align="center"><c:out value="${list.annual_rate}"/>%</td>
                                     <td align="center">第<c:out value="${list.nextNum}"/>期</td>
                                     <td align="center"><f:formatDate value="${list.startTime}" pattern="yyyy-MM-dd"/></td>
                                     <td align="center"><f:formatDate value="${list.finishTime}" pattern="yyyy-MM-dd"/></td>

@@ -17,12 +17,14 @@
   <script type="text/javascript">
     function auditSign(id) {
       if (confirm("确认审核通过吗？")) {
+        $("#btn1").attr("disabled", true);
         $.ajax({
           type: "POST",
           url: "<c:url value="/signAudit.do"/>",
           data: {productId: id},
           async: true,
           dataType: "json",
+          timeout:60000,
           success: function (data) {
             if (data) {
               alert("审核成功！");
@@ -37,12 +39,14 @@
     }
     function dropSign(id) {
       if (confirm("确认要废弃吗？")) {
+        $("#btn2").attr("disabled", true);
         $.ajax({
           type: "POST",
           url: "<c:url value="/dropAuditById.do"/>",
           data: {productId: id},
           async: true,
           dataType: "json",
+          timeout:60000,
           success: function (data) {
             if (data) {
               alert("废弃成功！");
@@ -104,8 +108,8 @@
           <td colspan="2">&nbsp;</td>
         </tr>
         <tr>
-          <td colspan="2" style="text-align: center;padding-bottom: 5px;"><input type="button" value="审核" onclick="auditSign('<c:out value="${productDetail.product_id}"/>')" />&nbsp;&nbsp;
-            <input type="button" value="废弃" onclick="dropSign('<c:out value="${productDetail.product_id}"/>')" />&nbsp;&nbsp;<input type="button" value="取消" onclick="window.close();" /></td>
+          <td colspan="2" style="text-align: center;padding-bottom: 5px;"><input type="button" value="审核" id="btn1" onclick="auditSign('<c:out value="${productDetail.product_id}"/>')" />&nbsp;&nbsp;
+            <input type="button" value="废弃" id="btn2" onclick="dropSign('<c:out value="${productDetail.product_id}"/>')" />&nbsp;&nbsp;<input type="button" value="取消" onclick="window.close();" /></td>
         </tr>
         </table>
   </div>

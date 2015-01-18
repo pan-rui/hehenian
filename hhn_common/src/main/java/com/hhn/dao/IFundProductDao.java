@@ -50,4 +50,8 @@ public interface IFundProductDao extends BaseDao<FundProduct> {
     //前台查询投资记录列表
     public List<HashMap> getWebInvestmentList(Map<String,Object> map);
 
+    public Integer updateProduct(@Param("params") Map<String,Object> params,@Param("product_id") Integer product_id,@Param("money") BigDecimal money);
+
+    public List<HashMap> getWithdrawList(Map<String, Object> map);
+
 }

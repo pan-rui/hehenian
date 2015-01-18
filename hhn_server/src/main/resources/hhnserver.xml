@@ -95,4 +95,11 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     <bean name="/ModifyProductService" class="org.springframework.remoting.caucho.HessianServiceExporter"
           p:service-ref="modifyProductService" p:serviceInterface="com.hhn.hessian.product.IModifyProductService"/>
 
+    <!-- 绑定银行卡 -->
+    <bean name="/CardVerifyService" class="org.springframework.remoting.caucho.HessianServiceExporter"
+          p:service-ref="cardVerifyService" p:serviceInterface="com.hhn.hessian.cardverify.ICardVerifyService"/>
+<!-- 验卡支付接口-->
+    <bean name="/allinPay" class="org.springframework.remoting.caucho.HessianServiceExporter"
+          p:service-ref="allinPayRemoteService" p:serviceInterface="com.hhn.service.pay.IAllinPayRemoteService"/>
+
 </beans>

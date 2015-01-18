@@ -8,4 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="t" uri="http://www.hehenian.com/top" %>
-<t:top url="${applicationScope.footerView}"/>
+<% Cookie[] cookies=request.getCookies();
+  String sessionId=null;
+  for(Cookie cookie:cookies){
+    if("s".equals(cookie.getName()))
+      sessionId=cookie.getValue();
+  }
+  request.setAttribute("sessionId", ";s="+sessionId);
+%>
+<t:top url="${applicationScope.footerView}" suffix="${sessionId}" />

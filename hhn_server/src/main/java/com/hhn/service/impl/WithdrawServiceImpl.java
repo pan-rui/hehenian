@@ -1,17 +1,14 @@
 package com.hhn.service.impl;
 
 import com.aipg.rtreq.Trans;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.hhn.dao.*;
 import com.hhn.pojo.*;
-import com.hhn.service.ProcessInfo;
 import com.hhn.service.pay.impl.AllinPayService;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
+import com.hhn.util.DqlcConfig;
+import com.hhn.util.FundUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -38,18 +35,27 @@ public class WithdrawServiceImpl extends BaseService<FundActualAccountLog>{
     @Resource
     private IFundTradeDao fundTradeDao;
     @Resource
-    private ProcessInfo processInfo;
+    private DqlcConfig processInfo;
     @Resource
-    private IFundAccountLogDao fundAccountLogDao;
+    private FundUtil fundUtil;
     public BaseReturn withdraw(Map<String, Object> params) throws CloneNotSupportedException {
         Integer userId = null;
+
+        //Modify by Tang Rufeng 20140118 begin
         if (params.containsKey("user_id"))
             userId = Integer.valueOf(String.valueOf(params.remove("user_id")));
+        else{
+            return new BaseReturn(1, "未指定提现用户");
+        }
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("user_id",userId);
-        param.put("is_default", 1);
+        //param.put("is_default",1);
+        param.put("bank_status", 3);  //查询已绑定的卡
+        //Modify by Tang Rufeng 20140118 end
+
         List<FundBankCard> fundBankCards=fundBankCardDao.queryByPros(param);
-        if(fundBankCards==null||fundBankCards.isEmpty()) return new BaseReturn(1, "用户尚未绑定银行卡");
+        if(fundBankCards==null||fundBankCards.isEmpty())
+            return new BaseReturn(1, "用户尚未绑定银行卡");
         Trans trans = new Trans();
         allinPayService.copyProperties(params, trans);
         logger.info("进入提现接口。。。。。。。。。。。。。。。。。。。。。。。提现用户ID：" + userId + "提现金额：" + trans.getAMOUNT() + "提现卡号：" + trans.getACCOUNT_NO());
@@ -57,15 +63,10 @@ public class WithdrawServiceImpl extends BaseService<FundActualAccountLog>{
         trans.setREMARK(String.valueOf(System.currentTimeMillis()));
         FundUserAccount fundUserAccount = fundUserAccountDao.queryUserAccount(userId);
         Calendar calendar = Calendar.getInstance();
-        if (fundUserAccount == null) {   //是否存在资金账户
-            fundUserAccount = new FundUserAccount();
-            fundUserAccount.setUser_id(userId);
-            fundUserAccount.setBalance_amount(BigDecimal.ZERO);
-            fundUserAccount.setTotal_withdraw_amount(BigDecimal.ZERO);
-            fundUserAccount.setCreate_time(calendar.getTime());
-            fundUserAccount.setUpdate_time(calendar.getTime());
-            fundUserAccountDao.save(fundUserAccount);  //创建资金账户
-        }
+        if (fundUserAccount == null)    //是否存在资金账户
+            return new BaseReturn(1, "您的账户余额为0.00");
+        if(new BigDecimal(trans.getAMOUNT()).compareTo(fundUserAccount.getBalance_amount())>0)
+            return new BaseReturn(1, "您的账户余额为:" + fundUserAccount.getBalance_amount() + ",请重新输入.");
         FundActualAccountLog fundActualAccountLog = new FundActualAccountLog();
         fundActualAccountLog.setUser_id(userId);
         fundActualAccountLog.setTrade_amount(new BigDecimal(trans.getAMOUNT()));
@@ -92,7 +93,7 @@ public class WithdrawServiceImpl extends BaseService<FundActualAccountLog>{
         logger.info("调用通联支付接口开始。。。。。。。。。。。。。。。。。。。。。。。。");
         BaseReturn baseReturn = allinPayService.allinPay100014(trans, new TransInfo[]{transInfo, transInfo1});
         if (baseReturn.getReturnCode() == 0) {
-            saveFundInfo(baseReturn, fundUserAccount, fundActualAccountLog);
+            fundUtil.saveFundInfo(baseReturn, fundUserAccount, fundActualAccountLog,"100011", IFundAccountLogDao.LogType.WITHDRAW);
             logger.info("调用通联支付结束，完成支付,提现用户ID："+userId+"提现金额："+trans.getAMOUNT()+"提现卡号："+trans.getACCOUNT_NO());
             return new BaseReturn(0, baseReturn.getData(), processInfo.OPERATE_SUCCESS);
         } else{
@@ -101,34 +102,7 @@ public class WithdrawServiceImpl extends BaseService<FundActualAccountLog>{
         }
     }
 
-    @Transactional(rollbackFor = Exception.class,propagation = Propagation.NESTED)
-    public void saveFundInfo(BaseReturn baseReturn,FundUserAccount fundUserAccount,FundActualAccountLog fundActualAccountLog){
-        if (baseReturn.getReturnCode() == 0) {
-            TransInfo transInfo = (TransInfo) baseReturn.getData();
-            transInfoDao.save(transInfo);
-            Calendar calendar = Calendar.getInstance();
-            FundUserAccount fundUserAccount1 = new FundUserAccount();
-            fundUserAccount1.setUser_account_id(fundUserAccount.getUser_account_id());
-            fundUserAccount1.setBalance_amount(fundUserAccount.getBalance_amount().subtract(transInfo.getTrans_money()));
-            fundUserAccount1.setTotal_withdraw_amount(fundUserAccount.getTotal_withdraw_amount().add(transInfo.getTrans_money()));
-            fundUserAccount1.setUpdate_time(calendar.getTime());
-            fundUserAccountDao.update(fundUserAccount1); //更新资金账户
-            FundActualAccountLog fundActualAccountLog1 = new FundActualAccountLog(fundActualAccountLog.getActual_account_log_id());
-            fundActualAccountLog1.setUpdate_time(calendar.getTime());
-            fundActualAccountLog1.setTransfer_status(IFundActualAccountLogDao.TransferStatus.TRANSFERRED.name());
-            fundActualAccountLogDao.update(fundActualAccountLog1);
-            FundAccountLog fundAccountLog = new FundAccountLog();
-            fundAccountLog.setTrade_id(fundActualAccountLog.getActual_account_log_id());
-            fundAccountLog.setUser_id(transInfo.getUser_id());
-            fundAccountLog.setUser_account_id(fundUserAccount.getUser_account_id());
-            fundAccountLog.setLog_type(IFundAccountLogDao.LogType.WITHDRAW);
-            fundAccountLog.setRemark(transInfo.getThird_sn());
-            fundAccountLog.setTrade_amount(transInfo.getTrans_money());
-            fundAccountLog.setTrade_time(calendar.getTime());
-            fundAccountLogDao.save(fundAccountLog);
-            logger.info("新增用户实际流水,实际流水ID;"+fundAccountLog.getAccount_log_id()+"\t用户ID:"+fundAccountLog.getUser_id()+"交易金额："+fundAccountLog.getTrade_amount()+"交易类型：充值");
-        }
-    }
+
 
     public BaseReturn applyWithdraw(Map<String, Object> params) {
         Integer userId = Integer.valueOf(String.valueOf(params.get("user_id")));
@@ -144,6 +118,8 @@ public class WithdrawServiceImpl extends BaseService<FundActualAccountLog>{
                 return new BaseReturn(1, BaseReturn.Err_data_inValid, "账户异常....");
             else
                 fundTrade.setUser_account_id(fundUserAccount.getUser_account_id());
+            if(amount.compareTo(fundUserAccount.getBalance_amount())>0)
+                return new BaseReturn(1, "您的账户余额为:" + fundUserAccount.getBalance_amount() + ",请重新输入.");
             fundTrade.setTrade_amount(amount);
             fundTrade.setTrade_type(IFundTradeDao.TradeType.WITHDRAW.name());
             fundTrade.setTrade_status(IFundTradeDao.TradeStatus.VERIFY.name());

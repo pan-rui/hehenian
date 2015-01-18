@@ -97,34 +97,58 @@ public class FundProductDaoTest {
     }
 
     @Test
-    public void testQuery(){
+    public void testQuery() {
+       BigDecimal money= fundTradeDao.queryPay(new Date());
+        System.out.println(money);
+        System.out.println("****************");
+        System.out.println("Interested:"+fundTradeDao.queryInterested(1241));
+        System.out.println("Intest:"+fundTradeDao.queryInterest(1241));
+        System.out.println("Round:"+fundTradeDao.queryRound(1241));
+
+//        System.out.println(money.toString());
 //        BankSdbLog fundProduct = bankSdbLogDao.query(48);
 //        System.out.println(fundProduct.getUser_id());
-        HashMap<String, Object> param = new HashMap<String,Object>();
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("product_id", 540);
+        params.put("invest_amount", BigDecimal.valueOf(100000));
+        Calendar calendar = Calendar.getInstance();
+        params.put("invested_amount", BigDecimal.valueOf(100000));
+        params.put("product_status", 3);
+        params.put("update_time", calendar.getTime());
+        int size = fundProductDao.updateProduct(params, 540,BigDecimal.valueOf(10000));
+        calendar.add(Calendar.DAY_OF_MONTH,3);
+        System.out.println(fundTradeDao.queryPay(calendar.getTime()));
+//        int size2 = fundProductDao.updateProduct(params);
+
+//        params.put("invested_amount", fundProduct.getInvested_amount().add(money));
+//        params.put("update_time", new Date());
+//        params.put("money", money);
+/*
         param.put("user_id", 1);
         fundProductDao.getAllCount(param);
-       List<FundProduct> fundProductList= fundProductDao.queryProduct3(BigDecimal.valueOf(3000),(short) 6);
-        for(FundProduct fundProduct1:fundProductList)
-            System.out.println(fundProduct1.getProduct_id()+"\t"+fundProduct1.getInvest_amount()+"\t"+fundProduct1.getInvested_amount()+"\t"+fundProduct1.getProduct_status());
+        List<FundProduct> fundProductList = fundProductDao.queryProduct3(BigDecimal.valueOf(3000), (short) 6);
+        for (FundProduct fundProduct1 : fundProductList)
+            System.out.println(fundProduct1.getProduct_id() + "\t" + fundProduct1.getInvest_amount() + "\t" + fundProduct1.getInvested_amount() + "\t" + fundProduct1.getProduct_status());
         fundProductDao.queryByTradeId(4757);
 //        System.out.println(fundTradeDao.querySurplusMoney());
-        Calendar calendar=Calendar.getInstance();calendar.add(Calendar.MONTH,12);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 12);
 //        System.out.println(fundTradeDao.queryPayMoney(calendar.getTime(), IFundTradeDao.TradeType.INVESTMENT.toString()));
 //        System.out.println(fundTradeDao.queryPay(calendar.getTime(), IFundTradeDao.TradeType.INVESTMENT.toString()));
         System.out.println(fundPaymentDao.queryCapital(8001243));
-/*        List<FundTrade> map=fundProductDao.getWebProductList(param);
+*//*        List<FundTrade> map=fundProductDao.getWebProductList(param);
         System.out.println(map.size());
         System.out.println(map.get(0).getExpect_trade_time());
         System.out.println(map.get(0).getTrade_amount());
         System.out.println("................");
         System.out.println(map.get(0).getFundInvestmentDetails().size());
         System.out.println(map.get(3).getFundInvestmentDetails().get(1).getTrade_amount());
-        System.out.println(map.get(3).getFundInvestmentDetails().get(0).getFundProduct().getProduct_name());*/
+        System.out.println(map.get(3).getFundInvestmentDetails().get(0).getFundProduct().getProduct_name());*//*
 //        System.out.println(map.get(3).getFundInvestmentDetails().get(1).getFundProduct().getAccountUser().getUser_name());
 //        for(Object key:map.get(0).keySet())
 //            System.out.println("key:\t"+key+"===========>value:\t"+map.get(0).get(key));
-        System.out.println("mysql.host===>"+mysql_host);
-        fundInvestmentDetailDao.queryByNow(new Date());
+        System.out.println("mysql.host===>" + mysql_host);
+        fundInvestmentDetailDao.queryByNow(new Date());*/
 /*//        System.out.println("operate======>"+operate);
         fundProductDao.save(new FundProduct(160));
         Map map = new HashMap<String, Object>();

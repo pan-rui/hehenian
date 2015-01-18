@@ -2,21 +2,20 @@ package com.hhn.service.impl;
 
 import com.aipg.rtreq.Trans;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.hhn.dao.*;
 import com.hhn.pojo.*;
-import com.hhn.service.ProcessInfo;
 import com.hhn.service.pay.impl.AllinPayService;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
+import com.hhn.util.DqlcConfig;
+import com.hhn.util.FundUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2014/12/17.
@@ -34,9 +33,9 @@ public class RechargeServiceImpl extends BaseService<FundActualAccountLog> {
     @Resource
     private ITransInfoDao transInfoDao;
     @Resource
-    private ProcessInfo processInfo;
+    private DqlcConfig processInfo;
     @Resource
-    private IFundAccountLogDao fundAccountLogDao;
+    private FundUtil fundUtil;
     @Resource
     private IBankCodeDao bankCodeDao;
 
@@ -44,10 +43,13 @@ public class RechargeServiceImpl extends BaseService<FundActualAccountLog> {
         Integer userId = null;
         if (params.containsKey("user_id"))
             userId = Integer.valueOf(String.valueOf(params.remove("user_id")));
+        FundBankCard fundBankCard = fundBankCardDao.getBankCard(userId);
         Trans trans = new Trans();
         allinPayService.copyProperties(params, trans);
         logger.info("进入充值接口。。。。。。。。。。。。。。。。。。。。。。。充值用户ID：" + userId + "充值金额：" + trans.getAMOUNT() + "充值卡号：" + trans.getACCOUNT_NO());
         trans.setREMARK(String.valueOf(System.currentTimeMillis()));
+        trans.setACCOUNT_NO(fundBankCard.getCard_no());
+        trans.setBANK_CODE(fundBankCard.getBank_code());
         List<BankCode> bankCodes = bankCodeDao.queryByProperties("code", trans.getBANK_CODE());
         if(bankCodes==null || bankCodes.isEmpty()) return new BaseReturn(1, processInfo.CARD_MISMATCHING);
         List<String> codes=JSON.parseArray(bankCodes.get(0).getRegex(), String.class);
@@ -91,27 +93,28 @@ public class RechargeServiceImpl extends BaseService<FundActualAccountLog> {
         TransInfo transInfo1 = (TransInfo) transInfo.clone();
         transInfo1.setSocket_type(2);
         logger.info("调用通联支付接口开始。。。。。。。。。。。。。。。。。。。。。。。。");
-        BaseReturn baseReturn = allinPayService.allinPay100014(trans, new TransInfo[]{transInfo, transInfo1});
+        BaseReturn baseReturn = allinPayService.allinPay100011(trans, new TransInfo[]{transInfo, transInfo1});
         if (baseReturn.getReturnCode() == 0) {
-            saveFundInfo(baseReturn, fundUserAccount, fundActualAccountLog);
+            fundUtil.saveFundInfo(baseReturn, fundUserAccount, fundActualAccountLog,"100011", IFundAccountLogDao.LogType.RECHARGE);
             logger.info("调用通联支付结束，完成支付,充值用户ID："+userId+"充值金额："+trans.getAMOUNT()+"充值卡号："+trans.getACCOUNT_NO());
             return new BaseReturn(0, baseReturn.getData(), processInfo.OPERATE_SUCCESS);
         } else{
+            transInfoDao.save(transInfo1);
             logger.info("充值失败,充值用户ID："+userId+"充值金额："+trans.getAMOUNT()+"充值卡号："+trans.getACCOUNT_NO());
             return baseReturn;
         }
     }
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NESTED)
+/*    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NESTED)
     public void saveFundInfo(BaseReturn baseReturn, FundUserAccount fundUserAccount, FundActualAccountLog fundActualAccountLog) {
-        if (baseReturn.getReturnCode() == 0) {
+
             TransInfo transInfo = (TransInfo) baseReturn.getData();
             transInfoDao.save(transInfo);
-            Map<String, Object> params = new HashMap<String, Object>();
+            Calendar calendar = Calendar.getInstance();
+*//*            Map<String, Object> params = new HashMap<String, Object>();
             params.put("user_id", transInfo.getUser_id());
             params.put("card_no", transInfo.getCard_id());
             List<FundBankCard> fundBankCards1 = fundBankCardDao.queryByPros(params);
-            Calendar calendar = Calendar.getInstance();
             if (fundBankCards1 == null || fundBankCards1.isEmpty()) {
                 FundBankCard fundBankCard1 = new FundBankCard();
                 fundBankCard1.setUser_id(transInfo.getUser_id());
@@ -130,7 +133,7 @@ public class RechargeServiceImpl extends BaseService<FundActualAccountLog> {
                 fundBankCard1.setIs_default(Byte.valueOf("1"));
                 fundBankCardDao.save(fundBankCard1); //保存银行卡信息
                 logger.info("用户新增银行卡，用户ID："+transInfo.getUser_id()+"\t银行卡号："+transInfo.getCard_id()+"交易金额："+transInfo.getTrans_money());
-            }
+            }*//*
             FundUserAccount fundUserAccount1 = new FundUserAccount();
             fundUserAccount1.setUser_account_id(fundUserAccount.getUser_account_id());
             fundUserAccount1.setBalance_amount(fundUserAccount.getBalance_amount().add(transInfo.getTrans_money()));
@@ -151,6 +154,5 @@ public class RechargeServiceImpl extends BaseService<FundActualAccountLog> {
             fundAccountLog.setTrade_time(calendar.getTime());
             fundAccountLogDao.save(fundAccountLog);
             logger.info("新增用户实际流水,实际流水ID;"+fundAccountLog.getAccount_log_id()+"\t用户ID:"+fundAccountLog.getUser_id()+"交易金额："+fundAccountLog.getTrade_amount()+"交易类型：充值");
-        }
-    }
+    }*/
 }

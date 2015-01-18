@@ -23,7 +23,6 @@
             <if test="pre_capital != null">pre_capital,</if>
             <if test="pre_interest != null">pre_interest,</if>
             <if test="fee_amount != null">fee_amount,</if>
-            <if test="receive_user_id != null">receive_user_id,</if>
         </trim>
     </sql>
     <sql id="vvv">
@@ -47,7 +46,6 @@
             <if test="pre_capital != null">#{pre_capital},</if>
             <if test="pre_interest != null">#{pre_interest},</if>
             <if test="fee_amount != null">#{fee_amount},</if>
-            <if test="receive_user_id != null">#{receive_user_id},</if>
         </trim>
     </sql>
     <sql id="uuu">
@@ -71,7 +69,6 @@
             <if test="pre_capital != null">pre_capital=#{pre_capital},</if>
             <if test="pre_interest != null">pre_interest=#{pre_interest},</if>
             <if test="fee_amount != null">fee_amount=#{fee_amount},</if>
-            <if test="receive_user_id != null">receive_user_id=#{receive_user_id},</if>
         </trim>
         where repayment_id=#{repayment_id}
     </sql>

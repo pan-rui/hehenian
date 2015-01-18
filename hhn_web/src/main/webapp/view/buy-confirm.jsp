@@ -36,7 +36,7 @@
                         dataType:'json',//非必须.默认text
                         async:true,//非必须.默认true
                         cache:false,//非必须.默认false
-                        timeout:30000,//非必须.默认30秒
+                        timeout:60000,//非必须.默认30秒
                         success: function (data) {
                             if(data.returnCode==0){
                                 $('.payBtn').css('background','#a1a1a1');
@@ -108,14 +108,14 @@
                                 <td>￥<c:out value="${amount}" /></td>
                             </tr>
                             <tr>
-                                <td colspan="4" style="text-align: right;padding-right: 15px;">预期收益：<c:out value="${rateMoney}" />元&nbsp;&nbsp;账户余额:<c:out value="${balance}" />元</td>
+                                <td colspan="4" style="text-align: right;">预期收益：<c:out value="${rateMoney}" />元&nbsp;&nbsp;账户余额:<c:out value="${balance}" />元</td>
                             </tr>
                         </table>
-                        <div>订单金额:　<span><c:out value="${amount}" /></span></div>
+                        <div>订单金额:　<span><c:out value="${amount}" />元</span></div>
                     </div>
                     <div class="agreementBox">
                         <span class="agreement-pic" id="agreement-pic" onclick="selectAgree(this)"></span>
-                        <span>同意<a>《xxxxxx协议》</a></span>
+                        <span>同意<a href="<c:url value="/view/serviceAgreement.jsp" />" target="_blank">《E计划服务协议》</a></span>
                     </div>
                     <a class="modifyBtn" href="javascript:void(0)" onclick="modifyMoney()">修改金额</a>&nbsp;&nbsp;<a class="payBtn" href="javascript:void(0)">立即付款</a>
                     <!--<div class="modifyBtn" onclick="modifyMoney()">修改价格</div>-->

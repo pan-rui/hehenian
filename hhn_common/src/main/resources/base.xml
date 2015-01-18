@@ -15,11 +15,10 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
     <!-- 引入属性文件 -->
-    <context:property-placeholder location="file:${catalina.home}/conf/config.properties"/>
-    <util:properties id="config" location="classpath:config.properties"/>
+    <context:property-placeholder location="file:${catalina.home}/conf/hehenian-dqlc-config.properties"/>
     <util:properties id="message" location="classpath:message.properties"/>
     <!-- 自动扫描(自动注入) -->
-    <context:component-scan base-package="com.hhn.dao,com.hhn.controll"/>
+    <context:component-scan base-package="com.hhn.dao,com.hhn.controll,com.hhn.util"/>
     <context:annotation-config/>
 
 
@@ -151,11 +150,5 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
         <property name="client" ref="memcachedClient"/>
         <property name="expire" value="259200"/>
     </bean>-->
-    <!-- 用户登录filter -->
-    <bean id="userLoginFilter" class="com.hhn.filter.UserLoginFilter" >
-        <property name="loginView" value="${hhn.login}"/>
-        <property name="adminLoginView" value="${hhn.admin.login}"/>
-        <property name="topView" value="${hhn.top.url}"/>
-        <property name="footerView" value="${hhn.footer.url}"/>
-    </bean>
+
 </beans>

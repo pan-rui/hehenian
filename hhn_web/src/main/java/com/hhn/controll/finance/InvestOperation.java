@@ -2,15 +2,16 @@ package com.hhn.controll.finance;
 
 import com.hehenian.biz.common.dqlc.IDqlcService;
 import com.hhn.dao.IFundTradeDao;
+import com.hhn.hessian.cardverify.ICardVerifyService;
 import com.hhn.hessian.invest.IFundInvestService;
 import com.hhn.hessian.query.IQueryService;
 import com.hhn.hessian.recharge.IRechargeService;
-import com.hhn.hessian.repay.IRepaymentService;
 import com.hhn.hessian.withdraw.IWithdrawService;
-import com.hhn.pojo.Invest;
-import com.hhn.util.BankCodeUtil;
+import com.hhn.pojo.FundBankCard;
+import com.hhn.pojo.Invest;;
 import com.hhn.util.BaseLoginAction;
 import com.hhn.util.BaseReturn;
+import com.hhn.util.Constants;
 import com.hhn.util.annotaion.AvoidSubmits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,8 @@ public class InvestOperation extends BaseLoginAction {
     private IQueryService queryService;
     @Autowired
     private IDqlcService dqlcService;
+    @Autowired
+    private ICardVerifyService cardVerifyService;
     /**
      * PC端
      * 用户投资充值
@@ -89,13 +92,7 @@ public class InvestOperation extends BaseLoginAction {
                 return new BaseReturn(1, "登录密码不能为空！");
             }
             if (bankCode!=null && !"".equals(bankCode)){
-                Integer code = Integer.valueOf(bankCode);
-                String bc = BankCodeUtil.getBankCode(code);
-                if (bc!=null && !"".equals(bc)){
-                    paraMap.put("BANK_CODE", bc);
-                }else {
-                    return new BaseReturn(1, "选择银行错误，请重新选择！");
-                }
+                paraMap.put("BANK_CODE", bankCode);
             }else{
                 return new BaseReturn(1, "未选择银行！");
             }
@@ -122,7 +119,7 @@ public class InvestOperation extends BaseLoginAction {
             return baseReturn;
         } catch (Exception e) {
             logger.error("error",e);
-            return new BaseReturn(1, "数据解析失败！");
+            return new BaseReturn(1, "系统正忙请稍后重试！");
         }
     }
     /**
@@ -150,16 +147,15 @@ public class InvestOperation extends BaseLoginAction {
                 return new BaseReturn(1, "购买金额不能为空！");
             } else {
                 BigDecimal withdraw_amount = new BigDecimal(amount);
-                withdraw_amount = withdraw_amount.setScale(0, BigDecimal.ROUND_HALF_UP);
                 invest.setMoney(withdraw_amount);
             }
-            if ("pc".equals(source)){
+            if ("PC".equals(source)){
                 invest.setTargetType(IFundTradeDao.TargetType.PC);
-            }else if("android".equals(source)){
+            }else if("ANDROID".equals(source)){
                 invest.setTargetType(IFundTradeDao.TargetType.ANDROID);
-            }else if("iphone".equals(source)){
+            }else if("ISO".equals(source)){
                 invest.setTargetType(IFundTradeDao.TargetType.IOS);
-            }else if ("winphone".equals(source)){
+            }else if ("WP".equals(source)){
                 invest.setTargetType(IFundTradeDao.TargetType.WP);
             }else {
                 invest.setTargetType(IFundTradeDao.TargetType.OTHER);
@@ -170,7 +166,7 @@ public class InvestOperation extends BaseLoginAction {
             return baseReturn;
         }catch (Exception e){
             logger.error("error",e);
-            return new BaseReturn(1,"数据解析失败！");
+            return new BaseReturn(1,"系统正忙请稍后重试！");
         }
     }
 
@@ -194,13 +190,7 @@ public class InvestOperation extends BaseLoginAction {
             String verfiyCode = request.getParameter("verfiyCode");//验证码
             String user_id = getUserId(request); //用户ID
             if (bankCode!=null && !"".equals(bankCode)){
-                Integer code = Integer.valueOf(bankCode);
-                String bc = BankCodeUtil.getBankCode(code);
-                if (bc!=null && !"".equals(bc)){
-                    map.put("BANK_CODE", bc);
-                }else {
-                    return new BaseReturn(1, "选择银行错误，请重新选择！");
-                }
+                map.put("BANK_CODE", bankCode);
             }else{
                 return new BaseReturn(1, "未选择银行！");
             }
@@ -213,7 +203,6 @@ public class InvestOperation extends BaseLoginAction {
                 return new BaseReturn(1, "充值金额不能为空！");
             } else {
                 BigDecimal withdraw_amount = new BigDecimal(amount);
-                withdraw_amount = withdraw_amount.setScale(0, BigDecimal.ROUND_HALF_UP);
                 map.put("AMOUNT", withdraw_amount.toString());
             }
             if (verfiyCode==null || "".equals(verfiyCode)){
@@ -243,7 +232,7 @@ public class InvestOperation extends BaseLoginAction {
             return baseReturn;
         }catch (Exception e){
             logger.error("error",e);
-            return new BaseReturn(1, "数据解析失败！");
+            return new BaseReturn(1, "系统正忙请稍后重试！");
         }
     }
 
@@ -263,15 +252,190 @@ public class InvestOperation extends BaseLoginAction {
                 return new BaseReturn(1, "购买金额不能为空！");
             } else {
                 BigDecimal withdraw_amount = new BigDecimal(amount);
-                withdraw_amount = withdraw_amount.setScale(2, BigDecimal.ROUND_HALF_UP);
                 map.put("amount", withdraw_amount.toString());
             }
             BaseReturn baseReturn = withdrawService.withdraw(map);
             return baseReturn;
         }catch (Exception e){
             logger.error("error",e);
-            return new BaseReturn(1,"数据解析失败！");
+            return new BaseReturn(1,"系统正忙请稍后重试！");
         }
+    }
+
+    /**
+     * 绑定银行卡
+     * @param request
+     * @return
+     */
+    @RequestMapping("/bindBankCard.do")
+    public ModelAndView bindBank(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            Map<String, String> param = new HashMap<String, String>();
+            String bankCode = request.getParameter("bankCode");
+            String userAccount = request.getParameter("userAccount");
+            userAccount = userAccount.replaceAll(" ", "");
+            //String verifyCode = request.getParameter("verifyCode");
+            String userId = getUserId(request);
+            if (bankCode == null || "".equals(bankCode)) {
+                view.setViewName("bindBankCard");
+                view.addObject("errorMsg", "银行代码不能为空！");
+                return view;
+            } else {
+                param.put("bankCode", bankCode);
+            }
+            if (userAccount == null || "".equals(userAccount)) {
+                view.setViewName("bindBankCard");
+                view.addObject("errorMsg", "银行卡号不能为空！");
+                return view;
+            } else {
+                param.put("bankNo", userAccount);
+            }
+            param.put("userId", userId);
+            BaseReturn baseReturn = cardVerifyService.sendBankIdentifyCode(param);
+            //BaseReturn baseReturn = new BaseReturn(0,"成功！");
+            if (baseReturn != null && baseReturn.getReturnCode() == 0) {
+                queryUserInfo(userId, bankCode, userAccount, map);
+                map.put("awardPage", 1);
+                view.setViewName("modifyBankCard");
+                view.addAllObjects(map);
+                return view;
+            } else {
+                queryUserInfo(userId,bankCode,userAccount,map);
+                map.put("errorMsg", baseReturn.getMessageInfo());
+                view.setViewName("bindBankCard");
+                view.addAllObjects(map);
+                return view;
+            }
+        }catch (Exception e){
+            logger.error("error", e);
+            view.setViewName("bindBankCard");
+            view.addObject("errorMsg", "系统正忙请稍后重试！");
+            return view;
+        }
+    }
+
+    /**
+     * 验证银行卡
+     * @param request
+     * @return
+     */
+    @RequestMapping("/verifyBankCard.do")
+    public ModelAndView verifyBindBank(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        Map<String, Object> param = new HashMap<String, Object>();
+        try {
+            Map<String, String> map = new HashMap<String, String>();
+            String money = request.getParameter("money");
+            String bankCode = request.getParameter("bankCode");
+            String bankNo = request.getParameter("codeNo");
+            HttpSession session = request.getSession();
+            String userId = getUserId(request);
+            map.put("userId", userId);
+            map.put("amount", money);
+            logger.debug("checkBankIdentifyCode::userId:::"+userId+"::amount::"+money);
+            BaseReturn baseReturn = cardVerifyService.checkBankIdentifyCode(map);
+            logger.debug("return checkBankIdentifyCode:"+baseReturn.getReturnCode());
+            //BaseReturn baseReturn = new BaseReturn(0, "成功!");
+            if (baseReturn != null && baseReturn.getReturnCode() == 0) {
+                String fromUrl = (String)session.getAttribute("fromUrl");
+                logger.debug("fromUrl:::::::"+fromUrl);
+                if (fromUrl!=null && !"".equals(fromUrl)){
+                    return new ModelAndView("forward:"+fromUrl);
+                }else {
+                    view.setViewName("bindCardSuccess");
+                    return view;
+                }
+            } else {
+                queryUserInfo(userId, bankCode, bankNo, param);
+                param.put("awardPage", 1);
+                param.put("errorMsg", baseReturn.getMessageInfo());
+                view.setViewName("modifyBankCard");
+                view.addAllObjects(param);
+                return view;
+            }
+        }catch (Exception e){
+            logger.error(e);
+            view.setViewName("modifyBankCard");
+            view.addObject("errorMsg", "系统正忙请稍后重试！");
+            return view;
+        }
+    }
+
+    /**
+     * 修改绑定银行卡
+     * @param request
+     * @return
+     */
+    @RequestMapping("/modifyBankCard.do")
+    public ModelAndView modifyBindBank(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+        Map<String, Object> param = new HashMap<String, Object>();
+        try {
+            Map<String, String> map = new HashMap<String, String>();
+            String bankCode = request.getParameter("bankCode");
+            String userAccount = request.getParameter("userAccount");
+            userAccount = userAccount.replaceAll(" ", "");
+            String userId = getUserId(request);
+            if (bankCode != null && !"".equals(bankCode)) {
+                map.put("bankCode", bankCode);
+            } else {
+                view.setViewName("modifyBankCard");
+                view.addObject("errorMsg", "银行不能为空！");
+                return view;
+            }
+            if (userAccount != null && !"".equals(userAccount)) {
+                map.put("bankNo", userAccount);
+            } else {
+                view.setViewName("modifyBankCard");
+                view.addObject("errorMsg", "银行卡号不能为空！");
+                return view;
+            }
+            map.put("userId", userId);
+            BaseReturn baseReturn = cardVerifyService.updateUserBindingCard(map);
+            if (baseReturn != null && baseReturn.getReturnCode() == 0) {
+                queryUserInfo(userId,bankCode,userAccount,param);
+                param.put("awardPage", 1);
+                view.setViewName("modifyBankCard");
+                view.addAllObjects(param);
+                return view;
+            } else {
+                queryUserInfo(userId,bankCode,userAccount, param);
+                param.put("awardPage", 0);
+                param.put("errorMsg", baseReturn.getMessageInfo());
+                view.setViewName("modifyBankCard");
+                view.addAllObjects(param);
+                return view;
+            }
+        }catch (Exception e){
+            logger.error("error", e);
+            view.setViewName("modifyBankCard");
+            view.addObject("errorMsg", "系统正忙请稍后重试！");
+            return view;
+        }
+    }
+
+    private void queryUserInfo(String userId,String bankCode, String bankNo, Map map){
+        BaseReturn userInfo = queryService.queryPhone(Integer.valueOf(userId));
+        Map<String,Object> userMap = (HashMap<String,Object>)userInfo.getData();
+        String mobilePhone = (String)userMap.get("mobilePhone");
+        if (mobilePhone.startsWith("-")){
+            mobilePhone = mobilePhone.substring(1);
+        }
+        String realName = (String)userMap.get("realName");
+        String idNo = (String)userMap.get("idNo");
+        logger.info("账户名：" + realName + ",手机号:" + mobilePhone);
+        map.put("userName",realName);
+        map.put("phone", Constants.getHidePhone(mobilePhone));
+        map.put("idNo", Constants.getHideIdNo(idNo));
+        HashMap<String, String> mapp = new HashMap<String, String>();
+        mapp.put("userId", userId);
+        FundBankCard fundBankCard = new FundBankCard();
+        fundBankCard.setUser_id(Integer.valueOf(userId));
+        fundBankCard.setBank_code(bankCode);
+        fundBankCard.setCard_no(bankNo);
+        map.put("bankCard", fundBankCard);
     }
 
 }

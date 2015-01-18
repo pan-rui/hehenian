@@ -703,7 +703,22 @@ background: #e6e5e1;
 	border: 1px #4aa3e9 solid;
 	color: #4aa3e9;
 }
-
+.payment .personalDataBox{
+	position: relative;
+	width:80px;
+	display: inline-block;
+}
+.payment .personalData{
+	position: absolute;
+	top:-15px;
+	text-decoration: none;
+	font-size: 12px;
+	color: #1b66c7;
+	font-family: Arial, Helvetica, STHeiti,"宋体";
+}
+.payment .personalData:hover{
+	text-decoration: underline;
+}
 .payment .content-nav{
 	height: 54px;
 	background: #f3f3f3;
@@ -1120,5 +1135,107 @@ background: url(../images/bt_blue_center.gif) repeat-x center;
 	background: #ffffff;
 	border-right: 1px solid #f0f4f7;
 	border-bottom: 1px solid #f0f4f7;
-	
+}
+
+.transactionDetails .personalDataBox{
+	position: relative;
+	width:80px;
+	display: inline-block;
+}
+.transactionDetails .personalData{
+	position: absolute;
+	top:-15px;
+	text-decoration: none;
+	font-size: 12px;
+	color: #1b66c7;
+	font-family: Arial, Helvetica, STHeiti,"宋体";
+}
+.transactionDetails .personalData:hover{
+	text-decoration: underline;
+}
+.transactionDetails .user-right .inputBox{
+	position: relative;
+	width: 530px;
+	background: #ffffff;
+	margin: 2px auto;
+	padding:46px 95px 54px 95px;
+}
+.transactionDetails .user-right .inputBox div{
+	position: relative;
+	height: 50px;
+	margin-bottom: 20px;
+	line-height: 50px;
+	font-size: 18px;
+	color:#666666;
+}
+.transactionDetails .user-right .inputBox div .bankBox{
+	position: relative;
+	display: inline-block;
+	width: 450px;
+	margin-left: 72px;
+}
+.transactionDetails .user-right .inputBox div .bankBox .bankLogo{
+	display: inline-block;
+	width: 100px;
+	border: 2px solid #e3e3e3;
+	cursor: pointer;
+	margin-right: 6px;
+}
+.transactionDetails .user-right .inputBox div .bankBox .bankLogo.onClick{
+	border: 2px solid #ff9900;
+}
+.transactionDetails .user-right .inputBox div .bankBox .bankLogo img{
+	height: 35px;
+	width: 100px;
+}
+.transactionDetails .user-right .inputBox div .bankBox .bankLogo .bankName{
+	position: relative;
+	top:0;
+	left: 0;
+	line-height: 20px;
+	font-size: 15px;
+	text-align: center;
+	margin-top: -16px;
+}
+.transactionDetails .user-right .inputBox div .accountNoO{
+	color: #FF6600;
+	font-size: 20pt;
+	font-family: "宋体";
+	padding-left: 8px;
+	padding-right: 8px;
+	position: absolute;
+	left: 72px;
+	bottom: -76px;
+	_bottom: -8px;
+	line-height: 52px;
+	border-top: 0;
+	text-align: left;
+	overflow: hidden;
+	background-color: #FFFFFF;
+	display: none;
+	z-index: 999;
+	border: 1px solid #e3e3e3;
+	border-top: none;
+}
+.transactionDetails .user-right .inputBox div input{
+	height: 50px;
+	width: 423px;
+	border:1px solid #e3e3e3;
+	padding-left: 25px;
+	font-size: 18px;
+}
+.transactionDetails .user-right .inputBox .paymentBtn{
+	height: 60px;
+	width: 126px;
+	display: block;
+	background: #ff9900;
+	margin-left: 234px;
+	color: #ffffff;
+	font-size: 26px;
+	line-height: 60px;
+	text-align: center;
+}
+.sucDiv{
+	position: relative;
+	float: left;
 }

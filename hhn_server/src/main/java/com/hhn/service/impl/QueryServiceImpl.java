@@ -1,20 +1,19 @@
 package com.hhn.service.impl;
 
-import com.hhn.dao.IFundPaymentDao;
+import com.hhn.dao.IFundBankCardDao;
 import com.hhn.dao.IFundTradeDao;
 import com.hhn.dao.IFundUserAccountDao;
+import com.hhn.pojo.FundBankCard;
 import com.hhn.pojo.FundUserAccount;
-import com.hhn.util.Base;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
+import com.hhn.util.DqlcConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Calendar;
 
 /**
  * Created by hynpublic on 2014/12/26.
@@ -28,30 +27,30 @@ public class QueryServiceImpl extends BaseService<FundUserAccount> {
     @Resource
     private IFundTradeDao fundTradeDao;
     @Resource
-    private IFundPaymentDao fundPaymentDao;
+    private IFundBankCardDao fundBankCardDao;
+    @Resource
+    private DqlcConfig dqlcConfig;
+
     public BaseReturn queryUserBalance(Integer userId) {
         FundUserAccount userAccount = fundUserAccountDao.queryUserAccount(userId);
-        return new BaseReturn(0, userAccount==null?new FundUserAccount():userAccount);
+        return new BaseReturn(0, userAccount == null ? new FundUserAccount() : userAccount);
     }
 
-    public BaseReturn queryPrincipal(Integer userId) {
-        return new BaseReturn(0,fundPaymentDao.queryCapital(userId));
+    public BaseReturn queryTotalInvest(Integer userId) {
+        FundUserAccount userAccount = fundUserAccountDao.queryUserAccount(userId);
+        return new BaseReturn(0,userAccount == null ? 0 : userAccount.getTotal_invest_amount());
     }
 
-    public BaseReturn queryFreeze(Integer userId) {
-        FundUserAccount fundUserAccount = fundUserAccountDao.queryUserAccount(userId);
-        if(fundUserAccount==null)
-            return new BaseReturn(1, 0);
-        else
-        return new BaseReturn(0,fundUserAccount.getFreeze_amount());
+    public BaseReturn queryRound(Integer userId) {
+        return new BaseReturn(0, fundTradeDao.queryRound(userId));
     }
 
     public BaseReturn queryInterested(Integer userId) {
-        return new BaseReturn(0,fundPaymentDao.queryInterested(userId));
+        return new BaseReturn(0, fundTradeDao.queryInterested(userId));
     }
 
     public BaseReturn queryInterest(Integer userId) {
-        return new BaseReturn(0,fundPaymentDao.queryInterest(userId));
+        return new BaseReturn(0, fundTradeDao.queryInterest(userId));
     }
 
     public BaseReturn queryOtherInterest(Integer userId) {
@@ -59,11 +58,19 @@ public class QueryServiceImpl extends BaseService<FundUserAccount> {
     }
 
     public BaseReturn queryPhone(Integer userId) {
-       return new BaseReturn(0,fundUserAccountDao.queryPhone(userId));
+        return new BaseReturn(0, fundUserAccountDao.queryPhone(userId));
     }
 
     public BaseReturn queryPay() {
-        BigDecimal bigDecimal=fundTradeDao.queryPay(new Date(), IFundTradeDao.TradeType.INVESTMENT.name());
-        return new BaseReturn(bigDecimal==null?1:0,bigDecimal);
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, Integer.parseInt(dqlcConfig.LOAN_AHEAD));
+        BigDecimal bigDecimal = fundTradeDao.queryPay(calendar.getTime());
+        return new BaseReturn(bigDecimal == null ? 1 : 0, bigDecimal);
     }
+
+    public BaseReturn queryBankCard(Integer userId) {
+        FundBankCard fundBankCard = fundBankCardDao.getBankCard(userId);
+        return new BaseReturn(0, fundBankCard == null ? new FundBankCard() : fundBankCard, "");
+    }
+
 }

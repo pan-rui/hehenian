@@ -497,4 +497,35 @@ public class Constants {
         return repayName;
     }
 
+    public static String getHidePhone(String phone){
+        StringBuffer sb = new StringBuffer();
+        if (phone!=null && !"".equals(phone)){
+            sb.append(phone.substring(0,3));
+            sb.append("****");
+            sb.append(phone.substring(7, phone.length()));
+        }
+        return sb.toString();
+    }
+
+    public static String getHideBandNo(String bankNo){
+        StringBuffer sb = new StringBuffer();
+        if (bankNo!=null && !"".equals(bankNo)){
+            sb.append(bankNo.substring(0,4));
+            int flag = bankNo.length()-8;
+            for(int i=0;i<flag;i++){
+                sb.append("*");
+            }
+            sb.append(bankNo.substring((flag+4), bankNo.length()));
+        }
+        return sb.toString();
+    }
+
+    public static String getHideIdNo(String idNo){
+        StringBuffer sb = new StringBuffer();
+        if (idNo!=null && !"".equals(idNo)){
+            sb.append(idNo.replace(idNo.subSequence(6, idNo.length() - 4),"********"));
+        }
+        return sb.toString();
+    }
+
 }

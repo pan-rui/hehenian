@@ -148,4 +148,5 @@ public class FundUserAccount implements java.io.Serializable {
 	public void setCreate_time(Date create_time) {
 		this.create_time = create_time;
 	}
+
 }

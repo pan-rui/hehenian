@@ -6,9 +6,9 @@ import com.hhn.dao.IFundTradeDao;
 import com.hhn.pojo.FundInvestmentDetail;
 import com.hhn.pojo.FundProduct;
 import com.hhn.pojo.FundTrade;
-import com.hhn.service.ProcessInfo;
 import com.hhn.util.BaseReturn;
 import com.hhn.util.BaseService;
+import com.hhn.util.DqlcConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +29,7 @@ public class ModifyProductServiceImpl extends BaseService<FundProduct> {
     @Resource
     private IFundTradeDao fundTradeDao;
 @Resource
-private ProcessInfo processInfo;
+private DqlcConfig processInfo;
     public BaseReturn modifyForStream(Integer product_id) {
         Calendar calendar=Calendar.getInstance();
         FundProduct fundProduct = fundProductDao.query(product_id);

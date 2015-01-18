@@ -94,7 +94,7 @@
     </update>
 
     <select id="queryPhone" parameterType="int" resultType="java.util.HashMap">
-        select u.mobilePhone,p.realName FROM t_user u,t_person p where u.id=#{userId} AND p.userId=#{userId}
+        select u.mobilePhone,p.realName,p.idNo FROM t_user u,t_person p where u.id=#{userId} AND p.userId=#{userId}
     </select>
 
 </mapper>

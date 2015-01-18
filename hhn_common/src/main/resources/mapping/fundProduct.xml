@@ -99,7 +99,14 @@
         <include refid="uuu"></include>
         where product_id=#{product_id}
     </update>
-
+    <update id="updateProduct" parameterType="map">update td_fund_product
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="params" item="item" index="key" separator=",">
+                <if test="null!=item and key!='product_id' and key!='money'">${key}=#{item}</if>
+            </foreach>
+        </trim>
+        where product_id=#{product_id} AND invest_amount-invested_amount &gt;= #{money}
+    </update>
     <select id="query" parameterType="int" resultType="fund_product">
         select * from td_fund_product where product_id=#{id}
     </select>
@@ -274,19 +281,18 @@
 
     <select id="getPayBackProduct" parameterType="map" resultType="java.util.HashMap">
         select a.*,b.realName,
-        (select t1.modify_time from td_fund_product_audit t1 where t1.product_audit_id = a.product_id
-        and t1.status = 5 order by t1.modify_time desc limit 1) startTime,
-        (select t2.pre_payment_time from td_fund_payment t2 where t2.user_id = a.user_id
-        order by t2.periods desc limit 1) finishTime,
-        (select t2.periods from td_fund_payment t2 where t2.user_id = a.user_id
-        and t2.payment_status = 0 order by t2.periods limit 1) nextNum,
-        (select t2.pre_payment_time from td_fund_payment t2 where t2.user_id = a.user_id
-        and t2.payment_status = 0 order by t2.periods limit 1) nextTime,
-        (select t2.pre_payment_money from td_fund_payment t2 where t2.user_id = a.user_id
-        and t2.payment_status = 0 order by t2.periods limit 1) nextAmount
-        from td_fund_product a, t_person b,td_fund_investment_detail c
-        where a.product_id = c.product_id
-        and a.user_id = b.userId
+        (select t2.pre_repay_date from td_fund_pre_repayment t2 where t2.user_id = a.user_id
+        and t2.loan_id=a.loan_id and t2.repay_status in ('NO_REPAYMENT','PROXY_REPAY')  order by t2.repay_times limit 1) startTime,
+        (select DATE_SUB(DATE_ADD(t2.pre_repay_date,interval 1 month),interval 1 day) from td_fund_pre_repayment t2 where t2.user_id = a.user_id
+        and t2.loan_id=a.loan_id and t2.repay_status in ('NO_REPAYMENT','PROXY_REPAY')  order by t2.repay_times limit 1) finishTime,
+        (select t2.repay_times from td_fund_pre_repayment t2 where t2.user_id = a.user_id
+        and t2.loan_id=a.loan_id and t2.repay_status in ('NO_REPAYMENT','PROXY_REPAY') order by t2.repay_times limit 1) nextNum,
+        (select t2.pre_repay_date from td_fund_pre_repayment t2 where t2.user_id = a.user_id
+        and t2.loan_id=a.loan_id and t2.repay_status in ('NO_REPAYMENT','PROXY_REPAY') order by t2.repay_times limit 1) nextTime,
+        (select t2.pre_repay_amount from td_fund_pre_repayment t2 where t2.user_id = a.user_id
+        and t2.loan_id=a.loan_id and t2.repay_status in ('NO_REPAYMENT','PROXY_REPAY') order by t2.repay_times limit 1) nextAmount
+        from td_fund_product a, t_person b
+        where a.user_id = b.userId
         <if test="product_name!=null">
             and product_name LIKE CONCAT('%',#{product_name},'%')
         </if>
@@ -328,6 +334,30 @@
           and a.user_id = #{user_id}
           order by a.invest_time desc
          limit #{numNow},#{pageSize}
+    </select>
+
+    <select id="getWithdrawList" parameterType="map" resultType="java.util.HashMap">
+        select
+          a.*,b.user_account_id,b.balance_amount,c.realName
+        from
+          td_fund_product a,
+          td_fund_user_account b,
+          t_person c
+        where a.user_id = b.user_id
+          and a.user_id = c.userId
+        <if test="product_name!=null">
+            and product_name LIKE CONCAT('%',#{product_name},'%')
+        </if>
+        <if test="product_status!=null">
+            and product_status = #{product_status}
+        </if>
+        <if test="beginDate!=null and beginDate!=''">
+            <![CDATA[ and create_time >= date_format(#{beginDate},'%Y-%m-%d') ]]>
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            <![CDATA[ and create_time < date_add(date_format(#{endDate},'%Y-%m-%d'),interval 1 day) ]]>
+        </if>
+        order by a.update_time desc limit 500
     </select>
 
     

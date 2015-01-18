@@ -1,5 +1,7 @@
 package com.hhn.service.pay;
 
+import java.util.Map;
+
 import com.aipg.rtreq.Trans;
 import com.hhn.pojo.TransInfo;
 import com.hhn.util.BaseReturn;
@@ -23,4 +25,6 @@ public interface IAllinPay {
      */
     public BaseReturn allinPay100011(Trans trans,TransInfo[] transInfos);
 
+
+	
 }

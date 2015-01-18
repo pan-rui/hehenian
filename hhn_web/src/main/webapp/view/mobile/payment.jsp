@@ -148,14 +148,14 @@
         <div class="container payment">
             <div class="cover" id="cover"></div>
             <div class="bankBox" id="bankBox">
-                <a class="bankText" onclick="choiceBank(this,0)">中国银行</a>
-                <a class="bankText" onclick="choiceBank(this,1)">农业银行</a>
-                <a class="bankText" onclick="choiceBank(this,2)">建设银行</a>
-                <a class="bankText" onclick="choiceBank(this,3)">交通银行</a>
-                <a class="bankText" onclick="choiceBank(this,4)">招商银行</a>
-                <a class="bankText" onclick="choiceBank(this,5)">邮储银行</a>
-                <a class="bankText" onclick="choiceBank(this,6)">兴业银行</a>
-                <a class="bankText" onclick="choiceBank(this,7)">光大银行</a>
+                <a class="bankText" onclick="choiceBank(this,'0104')">中国银行</a>
+                <a class="bankText" onclick="choiceBank(this,'0103')">农业银行</a>
+                <a class="bankText" onclick="choiceBank(this,'0105')">建设银行</a>
+                <a class="bankText" onclick="choiceBank(this,'0301')">交通银行</a>
+                <a class="bankText" onclick="choiceBank(this,'0308')">招商银行</a>
+                <a class="bankText" onclick="choiceBank(this,'0403')">邮储银行</a>
+                <a class="bankText" onclick="choiceBank(this,'0309')">兴业银行</a>
+                <a class="bankText" onclick="choiceBank(this,'0303')">光大银行</a>
             </div>
             <div class="header">
                 定期理财

@@ -1,16 +1,20 @@
 package com.hhn.util;
 
-import net.spy.memcached.MemcachedClient;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.util.List;
+
+import net.spy.memcached.MemcachedClient;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 /**
  * Created by lenovo on 2014/12/8.
@@ -24,6 +28,35 @@ public abstract class Base {
     public static ApplicationContext applicationContext;
     public static String webPath;
     public static ApplicationContext otherApplicationContext;
+
+    @Resource
+    protected MessageSource          messageSource;
+
+    /**
+     * 获取配置在message里的消息
+     * 
+     * @param messageKey
+     * @return
+     * @author: zhangyunhmf
+     * @date: 2015年1月15日上午11:09:08
+     */
+    public String getMessage(String messageKey) {
+        return messageSource.getMessage(messageKey, null, Locale.CHINA);
+    }
+
+    /**
+     * 获取配置在message里的消息
+     * 
+     * @param messageKey
+     * @param parameters
+     * @return
+     * @author: zhangyunhmf
+     * @date: 2015年1月15日上午11:09:37
+     */
+    public String getMessage(String messageKey, Object[] parameters) {
+        return messageSource.getMessage(messageKey, parameters, Locale.CHINA);
+    }
+
 //    public static String jsp_classpath;
     public static ApplicationContext getApplicationContext(HttpServletRequest request) {
 //        return applicationContext==null?applicationContext=WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext()):applicationContext;

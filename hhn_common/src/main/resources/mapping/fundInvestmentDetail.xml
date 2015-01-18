@@ -79,13 +79,20 @@
     </delete>
 
     <select id="getInvestDetailList" parameterType="java.util.Map" resultType="java.util.HashMap">
-        SELECT a.*,modify_time,c.realName user_name,b.product_name,b.product_status from td_fund_investment_detail a
-        INNER JOIN  td_fund_product b ON a.product_id = b.product_id
-        INNER JOIN t_person c ON c.userId = a.user_id
-        LEFT  JOIN (
-        SELECT  product_id,MAX(modify_time) modify_time  FROM td_fund_product_audit  WHERE `status` = 3 GROUP BY product_id
-        ) d ON d.product_id = a.product_id
-        WHERE 1=1
+        select
+        a.*,c.realName user_name,b.product_name,b.product_status,
+        (select
+        t.modify_time
+        from
+        td_fund_product_audit t
+        where t.product_id = a.product_id
+        and t.status = 5 limit 1) modify_time
+        from
+        td_fund_investment_detail a,
+        td_fund_product b,
+        t_person c
+        where a.product_id = b.product_id
+        and c.userId = a.user_id
         <if test="user_name!=null">
             and c.realName LIKE CONCAT('%',#{user_name},'%')
         </if>

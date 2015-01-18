@@ -17,12 +17,14 @@
   <script type="text/javascript">
     function auditSign(id) {
       if (confirm("确认放款吗？")) {
+        $("#btn1").attr("disabled", true);
         $.ajax({
           type: "POST",
           url: "<c:url value="/signPutMoney.do"/>",
           data: {productId: id},
           async: true,
           dataType: "json",
+          timeout:60000,
           success: function (data) {
             if (data) {
               alert("确认放款成功！");
@@ -52,16 +54,16 @@
           <td class="lftd">筹款用途：</td><td class="ritd"><c:out value="${productDetail.product_usage}" /></td>
         </tr>
         <tr>
-          <td class="lftd">年利率：</td><td class="ritd"><c:out value="${productDetail.annual_rate}" /></td>
+          <td class="lftd">年利率：</td><td class="ritd"><c:out value="${productDetail.annual_rate}" />%</td>
         </tr>
         <tr>
-          <td class="lftd">筹标期限：</td><td class="ritd"><c:out value="${productDetail.loan_period}" />月</td>
+          <td class="lftd">筹标期限：</td><td class="ritd"><c:out value="${productDetail.loan_period}" />个月</td>
         </tr>
         <tr>
-          <td class="lftd">发布时间：</td><td class="ritd"><c:out value="${productDetail.publishTime}" /></td>
+          <td class="lftd">发布时间：</td><td class="ritd"><f:formatDate value="${productDetail.publishTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
         </tr>
         <tr>
-          <td class="lftd">满标时间：</td><td class="ritd"><c:out value="${productDetail.fullTime}" /></td>
+          <td class="lftd">满标时间：</td><td class="ritd"><f:formatDate value="${productDetail.fullTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
         </tr>
         <tr>
           <td class="lftd">计划筹款金额：</td><td class="ritd"><c:out value="${productDetail.invest_amount}" /></td>
@@ -73,7 +75,7 @@
           <td colspan="2">&nbsp;</td>
         </tr>
         <tr>
-          <td colspan="2" style="text-align: center;padding-bottom: 5px;"><input type="button" value="确认放款" onclick="auditSign('<c:out value="${productDetail.product_id}"/>')" />
+          <td colspan="2" style="text-align: center;padding-bottom: 5px;"><input type="button" value="确认放款" id="btn1" onclick="auditSign('<c:out value="${productDetail.product_id}"/>')" />
             &nbsp;&nbsp;<input type="button" value="取消" onclick="window.close();" /></td>
         </tr>
         </table>

@@ -1,13 +1,18 @@
 <%@ page pageEncoding="UTF-8" language="java" %>
-<%@page import="java.util.Map,java.util.HashMap" %>
+<%@page import="java.util.*" %>
+<%@ page import="java.math.BigDecimal" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     HttpSession session2 = request.getSession();
-    Map map = new HashMap();
-    map.put("mounth",request.getAttribute("mounth"));
-    map.put("amount",request.getAttribute("amount"));
-    map.put("source",request.getAttribute("source"));
-    session.setAttribute("parameterMap", map);
+    HashMap map = new HashMap();
+    Integer mth = (Integer)request.getAttribute("mounth");
+    BigDecimal amt = (BigDecimal)request.getAttribute("totalAmount");
+    String sc = (String)request.getAttribute("source");
+    map.put("mounth", new String[]{mth.toString()});
+    map.put("amount",new String[]{amt.toString()});
+    map.put("source",new String[]{sc});
+    session2.setAttribute("parameterMap", map);
+    session2.removeAttribute("fromUrl");
 %>
 <!DOCTYPE html>
 <html>
@@ -24,42 +29,39 @@
             var it;count=60;
             $(function(){
                 if ((navigator.userAgent.indexOf('MSIE') >= 0)&&(navigator.userAgent.indexOf('Opera') < 0)){
-                    $('#userName').val('输入持卡人姓名');
-                    $('#userName').attr('onfocus',"if(this.value == '输入持卡人姓名') this.value = ''");
-                    $('#userName').attr('onblur',"if(this.value == '') this.value = '输入持卡人姓名'");
-                    $('#userAccount').val('输入银行卡号');
-                    $('#userAccount').attr('onfocus',"if(this.value == '输入银行卡号') this.value = ''");
-                    $('#userAccount').attr('onblur',"if(this.value == '') this.value = '输入银行卡号'");
+                    $('#userName').attr('disabled',"disabled");
+                    $('#userAccount').attr('disabled',"disabled");
+                    $('#phone').attr('disabled',"disabled");
                 }
                 $("#btn2").bind("click",function(){
                     getVerifyCode();
                 });
             });
             function subPay(){
+                var userName = $("#userName").attr("data");
+                var userAccount = $("#userAccount").attr("data");
+                var phone = $("#phone").attr("data");
                 var bankCode = $("#bankCode").val();
-                var userAccount = $('#userAccount').val();
                 var passwd = $("#userPassword").val();
-                var phone = $("#phone").attr("phone");
                 var verfiyCode = $("#verfiyCode").val();
+                if(userName==''){
+                    $('body').append('<div class="cover"></div><div class="payFailure"><img src="<c:url value="/images/zhifushibai.png"/>"><p>你未实名登记，请先完善个人信息</p><a onclick="closePop()">确定</a></div>');
+                    return;
+                }
                 if(bankCode==''){
                     $('body').append('<div class="cover"></div><div class="payFailure"><img src="<c:url value="/images/zhifushibai.png"/>"><p>请选择银行</p><a onclick="closePop()">确定</a></div>');
                     return;
                 }
-                if(userAccount == ""){
-                    $('body').append('<div class="cover"></div><div class="payFailure"><img src="<c:url value="/images/zhifushibai.png"/>"><p>请输入银行卡号</p><a onclick="closePop()">确定</a></div>');
+                if(userAccount==''){
+                    $('body').append('<div class="cover"></div><div class="payFailure"><img src="<c:url value="/images/zhifushibai.png"/>"><p>你未绑定银行卡，请先完成绑定</p><a onclick="closePop()">确定</a></div>');
                     return;
-                }else{
-                    if(userAccount.replace(/( )/g, "").length<16 || userAccount.replace(/( )/g, "").length>19){
-                        $('body').append('<div class="cover"></div><div class="payFailure"><img src="<c:url value="/images/zhifushibai.png"/>"><p>输入有误，请输入16至19位银行卡号</p><a onclick="closePop()">确定</a></div>');
-                        return;
-                    }
                 }
                 if(passwd==""){
                     $('body').append('<div class="cover"></div><div class="payFailure"><img src="<c:url value="/images/zhifushibai.png"/>"><p>登录密码不能为空</p><a onclick="closePop()">确定</a></div>');
                     return;
                 }
-                if(phone==""){
-                    $('body').append('<div class="cover"></div><div class="payFailure"><img src="<c:url value="/images/zhifushibai.png"/>"><p>还未绑定手机号，请先绑定</p><a onclick="closePop()">确定</a></div>');
+                if(phone==''){
+                    $('body').append('<div class="cover"></div><div class="payFailure"><img src="<c:url value="/images/zhifushibai.png"/>"><p>请先绑定手机号</p><a onclick="closePop()">确定</a></div>');
                     return;
                 }
                 if(verfiyCode==""){
@@ -120,28 +122,28 @@
             function goToPage(){
                 self.location.href = "<c:url value="/view/conductFinancial.jsp"/>";
             }
-            function formatInput(ob){
-                var sID = $.trim(ob.id);
-                var sValue = $.trim($(ob).val());
-                sValue = sValue.replace(/\s/g,"");
-                sValue = sValue.substring(0,19); 
-                if(sID.indexOf("user") != -1){
-                    sValue = sValue.replace(/.{4}/g,function(str){
-                        return str+' '; 
-                    });
-                    sValue = $.trim(sValue);
-                    if(sValue.length > 25){
-                        sValue = $.trim(sValue.substr(0,25))+'...';
-                    }
-                }else{
-                    if(sValue.length > 16){
-                        sValue = $.trim(sValue.substr(0,16))+'...';
-                    }   
-                }
-                sValue = $.trim(sValue);
-                if(sValue != "")$('#'+sID+'FormatTip').html(sValue).show();
-                else $('#'+sID+'FormatTip').hide();
-            }
+//            function formatInput(ob){
+//                var sID = $.trim(ob.id);
+//                var sValue = $.trim($(ob).val());
+//                sValue = sValue.replace(/\s/g,"");
+//                sValue = sValue.substring(0,19);
+//                if(sID.indexOf("user") != -1){
+//                    sValue = sValue.replace(/.{4}/g,function(str){
+//                        return str+' ';
+//                    });
+//                    sValue = $.trim(sValue);
+//                    if(sValue.length > 25){
+//                        sValue = $.trim(sValue.substr(0,25))+'...';
+//                    }
+//                }else{
+//                    if(sValue.length > 16){
+//                        sValue = $.trim(sValue.substr(0,16))+'...';
+//                    }
+//                }
+//                sValue = $.trim(sValue);
+//                if(sValue != "")$('#'+sID+'FormatTip').html(sValue).show();
+//                else $('#'+sID+'FormatTip').hide();
+//            }
 
             function getVerifyCode(){
                 $("#btn2").unbind("click");
@@ -194,52 +196,66 @@
                     <img style="position: absolute;top:32px;left:226px;" src="<c:url value="/images/paymentIcon.png"/>"/>
                     <p>支付金额<span><c:out value="${amount}" /></span>元,账户余额<span><c:out value="${balance}" /></span>元</p>
                     <div class="inputBox">
-                        <div>姓名　　<input type="text" id="userName" name="userName" value="<c:out value="${userName}"/>" placeholder="输入持卡人姓名" disabled="disabled" /></div>
-                        <c:if test="${empty userName}"><span style="text-decoration:underline;padding-left: 74px;"><a href="/owerInformationInit.do?fromUrl=/hhn_web/buyDetailPage.do" target="_blank">完善个人信息</a></span><br/></c:if>
+                        <div>姓名　　<input type="text" id="userName" name="userName" value="<c:out value="${userName}"/>" style="width: 334px;"
+                                        data="<c:out value="${userName}"/>" placeholder="输入持卡人姓名" disabled="disabled" />
+                            <span class="personalDataBox">
+                                <a class="personalData" href="/owerInformationInit.do?fromUrl=<c:url value="/buyDetailPage.do"/>" target="_blank">完善个人信息</a>
+                            </span></div>
                         <div style="height:auto;margin:0">
-                            <input id="bankCode" name="bankCode" type="hidden" value="0" />
+                            <input id="bankCode" name="bankCode" type="hidden"
+                                <c:choose>
+                                    <c:when test="${not empty bankCard and not empty bankCard.bank_code}"> value="<c:out value="${bankCard.bank_code}"/>"</c:when>
+                                    <c:otherwise> value="0104"</c:otherwise>
+                                </c:choose> />
                             <span style="position: absolute;top:0;left:0">银行</span>
                             <span class="bankBox">
-                                <span class="bankLogo onClick" onclick="selectBank(this,0)">
+                                <span class="bankLogo <c:if test="${empty bankCard or empty bankCard.bank_code or bankCard.bank_code=='0104'}">onClick</c:if>" onclick="selectBank(this,'0104')">
                                     <img src="<c:url value='/images/zgyh.jpg'/>">
                                     <p class="bankName">中国银行</p>
                                 </span>
-                                <span class="bankLogo" onclick="selectBank(this,1)">
+                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0103'}">onClick</c:if>" onclick="selectBank(this,'0103')">
                                     <img src="<c:url value='/images/nyyh.jpg'/>" >
                                     <p class="bankName">农业银行</p>
                                 </span>
-                                <span class="bankLogo" onclick="selectBank(this,2)">
+                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0105'}">onClick</c:if>" onclick="selectBank(this,'0105')">
                                     <img src="<c:url value='/images/jsyh.jpg'/>">   
                                     <p class="bankName">建设银行</p>   
                                 </span>
-                                <span style="margin-right:0px" class="bankLogo" onclick="selectBank(this,3)">
+                                <span style="margin-right:0px" class="bankLogo <c:if test="${bankCard.bank_code=='0301'}">onClick</c:if>" onclick="selectBank(this,'0301')">
                                     <img src="<c:url value='/images/jtyh.jpg'/>">
                                     <p class="bankName">交通银行</p>
                                 </span>
-                                <span class="bankLogo" onclick="selectBank(this,4)">
+                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0308'}">onClick</c:if>" onclick="selectBank(this,'0308')">
                                     <img src="<c:url value='/images/zsyh.jpg'/>">
                                     <p class="bankName">招商银行</p>
                                 </span>
-                                <span class="bankLogo" onclick="selectBank(this,5)">
+                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0403'}">onClick</c:if>" onclick="selectBank(this,'0403')">
                                     <img src="<c:url value='/images/ycyh.jpg'/>">
                                     <p class="bankName">邮储银行</p>
                                 </span>
-                                <span class="bankLogo" onclick="selectBank(this,6)">
+                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0309'}">onClick</c:if>" onclick="selectBank(this,'0309')">
                                     <img src="<c:url value='/images/xyyh.jpg'/>">
                                     <p class="bankName">兴业银行</p>
                                 </span>
-                                <span style="margin-right:0px" class="bankLogo" onclick="selectBank(this,7)">
+                                <span style="margin-right:0px" class="bankLogo <c:if test="${bankCard.bank_code=='0303'}">onClick</c:if>" onclick="selectBank(this,'0303')">
                                     <img src="<c:url value='/images/gdyh.jpg'/>">
                                     <p class="bankName">光大银行</p>
                                 </span>
                             </span>
                         </div>
-                        <div>卡号　　<input type="text" id="userAccount" name="userAccount" placeholder="输入银行卡号" onkeyup="formatBankNo(this)" onkeydown="formatBankNo(this)" onblur="$('#userAccountFormatTip').hide()" oninput="formatInput(this)" onpropertychange="formatInput(this)"/><div class="accountNoO" id="userAccountFormatTip"></div></div>
+                        <div>卡号　　<input type="text" id="userAccount" name="userAccount" value="<c:out value="${bankCard.card_no}"/>" style="width: 334px;"
+                                        data="<c:out value="${bankCard.card_no}"/>" placeholder="输入银行卡号" disabled="disabled" />
+                            <span class="personalDataBox">
+                                <a class="personalData" href="<c:url value="/queryBankCard.do"/>?fromUrl=/buyDetailPage.do" target="_blank">绑定银行卡</a>
+                            </span></div>
                         <div>密码　　<input type="password" id="userPassword" name="userPassword" placeholder="请输入合和年网站的登陆密码"/></div>
-                        <div>手机号　<input type="text" id="phone" name="phone" placeholder="输入手机号" value="<c:out value="${phone }"/>" phone="<c:out value="${phone }"/>" disabled="disabled" /></div>
-                        <c:if test="${empty phone}"><span style="text-decoration:underline;padding-left: 74px;"><a href="/updatexgmm.do?ivp=1&fromUrl=/hhn_web/buyDetailPage.do" target="_blank">修改手机号</a></span><br/></c:if>
-                        <div>　　　　<input type="text" id="verfiyCode" name="verfiyCode" placeholder="输入验证码" id="code" style="width:120px">&nbsp;&nbsp;&nbsp;&nbsp;<button style="height:40px" id="btn2" >获取验证码</button><font color="red" style="font-size: 13px;" id="s_telephone"><c:if test="${empty phone}">未绑定手机号，请先绑定！</c:if></font></div>
-                        <div class="agreement"><span id="agreementSelect" onclick="selectAgree(this)"></span><a href="#">同意合和年代扣协议</a></div>
+                        <div>手机号　<input type="text" id="phone" name="phone" placeholder="输入手机号" value="<c:out value="${phone }"/>" style="width: 334px;"
+                                        data="<c:out value="${phone }"/>" disabled="disabled" />
+                            <span class="personalDataBox">
+                                <a class="personalData" href="/updatexgmm.do?ivp=1&fromUrl=<c:url value="/buyDetailPage.do"/>" target="_blank">修改手机号</a>
+                            </span></div>
+                        <div>　　　　<input type="text" id="verfiyCode" name="verfiyCode" maxlength="6" placeholder="输入验证码" id="code" style="width:120px">&nbsp;&nbsp;&nbsp;&nbsp;<button style="height:40px" id="btn2" >获取验证码</button><font color="red" style="font-size: 13px;" id="s_telephone"><c:if test="${empty phone}">未绑定手机号，请先绑定！</c:if></font></div>
+                        <div class="agreement"><span id="agreementSelect" onclick="selectAgree(this)"></span><a href="<c:url value="/view/withholdingAgreement.jsp"/>" target="_blank">同意合和年代扣协议</a></div>
                         <a class="paymentBtn" onclick="subPay()">确认支付</a>
                     </div>
                 </div>
@@ -248,7 +264,6 @@
                 <form action="<c:url value="/getIntPcRate.do"/>" id="form2" name="form2" method="get">
                     <input type="hidden" name="mounth" value="<c:out value="${mounth}"/>" />
                     <input type="hidden" name="totalAmount" value="<c:out value="${totalAmount}"/>" />
-                    <input type="hidden" name="boss-token" value="<%=request.getSession().getAttribute("boss-token")%>" />
                 </form>
             </div>
         </div>

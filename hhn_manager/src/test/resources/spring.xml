@@ -84,7 +84,7 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
     </aop:config>
 
     <aop:aspectj-autoproxy/>
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
    <!--定时器 -->
    <!--<task:annotation-driven/>-->
    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>

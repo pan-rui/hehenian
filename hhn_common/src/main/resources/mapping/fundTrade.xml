@@ -152,9 +152,19 @@
             select sum(t.trade_amount) from td_fund_trade t WHERE t.expect_trade_time &lt;= #{noww} and t.trade_type=#{trade_type}
         </select>-->
     <select id="queryPay" parameterType="map" resultType="java.math.BigDecimal">
-    select pp.ss+IFNULL(sum(t.trade_amount),0) from td_fund_trade t,(select sum(p.invest_amount-p.invested_amount) as ss from td_fund_product p) pp WHERE t.expect_trade_time &lt;= #{noww} and t.trade_type=#{trade_type}
+    select IFNULL(pp.ss,0)+IFNULL(sum(t.trade_amount),0)-IFNULL(ft.stb,0) from td_fund_investment_detail t,(select sum(p.invest_amount-p.invested_amount) as ss from td_fund_product p WHERE p.product_status=2) pp, (SELECT sum(trade_balance) as stb FROM td_fund_trade WHERE trade_status='PROCESSING') ft WHERE date_add(t.invest_time,interval t.invest_period MONTH) &lt;= #{noww} and t.status!=4
     </select>
     <!--select (select sum(t.trade_amount) from td_fund_trade t WHERE t.expect_trade_time &lt;= #{noww} and t.trade_type=#{trade_type})+(select sum(p.invest_amount-p.invested_amount) from td_fund_product p) from td_dual;-->
     <!--select sum(t.trade_amount) from td_fund_trade t INNER JOIN fund_product p WHERE t.expect_trade_time &lt;= #{noww} and t.trade_type=#{trade_type}-->
-
+    <select id="queryRound" parameterType="int" resultType="java.math.BigDecimal">
+        select IFNULL(sum(trade_amount),0) FROM td_fund_trade WHERE user_id=#{user_id} AND trade_status='TRANSFEREDMONEY'
+    </select>
+    <select id="queryInterested" parameterType="int" resultType="java.math.BigDecimal">
+        select IFNULL(sum(ft.trade_amount),0)-IFNULL(tfids.sta,0) FROM td_fund_trade ft,
+        (select sum(tfid.trade_amount) as sta from td_fund_investment_detail tfid JOIN td_fund_trade tft ON tfid.fund_trade_id=tft.trade_id WHERE tft.user_id=#{user_id} AND tft.trade_status='TRANSFEREDMONEY') tfids WHERE ft.user_id=#{user_id} AND ft.trade_status='TRANSFEREDMONEY'
+    </select>
+    <select id="queryInterest" parameterType="int" resultType="java.math.BigDecimal">
+             select IFNULL(sum(ft.trade_amount),0)-IFNULL(tfids.sta,0) FROM td_fund_trade ft,
+        (select sum(tfid.trade_amount) as sta from td_fund_investment_detail tfid JOIN td_fund_trade tft ON tfid.fund_trade_id=tft.trade_id WHERE tft.user_id=#{user_id} AND tft.trade_status='SUCCESS') tfids WHERE ft.user_id=#{user_id} AND ft.trade_status='SUCCESS'
+    </select>
 </mapper>

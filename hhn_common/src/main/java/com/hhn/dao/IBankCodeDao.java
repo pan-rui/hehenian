@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IBankCodeDao extends BaseDao<BankCode> {
 
+    String getRegxByCode(String bankCode);
+
+
 }

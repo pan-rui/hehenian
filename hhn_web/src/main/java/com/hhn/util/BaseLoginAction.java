@@ -1,9 +1,10 @@
 package com.hhn.util;
 
+import com.hehenian.biz.common.account.dataobject.AccountUserDo;
+import com.hehenian.biz.common.account.dataobject.PersonDo;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -14,13 +15,30 @@ public class BaseLoginAction extends BaseAction {
     //判断用户登录，并取userId
     public String getUserId(HttpServletRequest request) {
         Object user = getSessionObj(request);
-        return getObjVal(user, "getId");
+       return getObjVal(user, "getId");
     }
     //取用户姓名
     public String getUserName(HttpServletRequest request) {
         Object user = getSessionObj(request);
         return getObjVal(user, "getUsername");
     }
+
+    public String getMobilePhone(HttpServletRequest request){
+        Object user = getSessionObj(request);
+        return getObjVal(user, "getMobilePhone");
+    }
+
+    public String getRealName(HttpServletRequest request){
+        Object user = getSessionObj(request);
+        if (user!=null) {
+            AccountUserDo accountUserDo = (AccountUserDo) user;
+            PersonDo personDo = accountUserDo.getPerson();
+            return getObjVal(personDo, "getRealName");
+        }else {
+            return null;
+        }
+    }
+
     //获取对象
     public Object getSessionObj(HttpServletRequest request) {
         HttpSession session = request.getSession();

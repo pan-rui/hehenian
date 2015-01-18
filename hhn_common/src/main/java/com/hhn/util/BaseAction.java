@@ -1,5 +1,12 @@
 package com.hhn.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,19 +14,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 /**
  * Created by lenovo on 2014/12/6.
  */
 @ControllerAdvice
 public class BaseAction extends Base {
-    public  @Value("#{config['hhn.login']}") String hhn_login;
-    public @Value("#{config['hhn.admin.login']}") String hhn_admin_login;
+    public @Value("${hhn.login}")
+    String hhn_login;
+    public @Value("${hhn.admin.login}")
+    String hhn_admin_login;
     public String getMessage(HttpServletRequest request, String key, Object... objs) {
         Locale locale = RequestContextUtils.getLocale(request);
         return getApplicationContext(request).getMessage(key, objs, locale);

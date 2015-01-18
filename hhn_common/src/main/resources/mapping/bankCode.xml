@@ -54,4 +54,9 @@
     <select id="queryByProperties" parameterType="map" resultType="bank_code">
         select * from td_bank_code where ${keyy}=#{valuee}
     </select>
+
+
+    <select id="getRegxByCode" parameterType="java.lang.String" resultType="java.lang.String" useCache="true">
+        SELECT regex FROM td_bank_code a WHERE a.`code` = #{bankCode}  LIMIT 1
+    </select>
 </mapper>

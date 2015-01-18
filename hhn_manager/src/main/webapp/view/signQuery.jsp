@@ -122,18 +122,15 @@
                                     <%--</td>--%>
                                     <td align="center"><c:out value="${list.product_name}"/></td>
                                     <td align="center"><c:out value="${list.invest_amount}"/></td>
-                                    <td align="center"><c:out value="${list.annual_rate}"/></td>
-                                    <td align="center"><c:out value="${list.loan_period}"/>月</td>
+                                    <td align="center"><c:out value="${list.annual_rate}"/>%</td>
+                                    <td align="center"><c:out value="${list.loan_period}"/>个月</td>
                                     <td align="center"><c:out value="${list.tender_day}"/>天</td>
                                     <td align="center">
-                                        <c:choose>
-                                            <c:when test="${list.repay_type==0}">
-                                                按月还款
-                                            </c:when>
-                                            <c:otherwise>
-                                                其它还款
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <c:if test="${list.repay_type==1}">等本等息</c:if>
+                                        <c:if test="${list.repay_type==2}">一次付息到期还本</c:if>
+                                        <c:if test="${list.repay_type==3}">按月付息到期还本</c:if>
+                                        <c:if test="${list.repay_type==4}">等额本息</c:if>
+                                        <c:if test="${list.repay_type==5}">等本等息（集团贷）</c:if>
                                     </td>
                                     <td align="center">待发布</td>
                                     <td align="center"><f:formatDate value="${list.create_time}"

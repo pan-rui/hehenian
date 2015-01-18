@@ -110,7 +110,7 @@
                 <td><c:out value="${list.user_name}" /></td>
                 <td><c:out value="${list.user_id}" /></td>
                 <td><c:out value="${list.trade_amount}" /></td>
-                <td><f:formatDate value="${list.create_time}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                <td><f:formatDate value="${list.invest_time}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                 <td><f:formatDate value="${list.modify_time}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                 <td>
                   <c:if test="${list.product_status==1}">待发布 </c:if>

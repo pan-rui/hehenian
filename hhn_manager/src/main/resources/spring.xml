@@ -84,7 +84,7 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
     </aop:config>
 
     <aop:aspectj-autoproxy/>
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
    <!--定时器 -->
    <!--<task:annotation-driven/>-->
    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
@@ -105,6 +105,13 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
     <bean id="loanDetailService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean" p:readTimeout="${hessian.readTimeout}">
         <property name="serviceUrl" value="${remoteHessionInvocationUrl}/server/LoanDetailService"/>
         <property name="serviceInterface" value="com.hhn.hessian.loan.ILoanDetailService"/>
+        <property name="overloadEnabled" value="true"/>
+    </bean>
+
+    <!-- 借款提现 -->
+    <bean id="withdrawService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean" p:readTimeout="${hessian.readTimeout}">
+        <property name="serviceUrl" value="${remoteHessionInvocationUrl}/server/WithdrawService"/>
+        <property name="serviceInterface" value="com.hhn.hessian.withdraw.IWithdrawService"/>
         <property name="overloadEnabled" value="true"/>
     </bean>
 

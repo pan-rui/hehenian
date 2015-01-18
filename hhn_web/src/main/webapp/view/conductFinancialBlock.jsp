@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.hhn.util.DateUtil,java.util.Date" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,12 +26,17 @@
                    timeout:30000,//非必须.默认30秒
                    success:function(data){
                        $("#totalAm").val(data.data.bt);
-                       $("#balanceDiv").html("当前可投金额"+data.data.bt+"元,账户余额:"+data.data.ba+"元");
+                       if(data.data.ba=='' || data.data.ba==null){
+                           $("#balanceDiv").html("当前可投金额"+data.data.bt+"元");
+                       }else{
+                           $("#balanceDiv").html("当前可投金额"+data.data.bt+"元,账户余额:"+data.data.ba+"元");
+                       }
                        $("#balanceDiv").show();
                    }
                });
                <c:if test="${not empty errorMsg}">
-               alert('<c:out value="${errorMsg}"/>');
+                 $('#amount').css('color','#ff0000');
+                 $('#amount').val("<c:out value="${errorMsg}"/>");
                </c:if>
                getExpectedReturn();
            });
@@ -40,12 +46,25 @@
                var totalAm = $('#totalAm').val();
                var source = getSource();
                $("#source").val(source);
+               var reg = /^[1-9]{1}[0-9]{0,19}$/;
+               if(isNaN(amount)){
+                   alert("请输入有效购买金额，只能为数字！");
+                   return;
+               }
+               if(!reg.test(amount)){
+                   alert("输入金额有误！");
+                   return;
+               }
+               if(amount.indexOf(' ')>-1){
+                   alert("购买金额不能包含空格！");
+                   return;
+               }
                if(amount < 1000 || amount%1000 != 0){
                    $('#amount').css('color','#ff0000');
                    $('#amount').val("输入金额必须是1000的整数倍，最低1000元!");
                    return;
                }
-               if(amount>totalAm){
+               if(amount>parseFloat(totalAm)){
                    alert("投资金额大于可投金额！");
                    return;
                }
@@ -90,21 +109,29 @@
                if(isNaN(money)){
                    return;
                }
-               if(money == ''){
+               if(money == ""){
                    $('#expectedReturn').text(0);
                    return;
                }
                var Rate;
                var mounth = $('#mounth').val();
                if(mounth == 3){
-                   Rate = 0.06;
+                   Rate = 6;
                }else if(mounth == 6){
-                   Rate = 0.08;
+                   Rate = 8;
                }else if(mounth == 12){
-                   Rate = 0.1;
+                   Rate = 10;
                }
-               $('#expectedReturn').text((money*Rate).toFixed(2));
-               return;
+               Rate = Rate/100;
+               var expectedReturn = money*Rate*mounth/12;
+               if(expectedReturn>10000){
+                   expectedReturn = (expectedReturn/10000).toFixed(2)+'万';
+                   $('#expectedReturn').text(expectedReturn);
+                   return;
+               }else{
+                   $('#expectedReturn').text(expectedReturn.toFixed(2));
+                   return;
+               }
            }
            function cleanInput(){
                $('#amount').val('');
@@ -339,12 +366,12 @@
                 </div>
                 <div class="inputBox">
                     <span class="mairu">买入金额：</span>
-                    <input type="text" id="amount" name="amount" value="" placeholder="输入买入金额，为1000.00元整倍数"oninput="getExpectedReturn()" onpropertychange="getExpectedReturn()" onfocus="cleanInput()"/>
-                    <span class="mairujine">预期收益：</span><span style="font-size:18px;color:#ff9900">￥<span id="expectedReturn"></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>(比银行定期存款收益高 <span style="color:#ff9900">4.6%</span>)</span>
+                    <input type="text" id="amount" name="amount" value="" maxlength="20" placeholder="输入买入金额，为1000.00元整倍数"oninput="getExpectedReturn()" onpropertychange="getExpectedReturn()" onfocus="cleanInput()"/>
+                    <span class="mairujine">预期收益：</span><span style="font-size:18px;color:#ff9900">￥<span id="expectedReturn"></span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>(预计计息时间 <span style="color:#ff9900"><%=DateUtil.getThirtDate(new Date(),1)%></span>)</span>
                 </div><div id="balanceDiv" style="display: none;position: absolute;top:196px;padding-left: 62px;"></div>
                 <input type="hidden" id="mounth" name="mounth" value="" />
                 <input type="hidden" id="source" name="source" />
-                <input type="hidden" id="totalAm" name="totalAm" />
+                <input type="hidden" id="totalAm" name="totalAm" value="0"/>
                <input type="hidden" name="boss-token" value="<%=request.getSession().getAttribute("boss-token")%>" /> 
                 <a class="buyBtn" onclick="submitBuy()">立即买入</a>
                </form>

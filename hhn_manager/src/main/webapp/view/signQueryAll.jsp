@@ -95,7 +95,7 @@
                             <th width="5%" class="thalign2"><input name="chkAll" id="chkAll" type="checkbox" class="iptalign2" />全选</th>
                             <th width="4%">标的ID</th>
                             <th width="8%">借款人</th>
-                            <th width="8%">标的类型</th>
+                            <%--<th width="8%">标的类型</th>--%>
                             <th width="12%">借款标题</th>
                             <th width="8%">借款金额</th>
                             <th width="7%">借款利率</th>
@@ -120,21 +120,18 @@
                                                               type="checkbox" name="sign_ids" /></td>
                                     <td align="center"><c:out value="${list.product_id}"/></td>
                                     <td align="center"><c:out value="${list.realName}"/></td>
-                                    <td align="center">&nbsp;
+                                    <%--<td align="center">&nbsp;</td>--%>
                                     <td align="center"><c:out value="${list.product_name}"/></td>
                                     <td align="center"><c:out value="${list.invest_amount}"/></td>
-                                    <td align="center"><c:out value="${list.annual_rate}"/></td>
-                                    <td align="center"><c:out value="${list.loan_period}"/>月</td>
+                                    <td align="center"><c:out value="${list.annual_rate}"/>%</td>
+                                    <td align="center"><c:out value="${list.loan_period}"/>个月</td>
                                     <td align="center"><c:out value="${list.tender_day}"/>天</td>
                                     <td align="center">
-                                        <c:choose>
-                                            <c:when test="${list.repay_type==0}">
-                                                按月还款
-                                            </c:when>
-                                            <c:otherwise>
-                                                其它还款
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <c:if test="${list.repay_type==1}">等本等息</c:if>
+                                        <c:if test="${list.repay_type==2}">一次付息到期还本</c:if>
+                                        <c:if test="${list.repay_type==3}">按月付息到期还本</c:if>
+                                        <c:if test="${list.repay_type==4}">等额本息</c:if>
+                                        <c:if test="${list.repay_type==5}">等本等息（集团贷）</c:if>
                                     </td>
                                     <td align="center">
                                         <c:if test="${product_status==1}">待发布</c:if>

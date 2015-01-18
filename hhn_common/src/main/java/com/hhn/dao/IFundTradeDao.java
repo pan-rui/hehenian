@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,11 @@ public enum TradeType implements Serializable{
 
     public java.math.BigDecimal queryPayMoney(@Param("noww")Date noww,@Param("trade_type")String trade_type);*/
 
-    public java.math.BigDecimal queryPay(@Param("noww")Date noww,@Param("trade_type")String trade_type);
+    public java.math.BigDecimal queryPay(@Param("noww")Date noww);
+
+    public BigDecimal queryRound(Integer user_id);
+
+    public BigDecimal queryInterested(Integer user_id);
+    public BigDecimal queryInterest(Integer user_id);
 
 }
