@@ -107,9 +107,10 @@ public class AllinPaySupport {
     }
 
     public TransInfo sendXml(String xml, String url, boolean isFront, TransInfo transInfo) throws UnsupportedEncodingException, Exception {
-        System.out.println("======================发送报文======================：\n" + xml);
+        logger.info("======================发送报文======================：\n" + xml);
 //        String resp=XmlTools.send(url,new String(xml.getBytes(),"GBK"));
         String resp = XmlTools.send(url, xml);
+        logger.info("=====================返回报文============="+resp);
         System.out.println("======================响应内容======================");
 //		System.out.println(new String(resp.getBytes(),"GBK")) ;
         boolean flag = XmlTools.verifySign(resp, cerPath, false, isFront);

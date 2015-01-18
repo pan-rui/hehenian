@@ -86,8 +86,7 @@ public class UserQuery extends BaseLoginAction {
             String amount = request.getParameter("amount");
             String source = request.getParameter("source");
             Map pmap = (HashMap)(request.getSession().getAttribute("parameterMap"));
-            logger.debug("pmap:==>size"+pmap.size()+"=====>pmap:"+pmap);
-
+            logger.debug("pmap:==>"+pmap);
             if (pmap!=null && pmap.size()>0){
                 if(pmap.containsKey("mounth") && pmap.get("mounth")!=null) {
                     mounth = ((String[]) pmap.get("mounth"))[0];
@@ -465,6 +464,7 @@ public class UserQuery extends BaseLoginAction {
             }
         }
         view.setViewName("bindBankCard");
+        map.put("errorMsg", baseReturn.getMessageInfo());
         view.addAllObjects(map);
         return view;
     }

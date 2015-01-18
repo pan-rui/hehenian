@@ -99,8 +99,8 @@ public class RechargeServiceImpl extends BaseService<FundActualAccountLog> {
             logger.info("调用通联支付结束，完成支付,充值用户ID："+userId+"充值金额："+trans.getAMOUNT()+"充值卡号："+trans.getACCOUNT_NO());
             return new BaseReturn(0, baseReturn.getData(), processInfo.OPERATE_SUCCESS);
         } else{
+            logger.info("充值失败,充值用户ID："+userId+"充值金额："+trans.getAMOUNT()+"充值卡号："+trans.getACCOUNT_NO()+"errorMessge:"+baseReturn.getMessageInfo());
             transInfoDao.save(transInfo1);
-            logger.info("充值失败,充值用户ID："+userId+"充值金额："+trans.getAMOUNT()+"充值卡号："+trans.getACCOUNT_NO());
             return baseReturn;
         }
     }

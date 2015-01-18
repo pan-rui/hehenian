@@ -85,7 +85,7 @@
           <table id="listTable" style="width: 100%; color: #333333;border-collapse: collapse;" bgColor="#dee7ef" border="0" cellSpacing="1" cellPadding="1">
             <thread>
               <tr class="gvHeader">
-                <th width="10%" class="thalign"><input name="chkAll" id="chkAll" type="checkbox" class="iptalign" />全选</th>
+                <th width="7%" class="thalign"><input name="chkAll" id="chkAll" type="checkbox" class="iptalign" />全选</th>
                 <th width="8%">标的ID</th>
                 <th width="10%">借款人</th>
                 <th width="14%">借款标题</th>

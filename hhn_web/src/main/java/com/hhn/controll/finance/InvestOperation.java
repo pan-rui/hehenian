@@ -178,6 +178,7 @@ public class InvestOperation extends BaseLoginAction {
      */
     @RequestMapping("/doCharge.do")
     @ResponseBody
+    @AvoidSubmits(removeToken = true)
     public BaseReturn doCharge(HttpServletRequest request) {
         try {
             Map<String, Object> map = new HashMap<String, Object>();
@@ -328,7 +329,7 @@ public class InvestOperation extends BaseLoginAction {
         try {
             Map<String, String> map = new HashMap<String, String>();
             String money = request.getParameter("money");
-            String bankCode = request.getParameter("bankCode");
+            String bankCode = request.getParameter("bankCode1");
             String bankNo = request.getParameter("codeNo");
             HttpSession session = request.getSession();
             String userId = getUserId(request);
@@ -340,13 +341,20 @@ public class InvestOperation extends BaseLoginAction {
             //BaseReturn baseReturn = new BaseReturn(0, "成功!");
             if (baseReturn != null && baseReturn.getReturnCode() == 0) {
                 String fromUrl = (String)session.getAttribute("fromUrl");
-                logger.debug("fromUrl:::::::"+fromUrl);
+                logger.debug("fromUrl:::::::" + fromUrl);
                 if (fromUrl!=null && !"".equals(fromUrl)){
                     return new ModelAndView("forward:"+fromUrl);
                 }else {
                     view.setViewName("bindCardSuccess");
                     return view;
                 }
+            }else if(baseReturn != null && baseReturn.getReturnCode() == 2){
+                queryUserInfo(userId, bankCode, bankNo, param);
+                param.put("bankCard", baseReturn.getData());
+                param.put("errorMsg", "请重新提交绑定！");
+                view.setViewName("bindBankCard");
+                view.addAllObjects(param);
+                return view;
             } else {
                 queryUserInfo(userId, bankCode, bankNo, param);
                 param.put("awardPage", 1);
@@ -374,8 +382,8 @@ public class InvestOperation extends BaseLoginAction {
         Map<String, Object> param = new HashMap<String, Object>();
         try {
             Map<String, String> map = new HashMap<String, String>();
-            String bankCode = request.getParameter("bankCode");
-            String userAccount = request.getParameter("userAccount");
+            String bankCode = request.getParameter("bankCode2");
+            String userAccount = request.getParameter("userAccount2");
             userAccount = userAccount.replaceAll(" ", "");
             String userId = getUserId(request);
             if (bankCode != null && !"".equals(bankCode)) {
@@ -393,7 +401,7 @@ public class InvestOperation extends BaseLoginAction {
                 return view;
             }
             map.put("userId", userId);
-            BaseReturn baseReturn = cardVerifyService.updateUserBindingCard(map);
+            BaseReturn baseReturn = cardVerifyService.sendBankIdentifyCode(map);
             if (baseReturn != null && baseReturn.getReturnCode() == 0) {
                 queryUserInfo(userId,bankCode,userAccount,param);
                 param.put("awardPage", 1);

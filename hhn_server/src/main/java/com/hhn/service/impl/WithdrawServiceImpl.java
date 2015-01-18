@@ -97,7 +97,8 @@ public class WithdrawServiceImpl extends BaseService<FundActualAccountLog>{
             logger.info("调用通联支付结束，完成支付,提现用户ID："+userId+"提现金额："+trans.getAMOUNT()+"提现卡号："+trans.getACCOUNT_NO());
             return new BaseReturn(0, baseReturn.getData(), processInfo.OPERATE_SUCCESS);
         } else{
-            logger.info("提现失败,提现用户ID："+userId+"提现金额："+trans.getAMOUNT()+"提现卡号："+trans.getACCOUNT_NO());
+            logger.info("提现失败,提现用户ID："+userId+"提现金额："+trans.getAMOUNT()+"提现卡号："+trans.getACCOUNT_NO()+"errorMessage:"+baseReturn.getMessageInfo());
+            transInfoDao.save((TransInfo) baseReturn.getData());
             return baseReturn;
         }
     }

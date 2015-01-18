@@ -54,7 +54,7 @@ public class QueryServiceImpl extends BaseService<FundUserAccount> {
     }
 
     public BaseReturn queryOtherInterest(Integer userId) {
-        return new BaseReturn(0, 0);
+        return new BaseReturn(0, new BigDecimal(0.00d));
     }
 
     public BaseReturn queryPhone(Integer userId) {

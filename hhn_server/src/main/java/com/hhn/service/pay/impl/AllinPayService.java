@@ -44,8 +44,10 @@ public class AllinPayService implements IAllinPay {
         String resultStr = transInfos[1].getContent();
         if (resultStr.contains("<RET_CODE>0000</RET_CODE>"))
             return new BaseReturn(0, transInfos[1], processInfo.OPERATE_SUCCESS);
-        else
-            return new BaseReturn(1, resultStr.substring(resultStr.indexOf("<ERR_MSG>") + 9, resultStr.indexOf("</ERR_MSG>")));
+        else {
+            logger.info(resultStr);
+            return new BaseReturn(1, transInfos[1],resultStr.substring(resultStr.indexOf("<ERR_MSG>") + 9, resultStr.indexOf("</ERR_MSG>")));
+        }
     }
 
     @Override

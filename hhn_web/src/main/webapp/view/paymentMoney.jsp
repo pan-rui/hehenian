@@ -198,7 +198,8 @@
                         <div>姓名　　<input type="text" id="userName" name="userName" style="width: 334px;" value="<c:out value="${userName}"/>"
                                         data="<c:out value="${userName}"/>" disabled="disabled" placeholder="输入持卡人姓名"/>
                             <span class="personalDataBox">
-                                <a class="personalData" href="/owerInformationInit.do?fromUrl=<c:url value="/doUserCharge.do"/>" target="_blank">完善个人信息</a>
+                                <a class="personalData" href="/owerInformationInit.do?fromUrl=<c:url value="/doUserCharge.do"/>" target="_self">
+                                    <c:if test="${empty userName}">完善个人信息</c:if><c:if test="${not empty userName}">修改个人信息</c:if></a>
                             </span></div>
                         <div style="height:auto;margin:0">
                             <input id="bankCode" name="bankCode" type="hidden"
@@ -208,45 +209,103 @@
                                 </c:choose>/>
                             <span style="position: absolute;top:0;left:0">银行</span>
                             <span class="bankBox">
-                                <span class="bankLogo <c:if test="${empty bankCard or empty bankCard.bank_code or bankCard.bank_code=='0104'}">onClick</c:if>" onclick="selectBank(this,'0104')">
-                                    <img src="<c:url value='/images/zgyh.jpg'/>">
-                                    <p class="bankName">中国银行</p>
-                                </span>
-                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0103'}">onClick</c:if>" onclick="selectBank(this,'0103')">
-                                    <img src="<c:url value='/images/nyyh.jpg'/>" >
-                                    <p class="bankName">农业银行</p>
-                                </span>
-                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0105'}">onClick</c:if>" onclick="selectBank(this,'0105')">
-                                    <img src="<c:url value='/images/jsyh.jpg'/>">
-                                    <p class="bankName">建设银行</p>
-                                </span>
-                                <span style="margin-right:0px" class="bankLogo <c:if test="${bankCard.bank_code=='0301'}">onClick</c:if>" onclick="selectBank(this,'0301')">
-                                    <img src="<c:url value='/images/jtyh.jpg'/>">
-                                    <p class="bankName">交通银行</p>
-                                </span>
-                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0308'}">onClick</c:if>" onclick="selectBank(this,'0308')">
-                                    <img src="<c:url value='/images/zsyh.jpg'/>">
-                                    <p class="bankName">招商银行</p>
-                                </span>
-                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0403'}">onClick</c:if>" onclick="selectBank(this,'0403')">
-                                    <img src="<c:url value='/images/ycyh.jpg'/>">
-                                    <p class="bankName">邮储银行</p>
-                                </span>
-                                <span class="bankLogo <c:if test="${bankCard.bank_code=='0309'}">onClick</c:if>" onclick="selectBank(this,'0309')">
-                                    <img src="<c:url value='/images/xyyh.jpg'/>">
-                                    <p class="bankName">兴业银行</p>
-                                </span>
-                                <span style="margin-right:0px" class="bankLogo <c:if test="${bankCard.bank_code=='0303'}">onClick</c:if>" onclick="selectBank(this,'0303')">
-                                    <img src="<c:url value='/images/gdyh.jpg'/>">
-                                    <p class="bankName">光大银行</p>
-                                </span>
+                                <c:choose>
+                                    <c:when test="${empty bankCard or empty bankCard.bank_code}">
+                                        <span class="bankLogo onClick" onclick="selectBank(this,'0104')">
+                                            <img src="<c:url value='/images/zgyh.jpg'/>">
+                                            <p class="bankName">中国银行</p>
+                                        </span>
+                                        <span class="bankLogo" onclick="selectBank(this,'0103')">
+                                            <img src="<c:url value='/images/nyyh.jpg'/>" >
+                                            <p class="bankName">农业银行</p>
+                                        </span>
+                                        <span class="bankLogo" onclick="selectBank(this,'0105')">
+                                            <img src="<c:url value='/images/jsyh.jpg'/>">
+                                            <p class="bankName">建设银行</p>
+                                        </span>
+                                        <span style="margin-right:0px" class="bankLogo" onclick="selectBank(this,'0301')">
+                                            <img src="<c:url value='/images/jtyh.jpg'/>">
+                                            <p class="bankName">交通银行</p>
+                                        </span>
+                                        <span class="bankLogo" onclick="selectBank(this,'0308')">
+                                            <img src="<c:url value='/images/zsyh.jpg'/>">
+                                            <p class="bankName">招商银行</p>
+                                        </span>
+                                        <span class="bankLogo" onclick="selectBank(this,'0403')">
+                                            <img src="<c:url value='/images/ycyh.jpg'/>">
+                                            <p class="bankName">邮储银行</p>
+                                        </span>
+                                        <span class="bankLogo" onclick="selectBank(this,'0309')">
+                                            <img src="<c:url value='/images/xyyh.jpg'/>">
+                                            <p class="bankName">兴业银行</p>
+                                        </span>
+                                        <span style="margin-right:0px" class="bankLogo" onclick="selectBank(this,'0303')">
+                                            <img src="<c:url value='/images/gdyh.jpg'/>">
+                                            <p class="bankName">光大银行</p>
+                                        </span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:if test="${bankCard.bank_code=='0104'}">
+                                            <span class="bankLogo onClick">
+                                                <img src="<c:url value='/images/zgyh.jpg'/>">
+                                                <p class="bankName">中国银行</p>
+                                            </span>
+                                        </c:if>
+                                        <c:if test="${bankCard.bank_code=='0103'}">
+                                            <span class="bankLogo onClick">
+                                                <img src="<c:url value='/images/nyyh.jpg'/>" >
+                                                <p class="bankName">农业银行</p>
+                                            </span>
+                                        </c:if>
+                                        <c:if test="${bankCard.bank_code=='0105'}">
+                                            <span class="bankLogo onClick">
+                                            <img src="<c:url value='/images/jsyh.jpg'/>">
+                                            <p class="bankName">建设银行</p>
+                                            </span>
+                                        </c:if>
+                                        <c:if test="${bankCard.bank_code=='0301'}">
+                                            <span class="bankLogo onClick">
+                                                <img src="<c:url value='/images/jtyh.jpg'/>">
+                                                <p class="bankName">交通银行</p>
+                                            </span>
+                                        </c:if>
+                                        <c:if test="${bankCard.bank_code=='0308'}">
+                                            <span class="bankLogo onClick">
+                                                <img src="<c:url value='/images/zsyh.jpg'/>">
+                                                <p class="bankName">招商银行</p>
+                                            </span>
+                                        </c:if>
+                                        <c:if test="${bankCard.bank_code=='0403'}">
+                                            <span class="bankLogo onClick">
+                                                <img src="<c:url value='/images/ycyh.jpg'/>">
+                                                <p class="bankName">邮储银行</p>
+                                            </span>
+                                        </c:if>
+                                        <c:if test="${bankCard.bank_code=='0309'}">
+                                            <span class="bankLogo onClick">
+                                                <img src="<c:url value='/images/xyyh.jpg'/>">
+                                                <p class="bankName">兴业银行</p>
+                                            </span>
+                                        </c:if>
+                                        <c:if test="${bankCard.bank_code=='0303'}">
+                                            <span class="bankLogo onClick">
+                                                <img src="<c:url value='/images/gdyh.jpg'/>">
+                                                <p class="bankName">光大银行</p>
+                                            </span>
+                                        </c:if>
+                                    </c:otherwise>
+                                </c:choose>
                             </span>
                         </div>
                         <div>卡号　　<input type="text" id="userAccount" name="userAccount" value="<c:out value="${bankCard.card_no}" />" style="width: 334px;" data="<c:out value="${bankCard.card_no}"/>" placeholder="输入银行卡号" disabled="disabled" />
-                        <span class="personalDataBox"><a class="personalData" href="<c:url value="/queryBankCard.do"/>?fromUrl=/doUserCharge.do" target="_blank">绑定银行卡</a></span></div>
+                        <span class="personalDataBox"><a class="personalData" href="<c:url value="/queryBankCard.do"/>?fromUrl=/doUserCharge.do" target="_self">
+                            <c:if test="${empty bankCard or empty bankCard.card_no}">绑定银行卡</c:if><c:if test="${not empty bankCard and not empty bankCard.card_no}">修改银行卡</c:if></a>
+                        </span></div>
                         <div>金额　　<input type="text" id="amount" name="amount" maxlength="20" placeholder="输入充值金额"/></div>
                         <div>手机号　<input type="text" id="phone" name="phone" value="<c:out value="${phone}"/>" data="<c:out value="${phone}"/>" style="width: 334px;" disabled="disabled" placeholder="输入手机号"/>
-                        <span class="personalDataBox"><a class="personalData" href="/updatexgmm.do?ivp=1&fromUrl=<c:url value="/doUserCharge.do"/>" target="_blank">修改手机号</a></span></div>
+                        <span class="personalDataBox"><a class="personalData" href="/updatexgmm.do?ivp=1&fromUrl=<c:url value="/doUserCharge.do"/>" target="_self">
+                            <c:if test="${empty phone}">填写手机号</c:if><c:if test="${not empty phone}">修改手机号</c:if></a>
+                        </span></div>
                         <div>　　　　<input type="text" id="verfiyCode" name="verfiyCode" maxlength="6" placeholder="输入验证码" style="width:120px">&nbsp;&nbsp;&nbsp;&nbsp;<button style="height:40px" id="btn2" <c:if test="${empty phone}">disabled="disabled"</c:if>>获取验证码</button><font color="red" style="font-size: 13px;" id="s_telephone"><c:if test="${empty phone}">未绑定手机号，请先绑定！</c:if></font></div>
                         <div class="agreement"><span id="agreementSelect" onclick="selectAgree(this)"></span><a href="<c:url value="/view/withholdingAgreement.jsp"/>" target="_blank">同意合和年代扣协议</a></div>
                         <a class="paymentBtn" onclick="subPay()">确认支付</a>
